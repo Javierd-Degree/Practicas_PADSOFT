@@ -1,0 +1,98 @@
+Description, zip code, characteristics (swimmingpool, size, etc) each characteristic has name and value
+
+Differents searches depending on the user: type of the offer, zip code and providing two dates. You can also see if the reserves are already reserved
+2 types of comments, text and numerical value (1-5) you can comment other commentaries from other people
+
+no chat. All comunication is done by the offers.
+
+We do not need to register new users, they are already registers.
+We do not need to offer a car.
+Every user has an id, they cannot change it but the admin should be able to change it.
+
+There are offers for holidays (start and end date) and for livings (start date and number of months for the rent)
+A user can create as many houses and offers as he wants (the system does not check if they happen in the samen time, no se solapan)  
+There are three types of access, non-registered users and registered, the registered can have two roles, owner and guest.
+You always pay using a credit card.
+To rent a house you need  to make a reservation, and the guest has 5 days to buy that offers, if it he doesnt pay in 5 five days, the reservation is canceled.
+
+We need name, surname, credit card and password.
+
+The same user can be host and guest.
+
+non registered user can search offers by zipcode type of offer (cannot see the comments and cannot see the already reserved or booked offers) and cannot make a reservation.
+
+No order for offers.
+
+Adminitrator has an special ID and password. He is a registered user. He can control the system he basically chechs the offers, the administrator approves the offers (accept it, reject it, or ask to make some changes).
+
+The host can erase an offer id the administrator has not approve it yet. Once the offer is approved, the offer cannot be erased or changed.
+
+If you buy an offer it cannot be "unbuyed".
+
+The comments and valorations are both for the host and the houses.
+
+The users credit card can only be changed by the administrator.
+
+Users can be blocked (banned) by de adminitrator (for giving a fake credit card) until the administrator changes the credit card number, then it is unblocked.
+
+the user cannot see the house in a map.
+
+Offers have starting date and it can expire.
+
+no filters and no order in the offers.
+
+no pictures.
+
+we assume that all the resevations are going to be done at least 5 days before the start date of the offer.
+
+when we make the reservation we only have to check if the reservation is donde before the starting date, and that the offer is not already reserved or booked.
+
+when a host makes an offer he has to provide 2 prices, firstly a deposit, and secondly the price for the full stay (vacation case) or the price/month (living case) but the guest will only pay the deposit and the first month. The rest is not paid or controlled by the application, we ignore it.
+The host receives the money minus some commission charged by the application so that the company gets profit. The commission for vacation offers is the 2% of the final price, and in the living cases is the 0,1% of the final price.
+
+The deposit is returned to the guest if the host and the guest fulfill all the conditions of the reservation.
+
+the guest does not select the number of days or months he will stay. This time is stated on the reservation and if the guest buys the reservation he has it for the period stated by the offer.
+
+If someone buys an offer the system saves it for "history purposes". If an offer isnt bought before the starting date it is erased.
+
+if a user is only host he cannot see the available offers. He needs to be guest in order to see it.
+
+The guests can only see the approved offers.
+
+a host can have a house but maybe he has nor made an offer for the house yer. in that case the house doesnt show in the offers.
+
+you can search for offers in a period of time and the system will show the offers that have the starting date between those days.
+
+if someone is guest and host he can book his own house.
+
+
+
+
+
+The offer can be bought dirctly.
+
+If someone reserve an offer and dont pay in 5 days he loses the reservation and cannot reserve the same offer again.
+
+There can be 2 offers per house (one in living and one in holidays) there cannot be more than those 2 offers for the same house.
+
+A user cannot have reserved of bought more than 2 offers (one for living and one for holidays) at a time. 
+
+The regstered users can make 3 searches (all the offer that are bought, all the offers that are reserved and all the offers that have more than a specific value than a certain number).
+
+A user has o have a window where he can see his booked or buyed offers and (if he is a host) the offers that he has to change in order to be approved and the ones that are approved and in its way to approval.
+
+Each house registered has to have a set of characteristics (number of rooms, place....)
+
+The offers made by the host have to have the starting date.
+
+The offers can be changed by the host unil they are approved by the administrator.
+
+
+
+
+
+
+
+
+

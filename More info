@@ -1,0 +1,44 @@
+Just one language
+The same user has both of the previous roles
+Non registered users are not able to see reserved offersthey can justsearch using dates and zip, they cannot reserve.
+
+There is no especilal order for the offers.
+
+The admin has an especial id, and he check the offers, he need to aprove the offers (boolean on the database). He can also ask for some changes before accepting the reserve, and the host has 5 days to make tose changes, otherwise the reservation would be deleted.
+
+Until the administrator approves the offer the host can cancel it, otherwise you cant.
+Only the administrator is allowed to change data as credit card number, not the user.
+A user can be blocked if he uses fake credit cards (detected by the program). If the admin changes later the ccard number, the user would be unblocked.
+The user cannot see the house on a map.
+A house can have both types of offers at the same time.
+No photographs, maps. etc
+
+Check if the reservaion is before the starting date.
+
+When we create and offer, we provide two prices the deposit and the price for the whole period (on holidays), for living we have the deposit and the price per month, it is just payed on the first month in this case. The host will receive this money - comissions (2% holidays, 0.1% rent)
+
+If the offer is for holidays and no one rent it, it is deleted from the sistem an the end of the date.
+If you create a house but there are no offers for it, it is not showed.
+
+
+=========================================================================
+			SECOND DAY
+=========================================================================
+You can also pay directly without reservation
+If yoy reserve but you donnot pay in  days, you cannot reserve the same offer again
+You can just reserve one offer of each type per house at the same time.
+
+The administrator has a special id number that we decide.
+
+The registered users can search all the offers booked, reserved, and all offers with a min mark of the comments.
+Non-registered users cannot see the value of the offer, if its booked or not, etc.
+
+If the admin ask you for more changes you have 5 more days to complete them.
+The admin has to be able to see the non-approved offers etc, the admin should be able to see all his offers.
+A registered uer can rate an offer even if he has not reserved it.
+
+Each house has a set of characteristics.
+
+You can also search usign two dates, so that you get all the offers between them.
+If you reserve an offer that starts in 2 days, you just have 2 days to pay it.
+
