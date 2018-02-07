@@ -15,8 +15,6 @@ There are three types of access, non-registered users and registered, the regist
 You always pay using a credit card.
 To rent a house you need  to make a reservation, and the guest has 5 days to buy that offers, if it he doesnt pay in 5 five days, the reservation is canceled.
 
-We need name, surname, credit card and password.
-
 The same user can be host and guest.
 
 non registered user can search offers by zipcode type of offer (cannot see the comments and cannot see the already reserved or booked offers) and cannot make a reservation.
