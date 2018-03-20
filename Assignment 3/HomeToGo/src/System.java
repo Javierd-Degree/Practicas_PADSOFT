@@ -22,6 +22,17 @@ public class System {
 		both = new ArrayList<>();
 		offers = new ArrayList<>();
 		houses = new ArrayList<>();
+		/* Lo ha puesto el profesor*/
+		ArrayList<Offer> toRemove = new ArrayList<Offer>()
+		for (Offer of : offers) {
+			if (of.hasExpired()) {
+				toRemove.add(of);
+				offers.remove
+			}
+		}
+		offers.removeAll(toRemove);
+		
+		
 	}
 	
 	/*TODO Hacer funciones para cargar los datos de fichero*/

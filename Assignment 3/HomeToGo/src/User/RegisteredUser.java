@@ -117,4 +117,19 @@ public class RegisteredUser {
 			/*TODO quitar la oferta del array si deja de estar reservada*/
 		}	
 	}
+	
+	private int id;
+	private String name;
+	private String surname;
+	private String creditCard;
+	private String password;
+	private int status;
+	private List<Offer> boughtOffers;
+	private List<Offer> createdOffers;
+	private List<House> createdHouses;
+	
+	public boolean equals(RegisteredUser u) {
+		
+		return this.id == u.id;
+	}
 }
