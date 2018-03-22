@@ -118,8 +118,13 @@ public class RegisteredUser {
 		}	
 	}
 	
-	public boolean equals(RegisteredUser u) {
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof RegisteredUser)) {
+			return false;
+		}
 		
+		RegisteredUser u = (RegisteredUser) o;
 		return this.id == u.id;
 	}
 }

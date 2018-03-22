@@ -112,8 +112,13 @@ public abstract class Offer {
 		return guest;
 	}
 	
-	public boolean equals(Offer o) {
+	@Override
+	public boolean equals(Object ob) {
+		if(!(ob instanceof Offer)) {
+			return false;
+		}
 		
+		Offer o = (Offer) ob;
 		return this.deposit == o.deposit && this.status == o.status &&
 				this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
 				&& this.host.equals(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments);

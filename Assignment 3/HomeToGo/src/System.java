@@ -86,11 +86,10 @@ public class System {
 		houses.add(h);
 	}
 	
-	/*TODO Ver como llamar a esta funcion cuando pasan los cinco dias.*/
 	public void cancelOffer(Offer o) {
 		/*remove it from the system array*/
 		for(int i = 0; i < offers.size(); i++) {
-			/*TODO Cambiar por un equals�?*/
+			/*TODO Cambiar por un equals?*/
 			if(offers.get(i) == o) {
 				offers.remove(i);
 			}
