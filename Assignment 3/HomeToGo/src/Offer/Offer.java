@@ -31,7 +31,7 @@ public abstract class Offer {
 		this.guest = null;
 		this.comments = new ArrayList<>();
 		
-		/*TODO Añadir al array del usuario y del sistema*/
+		/*TODO Aï¿½adir al array del usuario y del sistema*/
 	}
 	
 	public void setLastModifiedDate(Date date) {
@@ -116,7 +116,7 @@ public abstract class Offer {
 		
 		return this.deposit == o.deposit && this.status == o.status &&
 				this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
-				&& this.host.equales(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments);
+				&& this.host.equals(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments);
 		
 	}
 }

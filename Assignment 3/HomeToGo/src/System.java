@@ -22,15 +22,15 @@ public class System {
 		both = new ArrayList<>();
 		offers = new ArrayList<>();
 		houses = new ArrayList<>();
-		/* Lo ha puesto el profesor*/
-		ArrayList<Offer> toRemove = new ArrayList<Offer>()
+		/* Lo ha puesto el profesor
+		ArrayList<Offer> toRemove = new ArrayList<Offer>();
 		for (Offer of : offers) {
 			if (of.hasExpired()) {
 				toRemove.add(of);
 				offers.remove
 			}
 		}
-		offers.removeAll(toRemove);
+		offers.removeAll(toRemove);*/
 		
 		
 	}
@@ -90,7 +90,7 @@ public class System {
 	public void cancelOffer(Offer o) {
 		/*remove it from the system array*/
 		for(int i = 0; i < offers.size(); i++) {
-			/*TODO Cambiar por un equals¿?*/
+			/*TODO Cambiar por un equalsï¿½?*/
 			if(offers.get(i) == o) {
 				offers.remove(i);
 			}
