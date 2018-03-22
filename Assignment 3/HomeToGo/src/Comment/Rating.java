@@ -1,7 +1,10 @@
 package Comment;
+
+import java.io.Serializable;
 import User.RegisteredUser;
 
-public class Rating extends Comment {
+public class Rating extends Comment implements Serializable{
+	private static final long serialVersionUID = 8557705144350519069L;
 	private int rating;
 	private RegisteredUser user;
 	

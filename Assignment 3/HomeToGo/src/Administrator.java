@@ -1,5 +1,7 @@
+import java.io.Serializable;
 
-public class Administrator {
+public class Administrator implements Serializable{
+	private static final long serialVersionUID = -5008330488164364504L;
 	private int id;
 	private String name;
 	private String surname;

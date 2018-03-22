@@ -1,10 +1,12 @@
 package User;
+import java.io.Serializable;
 import java.util.*;
 
 import House.House;
 import Offer.*;
 
-public class RegisteredUser {
+public class RegisteredUser implements Serializable{
+	private static final long serialVersionUID = 5875960192364410941L;
 	private int id;
 	private String name;
 	private String surname;

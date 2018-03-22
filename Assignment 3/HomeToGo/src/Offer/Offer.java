@@ -2,11 +2,13 @@ package Offer;
 
 import java.util.Date;
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import User.RegisteredUser;
 import Comment.*;
 
-public abstract class Offer {
+public abstract class Offer implements Serializable{
+	private static final long serialVersionUID = -6572064457556207983L;
 	private double deposit;
 	private int status;
 	private Date startDate;
@@ -15,12 +17,12 @@ public abstract class Offer {
 	private RegisteredUser guest;
 	private List<Comment> comments;
 	
-	private final static int WAITING = 0;
-	private final static int TO_CHANGE = -1;
-	private final static int DENIED = -2;
-	private final static int AVAILABLE = 1;
-	private final static int RESERVED = 2;
-	private final static int BOUGHT = 3;
+	public static final int WAITING = 0;
+	public static final int TO_CHANGE = -1;
+	public static final int DENIED = -2;
+	public static final int AVAILABLE = 1;
+	public static final int RESERVED = 2;
+	public static final int BOUGHT = 3;
 	
 	public Offer(double deposit, Date startDate, RegisteredUser host) {
 		this.deposit = deposit;

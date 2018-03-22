@@ -1,9 +1,11 @@
 package Comment;
 import java.util.List;
+import java.io.Serializable;
 import java.util.ArrayList;
 import User.RegisteredUser;
 
-public class TextComment extends Comment {
+public class TextComment extends Comment implements Serializable{
+	private static final long serialVersionUID = -1027844935905198927L;
 	private String text;
 	private RegisteredUser user;
 	private List<TextComment> answers;
