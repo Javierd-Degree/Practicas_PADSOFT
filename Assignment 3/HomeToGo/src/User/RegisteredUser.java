@@ -110,7 +110,7 @@ public class RegisteredUser implements Serializable{
 	}
 	
 	public void addOffer(Offer o, int s){
-		if(s==CREATED_OFFER){
+		if(s == CREATED_OFFER){
 			this.createdOffers.add(o);
 		}
 		else {

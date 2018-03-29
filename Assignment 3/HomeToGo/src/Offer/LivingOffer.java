@@ -14,6 +14,16 @@ public class LivingOffer extends Offer implements Serializable{
 		super(deposit, startDate, host, house);
 		this.pricePerMonth = pricePerMonth;
 		
-		/*TODO Anadir al array del usuario y del sistema*/
+		/*TODO Anadir al array del usuario y del sistema, al crearlo, dentro de System*/
+	}
+	
+	@Override
+	public boolean equals(Object ob) {
+		if(!(ob instanceof LivingOffer)) {
+			return false;
+		}
+		
+		LivingOffer h = (LivingOffer) ob;
+		return super.equals(h) && this.pricePerMonth == h.pricePerMonth;
 	}
 }

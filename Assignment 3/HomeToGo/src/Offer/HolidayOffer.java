@@ -1,7 +1,6 @@
 package Offer;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 import java.util.Date;
 
 import House.House;
@@ -16,6 +15,16 @@ public class HolidayOffer extends Offer implements Serializable{
 		super(deposit, startDate, host, house);
 		this.endDate = endDate;
 		this.totalPrice = totalPrice;
-		/*TODO Anadir al array del usuario y del sistema*/
+		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
+	}
+	
+	@Override
+	public boolean equals(Object ob) {
+		if(!(ob instanceof HolidayOffer)) {
+			return false;
+		}
+		
+		HolidayOffer h = (HolidayOffer) ob;
+		return super.equals(h) && this.totalPrice == h.totalPrice && this.endDate.equals(h.endDate);
 	}
 }

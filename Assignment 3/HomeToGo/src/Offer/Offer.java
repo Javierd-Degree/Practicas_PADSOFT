@@ -68,8 +68,6 @@ public abstract class Offer implements Serializable{
 		this.status = RESERVED;
 		this.lastModifiedDate = new Date();
 		this.guest = guest;
-		/*TODO
-		 * Check if this works*/
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
@@ -77,9 +75,7 @@ public abstract class Offer implements Serializable{
 		this.status = BOUGHT;
 		this.lastModifiedDate = new Date();
 		this.guest = guest;
-		/*TODO
-		 * Check if this works
-		 * CALL THE PAYMENT SYSTEM*/
+		/*TODO CALL THE PAYMENT SYSTEM*/
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
@@ -130,7 +126,8 @@ public abstract class Offer implements Serializable{
 		Offer o = (Offer) ob;
 		return this.deposit == o.deposit && this.status == o.status &&
 				this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
-				&& this.host.equals(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments);
+				&& this.host.equals(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments)
+				&& this.house.equals(o.house);
 		
 	}
 }

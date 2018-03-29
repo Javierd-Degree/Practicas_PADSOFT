@@ -30,6 +30,14 @@ public class House implements Serializable{
 		this.characteristics.remove(name);
 	}
 	
-	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof House)) {
+			return false;
+		}
+		House h = (House) o;
+		
+		return  this.id.equals(h.id) && this.characteristics.equals(h.characteristics);
+	}
 	
 }
