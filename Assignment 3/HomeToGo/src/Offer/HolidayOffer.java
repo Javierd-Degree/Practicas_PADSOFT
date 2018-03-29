@@ -1,17 +1,17 @@
 package Offer;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import House.House;
 import User.RegisteredUser;
 
 public class HolidayOffer extends Offer implements Serializable{
 	private static final long serialVersionUID = -3546137102202274577L;
-	private Date endDate;
+	private LocalDate endDate;
 	private double totalPrice;
 	
-	public HolidayOffer(double deposit, Date startDate, RegisteredUser host, House house, Date endDate, double totalPrice) {
+	public HolidayOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, LocalDate endDate, double totalPrice) {
 		super(deposit, startDate, host, house);
 		this.endDate = endDate;
 		this.totalPrice = totalPrice;
@@ -26,5 +26,9 @@ public class HolidayOffer extends Offer implements Serializable{
 		
 		HolidayOffer h = (HolidayOffer) ob;
 		return super.equals(h) && this.totalPrice == h.totalPrice && this.endDate.equals(h.endDate);
+	}
+	
+	public double getPrice() {
+		return this.totalPrice + this.getDeposit();
 	}
 }

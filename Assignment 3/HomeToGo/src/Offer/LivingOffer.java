@@ -1,7 +1,7 @@
 package Offer;
 
 import java.io.Serializable;
-import java.util.Date;
+import java.time.LocalDate;
 
 import House.House;
 import User.RegisteredUser;
@@ -10,7 +10,7 @@ public class LivingOffer extends Offer implements Serializable{
 	private static final long serialVersionUID = 6202450079263161446L;
 	private double pricePerMonth;
 	
-	public LivingOffer(double deposit, Date startDate, RegisteredUser host, House house, double pricePerMonth) {
+	public LivingOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, double pricePerMonth) {
 		super(deposit, startDate, host, house);
 		this.pricePerMonth = pricePerMonth;
 		
@@ -25,5 +25,9 @@ public class LivingOffer extends Offer implements Serializable{
 		
 		LivingOffer h = (LivingOffer) ob;
 		return super.equals(h) && this.pricePerMonth == h.pricePerMonth;
+	}
+	
+	public double getPrice() {
+		return this.pricePerMonth + this.getDeposit();
 	}
 }

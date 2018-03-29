@@ -1,6 +1,6 @@
 package Offer;
 
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,8 +12,8 @@ public abstract class Offer implements Serializable{
 	private static final long serialVersionUID = -6572064457556207983L;
 	private double deposit;
 	private int status;
-	private Date startDate;
-	private Date lastModifiedDate;
+	private LocalDate startDate;
+	private LocalDate lastModifiedDate;
 	private RegisteredUser host;
 	private RegisteredUser guest;
 	private House house;
@@ -26,11 +26,11 @@ public abstract class Offer implements Serializable{
 	public static final int RESERVED = 2;
 	public static final int BOUGHT = 3;
 	
-	public Offer(double deposit, Date startDate, RegisteredUser host, House house) {
+	public Offer(double deposit, LocalDate startDate, RegisteredUser host, House house) {
 		this.deposit = deposit;
 		this.status = WAITING;
 		this.startDate = startDate;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 		this.host = host;
 		this.guest = null;
 		this.house = house;
@@ -39,7 +39,7 @@ public abstract class Offer implements Serializable{
 		/*TODO Anadir al array del usuario y del sistema*/
 	}
 	
-	public void setLastModifiedDate(Date date) {
+	public void setLastModifiedDate(LocalDate date) {
 		this.lastModifiedDate = date;
 	}
 	
@@ -49,31 +49,31 @@ public abstract class Offer implements Serializable{
 	
 	public void approveOffer() {
 		this.status = AVAILABLE;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 	}
 	
 	public void denyOffer() {
 		this.status = DENIED;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 	}
 	
 	public void askForChanges(String text) {
 		ChangeComment comment = new ChangeComment(text);
 		this.status = TO_CHANGE;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 		comments.add(comment);
 	}
 	
 	public void reserveOffer(RegisteredUser guest) {
 		this.status = RESERVED;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 		this.guest = guest;
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
 	public void buyOffer(RegisteredUser guest) {
 		this.status = BOUGHT;
-		this.lastModifiedDate = new Date();
+		this.lastModifiedDate = LocalDate.now();
 		this.guest = guest;
 		/*TODO CALL THE PAYMENT SYSTEM*/
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
@@ -101,9 +101,7 @@ public abstract class Offer implements Serializable{
 		this.comments.add(comment);
 	}
 	
-	public double getPrice() {
-		return -1;
-	}
+	public abstract double getPrice();
 	
 	public RegisteredUser getHost() {
 		return host;
@@ -115,6 +113,10 @@ public abstract class Offer implements Serializable{
 	
 	public House getHouse() {
 		return house;
+	}
+	
+	public double getDeposit() {
+		return this.deposit;
 	}
 	
 	@Override
