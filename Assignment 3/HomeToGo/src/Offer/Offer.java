@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import User.RegisteredUser;
 import Comment.*;
 import House.House;
+import es.uam.eps.padsof.telecard.*;
 
 public abstract class Offer implements Serializable{
 	private static final long serialVersionUID = -6572064457556207983L;
@@ -71,11 +72,20 @@ public abstract class Offer implements Serializable{
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
-	public void buyOffer(RegisteredUser guest) {
+	public void buyOffer(RegisteredUser guest) throws FailedInternetConnectionException,
+		    OrderRejectedException {
+		
 		this.status = BOUGHT;
 		this.lastModifiedDate = LocalDate.now();
 		this.guest = guest;
-		/*TODO CALL THE PAYMENT SYSTEM*/
+		
+		try {
+			TeleChargeAndPaySystem.charge(guest.getCreditCard(), "Buy offer", this.getPrice());
+		} catch (InvalidCardNumberException e) {
+			guest.changeStatus(RegisteredUser.BANNED);
+			return;
+		}
+		
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
