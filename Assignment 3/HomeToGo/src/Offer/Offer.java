@@ -6,6 +6,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import User.RegisteredUser;
 import Comment.*;
+import House.House;
 
 public abstract class Offer implements Serializable{
 	private static final long serialVersionUID = -6572064457556207983L;
@@ -15,6 +16,7 @@ public abstract class Offer implements Serializable{
 	private Date lastModifiedDate;
 	private RegisteredUser host;
 	private RegisteredUser guest;
+	private House house;
 	private List<Comment> comments;
 	
 	public static final int WAITING = 0;
@@ -24,16 +26,17 @@ public abstract class Offer implements Serializable{
 	public static final int RESERVED = 2;
 	public static final int BOUGHT = 3;
 	
-	public Offer(double deposit, Date startDate, RegisteredUser host) {
+	public Offer(double deposit, Date startDate, RegisteredUser host, House house) {
 		this.deposit = deposit;
 		this.status = WAITING;
 		this.startDate = startDate;
 		this.lastModifiedDate = new Date();
 		this.host = host;
 		this.guest = null;
+		this.house = house;
 		this.comments = new ArrayList<>();
 		
-		/*TODO A�adir al array del usuario y del sistema*/
+		/*TODO Anadir al array del usuario y del sistema*/
 	}
 	
 	public void setLastModifiedDate(Date date) {
@@ -112,6 +115,10 @@ public abstract class Offer implements Serializable{
 	
 	public RegisteredUser getGuest() {
 		return guest;
+	}
+	
+	public House getHouse() {
+		return house;
 	}
 	
 	@Override
