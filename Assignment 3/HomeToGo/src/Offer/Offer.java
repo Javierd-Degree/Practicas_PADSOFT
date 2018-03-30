@@ -159,6 +159,10 @@ public abstract class Offer implements Serializable{
 		return this.deposit;
 	}
 	
+	public LocalDate getStartDate() {
+		return this.startDate;
+	}
+	
 	@Override
 	public boolean equals(Object ob) {
 		if(!(ob instanceof Offer)) {
