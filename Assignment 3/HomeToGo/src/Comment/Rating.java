@@ -29,5 +29,13 @@ public class Rating extends Comment implements Serializable{
 		this.user = user;
 	}
 	
-	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof Rating)) {
+			return false;
+		}
+		
+		Rating c = (Rating) o;
+		return this.user.equals(c.user) && this.rating == c.rating;
+	}
 }

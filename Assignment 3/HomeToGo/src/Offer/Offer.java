@@ -5,6 +5,7 @@ import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
 import User.RegisteredUser;
+import Exceptions.*;
 import Comment.*;
 import House.House;
 import es.uam.eps.padsof.telecard.*;
@@ -54,6 +55,7 @@ public abstract class Offer implements Serializable{
 	}
 	
 	public void denyOffer() {
+		/*TODO Mirar que hacer cuando esta reservad etc*/
 		this.status = DENIED;
 		this.lastModifiedDate = LocalDate.now();
 	}
@@ -65,28 +67,41 @@ public abstract class Offer implements Serializable{
 		comments.add(comment);
 	}
 	
-	public void reserveOffer(RegisteredUser guest) {
+	public void reserveOffer(RegisteredUser guest) throws NotAvailableOfferException{
+		/**TODO make sure the user id a guest?*/
+		if(this.status != AVAILABLE) {
+			throw new NotAvailableOfferException();
+		}
+		
 		this.status = RESERVED;
 		this.lastModifiedDate = LocalDate.now();
 		this.guest = guest;
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
-	public void buyOffer(RegisteredUser guest) throws FailedInternetConnectionException,
+	public void buyOffer(RegisteredUser guest, String subject) throws NotAvailableOfferException,
+			FailedInternetConnectionException,
 		    OrderRejectedException {
+		
+		if(this.status == RESERVED && !this.guest.equals(guest)) {
+			throw new NotAvailableOfferException();
+		}else if(this.status == BOUGHT || this.status == WAITING || this.status == DENIED 
+				|| this.status == TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		
+		try {
+			TeleChargeAndPaySystem.charge(guest.getCreditCard(), subject, this.getPrice());
+		} catch (InvalidCardNumberException e) {
+			/*TODO The user should be unlogged.*/
+			guest.changeStatus(RegisteredUser.BANNED);
+			throw e;
+		}
 		
 		this.status = BOUGHT;
 		this.lastModifiedDate = LocalDate.now();
 		this.guest = guest;
-		
-		try {
-			TeleChargeAndPaySystem.charge(guest.getCreditCard(), "Buy offer", this.getPrice());
-		} catch (InvalidCardNumberException e) {
-			guest.changeStatus(RegisteredUser.BANNED);
-			return;
-		}
-		
-		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
 	
 	public double calculateRating() {
@@ -101,14 +116,29 @@ public abstract class Offer implements Serializable{
 		return sum/num;
 	}
 	
-	public void postComment(RegisteredUser user, String text) {
+	public boolean postComment(RegisteredUser user, String text) {
 		TextComment comment = new TextComment(text, user);
 		this.comments.add(comment);
+		return true;
 	}
 	
-	public void postComment(RegisteredUser user, int rating) {
+	public boolean postComment(RegisteredUser user, int rating) {
+		if(rating < 0 || rating > 5) {
+			return false;
+		}
+		
 		Rating comment = new Rating(rating, user);
 		this.comments.add(comment);
+		return true;
+	}
+	
+	public boolean postComment(RegisteredUser user, String text, TextComment answerTo) {
+		if(answerTo == null || !this.comments.contains(answerTo)) {
+			return false;
+		}
+		
+		answerTo.answerComment(text, user);
+		return true;
 	}
 	
 	public abstract double getPrice();
@@ -136,6 +166,16 @@ public abstract class Offer implements Serializable{
 		}
 		
 		Offer o = (Offer) ob;
+		if(this.guest == null && o.guest == null) {
+			return this.deposit == o.deposit && this.status == o.status &&
+					this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
+					&& this.host.equals(o.host) && this.comments.equals(o.comments)
+					&& this.house.equals(o.house);
+		}else if(this.guest == null && o.guest == null) {
+			/*If just one of them is null, the offers are obviously not the same.*/
+			return false;
+		}
+		
 		return this.deposit == o.deposit && this.status == o.status &&
 				this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
 				&& this.host.equals(o.host) && this.guest.equals(o.guest) && this.comments.equals(o.comments)

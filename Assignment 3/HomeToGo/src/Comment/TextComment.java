@@ -37,4 +37,15 @@ public class TextComment extends Comment implements Serializable{
 		TextComment answer = new TextComment(text, user);
 		this.answers.add(answer);
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof TextComment)) {
+			return false;
+		}
+		
+		TextComment c = (TextComment) o;
+		return this.text.equals(c.text) && this.user.equals(c.user)
+				&& this.answers.equals(c.answers);
+	}
 }

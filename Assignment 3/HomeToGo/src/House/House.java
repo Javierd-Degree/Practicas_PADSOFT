@@ -13,21 +13,30 @@ public class House implements Serializable{
 		this.id = id;
 		this.characteristics = new HashMap<>();
 	}
+	
 	public String getId() {
 		return id;
 	}
-	public void setId(String id) {
-		this.id = id;
-	}
+	
 	public Map<String, String> getCharacteristics() {
 		return characteristics;
 	}
-	public void addCharacteristic(String name, String value) {
+	
+	public boolean addCharacteristic(String name, String value) {
+		if(this.characteristics.containsKey(name)) {
+			return false;
+		}
+		
 		this.characteristics.put(name, value);
+		return true;
 	}
 	
-	public void removeCharacteristic(String name) {
-		this.characteristics.remove(name);
+	public boolean removeCharacteristic(String name) {
+		if(this.characteristics.containsKey(name)) {
+			this.characteristics.remove(name);
+			return true;
+		}
+		return false;
 	}
 	
 	@Override

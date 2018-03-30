@@ -8,4 +8,7 @@ public abstract class Comment implements Serializable{
 	public Comment() {
 		
 	}
+	
+	@Override
+	public abstract boolean equals(Object o);
 }

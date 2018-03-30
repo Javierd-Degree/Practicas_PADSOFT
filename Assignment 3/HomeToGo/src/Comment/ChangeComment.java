@@ -13,4 +13,14 @@ public class ChangeComment extends Comment implements Serializable{
 	public String getText() {
 		return text;
 	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if(!(o instanceof ChangeComment)) {
+			return false;
+		}
+		
+		ChangeComment c = (ChangeComment) o;
+		return this.text.equals(c.text);
+	}
 }
