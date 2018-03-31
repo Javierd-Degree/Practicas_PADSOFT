@@ -2,18 +2,44 @@ package Comment;
 
 import java.io.Serializable;
 
+/**
+ * Class which implements a comment the administrator can make
+ * on an offer in order to let the host know what he would need
+ * to change if he wants his offer to be approved.
+ * 
+ * @author Javier Delgado del Cerro
+ * @author Javier Lopez Cano
+ */
 public class ChangeComment extends Comment implements Serializable{
 	private static final long serialVersionUID = -814635662535770669L;
 	private String text;
 	
+	/**
+	 * Constructor of the ChangeComment class.
+	 * 
+	 * @param text String that the administrator wants to sends to the host.
+	 */
 	public ChangeComment(String text) {
 		this.text = text;
 	}
 
-	public String getText() {
+	/**
+	 * Returns the ChangeComment as a String
+	 * so that it can be shown.
+	 * 
+	 * @return String with the comment's text.
+	 */
+	@Override
+	public String toString() {
 		return text;
 	}
 	
+	/**
+	 * Compare two ChangeComment to know if they are the same one.
+	 * 
+	 * @param o Object we want to compare, must be a ChangeComment.
+	 * @return boolean true if they are the same, false otherwise.
+	 */
 	@Override
 	public boolean equals(Object o) {
 		if(!(o instanceof ChangeComment)) {

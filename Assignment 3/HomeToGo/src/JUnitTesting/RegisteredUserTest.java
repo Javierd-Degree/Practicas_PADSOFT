@@ -7,7 +7,6 @@ import java.time.LocalDate;
 import org.junit.Before;
 import org.junit.Test;
 
-import Comment.ChangeComment;
 import House.House;
 import Offer.LivingOffer;
 import Offer.Offer;
