@@ -1,7 +1,6 @@
 package User;
 import java.io.Serializable;
 import java.util.*;
-
 import House.House;
 import Offer.*;
 
@@ -35,9 +34,6 @@ public class RegisteredUser implements Serializable{
 	public final static int CREATED_OFFER = 1;
 	
 	
-<<<<<<< HEAD
-	public RegisteredUser(String id, String name, String surname, String creditCard,
-=======
 	/**
 	 * Constructor of the RegisteredUser class.
 	 * 
@@ -48,9 +44,7 @@ public class RegisteredUser implements Serializable{
 	 * It should have 16 digits to be well-formed and avoid exceptions.
 	 * @param password String with the user's password.
 	 */
-	public RegisteredUser(int id, String name, String surname, String creditCard,
->>>>>>> origin/master
-			String password) {
+	public RegisteredUser(String id, String name, String surname, String creditCard, String password) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
@@ -70,15 +64,11 @@ public class RegisteredUser implements Serializable{
 		return creditCard;
 	}
 	
-<<<<<<< HEAD
-	public String getId() {
-=======
 	/**
 	 * Getter of the user's id used to log in.
-	 * @return int with the user's id.
+	 * @return String with the user's id.
 	 */
-	public int getId() {
->>>>>>> origin/master
+	public String getId() {
 		return this.id;
 	}
 	
@@ -220,6 +210,19 @@ public class RegisteredUser implements Serializable{
 		
 		this.createdHouses.add(h);
 		return true;
+	}
+	
+	/**
+	 * Returns the RegisteredUser as a String
+	 * so that it can be shown.
+	 * 
+	 * @return String with the RegisteredUser's data.
+	 */
+	@Override
+	public String toString() {
+		String result = this.name + this.surname + " has the ID: " + this.id + "and the credit card: " + this.creditCard + 
+				"and has the password: " + this.password + "and status: " + this.status;
+		return result;
 	}
 	
 	/**

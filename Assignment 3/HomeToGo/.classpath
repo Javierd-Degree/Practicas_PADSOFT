@@ -2,7 +2,7 @@
 <classpath>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="/media/javierd/JAVIER/2º Universidad/Segundo Cuatrimestre/PADSOFT/Practicas/Assignment 3/TeleChargeAndPaySystem.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
+	<classpathentry kind="lib" path="C:/Users/javix/Documents/2ºUni/PADSOFT/Assignment 3/TeleChargeAndPaySystem.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

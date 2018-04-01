@@ -87,20 +87,10 @@ public abstract class Offer implements Serializable{
 		this.lastModifiedDate = LocalDate.now();
 	}
 	
-<<<<<<< HEAD
 	public void denyOffer() throws NotAvailableOfferException {
 		if(this.status != WAITING && this.status != TO_CHANGE) {
 			throw new NotAvailableOfferException();
 		}
-		
-=======
-	/**
-	 * Deny an offer.
-	 * The offer will be marked as DENIED.
-	 */
-	public void denyOffer() {
-		/*TODO Mirar que hacer cuando esta reservad etc*/
->>>>>>> origin/master
 		this.status = DENIED;
 		this.lastModifiedDate = LocalDate.now();
 	}
@@ -112,8 +102,10 @@ public abstract class Offer implements Serializable{
 	 * 
 	 * @param text The comment that the administrator wants to write.
 	 */
-	public void askForChanges(String text) {
-		/*TODO Mirar que hacer cuando esta reservad etc*/
+	public void askForChanges(String text) throws NotAvailableOfferException {
+		if(this.status != WAITING && this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
 		ChangeComment comment = new ChangeComment(text);
 		this.status = TO_CHANGE;
 		this.lastModifiedDate = LocalDate.now();

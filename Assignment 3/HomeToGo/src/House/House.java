@@ -78,6 +78,18 @@ public class House implements Serializable{
 	}
 	
 	/**
+	 * Returns the House as a String
+	 * so that it can be shown.
+	 * 
+	 * @return String with the House's data.
+	 */
+	@Override
+	public String toString() {
+		String result = "House with ID: " + this.id + "\n" + this.characteristics;
+		return result;
+	}
+	
+	/**
 	 * Compare two House to know if they are the same one.
 	 * 
 	 * @param o Object we want to compare, must be a House.

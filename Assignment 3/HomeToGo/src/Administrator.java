@@ -11,10 +11,11 @@ import java.io.Serializable;
  */
 public class Administrator implements Serializable{
 	private static final long serialVersionUID = -5008330488164364504L;
-	private int id;
+	private String id;
 	private String name;
 	private String surname;
 	private String password;
+	private boolean log;
 	
 	/**
 	 * Constructor of the Administrator class.
@@ -23,19 +24,20 @@ public class Administrator implements Serializable{
 	 * @param surname String with the administrator's surname.
 	 * @param password String with the administrator's password.
 	 */
-	public Administrator(int id, String name, String surname, String password) {
+	public Administrator(String id, String name, String surname, String password) {
 		super();
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.password = password;
+		this.log = false;
 	}
 	
 	
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -55,6 +57,13 @@ public class Administrator implements Serializable{
 	}
 	public void setPassword(String password) {
 		this.password = password;
+	}
+	
+	public boolean getLog() {
+		return log;
+	}
+	public void changeLog(boolean log) {
+		this.log = log;
 	}
 	
 	

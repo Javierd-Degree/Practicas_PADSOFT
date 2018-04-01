@@ -57,10 +57,19 @@ public class System implements Serializable {
 		
 	}
 	
-	/*TODO Hacer funciones para cargar los datos de fichero*/
-	
 	public int login(String id, String password) {
 		/*Change 1, -1, -2 to MACROS*/
+		for(Administrator admin : admins) {
+			if(admin.getId() == id) {
+				if(admin.getPassword().equals(password)) {
+					/*Successfully logged in*/
+					admin.changeLog(true);
+					return 1;
+				}else {
+					return -1;
+				}
+			}
+		}
 		for(RegisteredUser user: guests) {
 			if(user.getId() == id) {
 				if(user.getPassword().equals(password)) {
@@ -101,6 +110,10 @@ public class System implements Serializable {
 	
 	public void logout(RegisteredUser user) {
 		user.changeStatus(RegisteredUser.UNLOGGED);
+	}
+	
+	public void logout(Administrator admin) {
+		admin.changeLog(false);
 	}
 	
 	public void addHouse(String id) {
