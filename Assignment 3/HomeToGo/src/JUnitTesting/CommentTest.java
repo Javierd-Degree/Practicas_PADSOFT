@@ -15,7 +15,7 @@ public class CommentTest {
 	
 	@Before
 	public void before() {
-		user = new RegisteredUser(112, "Pedro", "Lopez", "1234567890123456", "Hello world");
+		user = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
 		cComment = new ChangeComment("Explanation of the needed changes");
 		rating = new Rating(4, user);
 		tComment = new TextComment("Comentario de prueba", user);

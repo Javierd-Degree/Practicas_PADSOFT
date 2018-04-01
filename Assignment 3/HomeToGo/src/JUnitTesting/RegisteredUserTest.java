@@ -20,16 +20,16 @@ public class RegisteredUserTest {
 	
 	@Before
 	public void before() {
-		user = new RegisteredUser(198, "Juan", "Ramirez", "9876543219876543", "Hello world");
+		user = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
 	}
 	
 	@Test
 	public void testEquals() {
-		RegisteredUser user2 = new RegisteredUser(197, "Juan", "Ramirez", "9876543219876543", "Hello world");
+		RegisteredUser user2 = new RegisteredUser("197", "Juan", "Ramirez", "9876543219876543", "Hello world");
 		assertEquals(user.equals(user), true);
 		assertEquals(user.equals(null), false);
 		assertEquals(user.equals(user2), false);
-		assertEquals(user.equals(new RegisteredUser(198, "Juan", "Ramirez", "9876543219876543", "Hello world")), true);
+		assertEquals(user.equals(new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world")), true);
 	}
 	
 	@Test

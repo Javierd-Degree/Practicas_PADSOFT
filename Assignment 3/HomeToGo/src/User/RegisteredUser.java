@@ -17,7 +17,7 @@ import Offer.*;
  */
 public class RegisteredUser implements Serializable{
 	private static final long serialVersionUID = 5875960192364410941L;
-	private int id;
+	private String id;
 	private String name;
 	private String surname;
 	private String creditCard;
@@ -35,6 +35,9 @@ public class RegisteredUser implements Serializable{
 	public final static int CREATED_OFFER = 1;
 	
 	
+<<<<<<< HEAD
+	public RegisteredUser(String id, String name, String surname, String creditCard,
+=======
 	/**
 	 * Constructor of the RegisteredUser class.
 	 * 
@@ -46,6 +49,7 @@ public class RegisteredUser implements Serializable{
 	 * @param password String with the user's password.
 	 */
 	public RegisteredUser(int id, String name, String surname, String creditCard,
+>>>>>>> origin/master
 			String password) {
 		this.id = id;
 		this.name = name;
@@ -66,11 +70,15 @@ public class RegisteredUser implements Serializable{
 		return creditCard;
 	}
 	
+<<<<<<< HEAD
+	public String getId() {
+=======
 	/**
 	 * Getter of the user's id used to log in.
 	 * @return int with the user's id.
 	 */
 	public int getId() {
+>>>>>>> origin/master
 		return this.id;
 	}
 	
@@ -227,6 +235,6 @@ public class RegisteredUser implements Serializable{
 		}
 		
 		RegisteredUser u = (RegisteredUser) o;
-		return this.id == u.id;
+		return this.id.equals(u.id);
 	}
 }

@@ -87,12 +87,20 @@ public abstract class Offer implements Serializable{
 		this.lastModifiedDate = LocalDate.now();
 	}
 	
+<<<<<<< HEAD
+	public void denyOffer() throws NotAvailableOfferException {
+		if(this.status != WAITING && this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+=======
 	/**
 	 * Deny an offer.
 	 * The offer will be marked as DENIED.
 	 */
 	public void denyOffer() {
 		/*TODO Mirar que hacer cuando esta reservad etc*/
+>>>>>>> origin/master
 		this.status = DENIED;
 		this.lastModifiedDate = LocalDate.now();
 	}
