@@ -81,8 +81,18 @@ public abstract class Offer implements Serializable{
 	/**
 	 * Approve an offer which was waiting to be approved.
 	 * The offer will be marked as AVAILABLE.
+	 * If it was already approved, we just exit the function,
+	 * in order to avoid a silly exception.
+	 * 
+	 * @throws NotAvailableOfferException if the offer can't be denied
+	 * because it is already approved/reserved/bought.
 	 */
-	public void approveOffer() {
+	public void approveOffer() throws NotAvailableOfferException {
+		if(this.status == AVAILABLE) return;
+		
+		if(this.status != WAITING && this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
 		this.status = AVAILABLE;
 		this.lastModifiedDate = LocalDate.now();
 	}
@@ -91,11 +101,15 @@ public abstract class Offer implements Serializable{
 	 * Deny an offer which the administrator consider it is not valid,
 	 * or because it is not reserved an the host wants to remove it.
 	 * The offer will be markes as DENIED.
+	 * If it was already denied, we just exit the function, in
+	 * order to avoid a silly exception.
 	 * 
 	 * @throws NotAvailableOfferException if the offer can't be denied
 	 * because it is already approved/reserved/bought.
 	 */
 	public void denyOffer() throws NotAvailableOfferException {
+		if(this.status == DENIED) return;
+		
 		if(this.status != WAITING && this.status != TO_CHANGE) {
 			throw new NotAvailableOfferException();
 		}
@@ -107,12 +121,16 @@ public abstract class Offer implements Serializable{
 	 * Ask for changes on an offer in case the Administrator consider
 	 * it is not valid to be published.
 	 * The admin writes a comment so that the host knows what to change.
+	 * Although the Offer was previously on the status TO_CHANGE, the
+	 * administrator may want to add more comments.
 	 * 
 	 * @param text The comment that the administrator wants to write.
 	 * @throws NotAvailableOfferException if the offer can't be changed because
 	 * it is already approved/reserved/bought/denied.
 	 */
 	public void askForChanges(String text) throws NotAvailableOfferException {
+		if(this.status == TO_CHANGE) return;
+		
 		if(this.status != WAITING && this.status != TO_CHANGE) {
 			throw new NotAvailableOfferException();
 		}

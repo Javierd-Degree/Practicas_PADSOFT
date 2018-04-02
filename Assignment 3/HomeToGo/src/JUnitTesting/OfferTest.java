@@ -70,15 +70,13 @@ public class OfferTest {
 	
 	
 	/*From here, the methods are inherited from Offer, so they 
-	 * are the same from Holiday and Living Offers*/
+	 * are the same from Holiday and Living Offers.
+	 * We avoid the exceptions here because JUnit marks them as
+	 * failures, so we test them on the Java tests.*/
 	@Test
 	public void testChangeStatus() {
-		/*Change the status of the offer to make sure it is working as it should*/
-		offer.approveOffer();
-		assertEquals(offer.getStatus(), Offer.AVAILABLE);
-		
-		/*We avoid the exceptions here because JUnit marks them as a failure,
-		 * so we test them on the Java tests.*/
+		/*Deny the offer. Once it is denied, it can't be changed, so
+		 * we need to create a new one.*/
 		try {
 			offer.denyOffer();
 		} catch (NotAvailableOfferException e2) {
@@ -87,16 +85,27 @@ public class OfferTest {
 		}
 		assertEquals(offer.getStatus(), Offer.DENIED);
 		
+		/*Create a new offer, as the previous one was denied.
+		 * Ask for changes on the offer.*/
+		before();
 		try {
 			offer.askForChanges("Anade mas caracteristicas");
 		} catch (NotAvailableOfferException e2) {
-			System.out.println("Error while trying to ask for chenges on an offer");
+			System.out.println("Error while trying to ask for changes on an offer");
 			e2.printStackTrace();
 		}
 		assertEquals(offer.getStatus(), Offer.TO_CHANGE);
 		
-		/*The offer needs to be approved in order to reserve it.*/
-		offer.approveOffer();
+		/*Approve the offer.*/
+		try {
+			offer.approveOffer();
+		} catch (NotAvailableOfferException e3) {
+			System.out.println("Error while trying to approve the offer");
+			e3.printStackTrace();
+		}
+		assertEquals(offer.getStatus(), Offer.AVAILABLE);
+		
+		/*Once the offer is approved, we can reserve it.*/
 		try {
 			offer.reserveOffer(guest);
 			assertEquals(offer.getStatus(), Offer.RESERVED);
