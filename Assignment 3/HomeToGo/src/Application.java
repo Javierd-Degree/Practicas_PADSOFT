@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 
-public class System implements Serializable {
+public class Application implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<Administrator> admins;
 	private List<RegisteredUser> guests;
@@ -37,7 +37,7 @@ public class System implements Serializable {
 	public static final int LIVING_OFFER = 1;
 	
 	
-	private System() {
+	private Application() {
 		admins = new ArrayList<>();
 		guests = new ArrayList<>();
 		hosts = new ArrayList<>();
@@ -240,11 +240,11 @@ public class System implements Serializable {
 		return offs;
 	}
 	
-	public static System loadFromFile(String file) {
-		System sys = null;
+	public static Application loadFromFile(String file) {
+		Application sys = null;
 		try { 
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
-			sys = (System) ois.readObject();
+			sys = (Application) ois.readObject();
 			ois.close();
 			return sys;
 
@@ -253,7 +253,7 @@ public class System implements Serializable {
 			try {
 				FileReader f = new FileReader(file2);
 				BufferedReader b = new BufferedReader(f);
-				sys = new System();
+				sys = new Application();
 				while((data = b.readLine())!=null) {
 					String[] tokens = data.split(";");
 					String[] name = tokens[2].split(",");

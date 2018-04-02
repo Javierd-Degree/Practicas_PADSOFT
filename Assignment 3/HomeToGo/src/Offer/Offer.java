@@ -61,7 +61,7 @@ public abstract class Offer implements Serializable{
 	 * if more than five days since the changes were asked or since a reservation
 	 * was made have passed.
 	 * 
-	 * @param date LocalDate when the las modificaton was made.
+	 * @param date LocalDate when the last modification was made.
 	 */
 	public void setLastModifiedDate(LocalDate date) {
 		this.lastModifiedDate = date;
@@ -87,6 +87,14 @@ public abstract class Offer implements Serializable{
 		this.lastModifiedDate = LocalDate.now();
 	}
 	
+	/**
+	 * Deny an offer which the administrator consider it is not valid,
+	 * or because it is not reserved an the host wants to remove it.
+	 * The offer will be markes as DENIED.
+	 * 
+	 * @throws NotAvailableOfferException if the offer can't be denied
+	 * because it is already approved/reserved/bought.
+	 */
 	public void denyOffer() throws NotAvailableOfferException {
 		if(this.status != WAITING && this.status != TO_CHANGE) {
 			throw new NotAvailableOfferException();
@@ -101,6 +109,8 @@ public abstract class Offer implements Serializable{
 	 * The admin writes a comment so that the host knows what to change.
 	 * 
 	 * @param text The comment that the administrator wants to write.
+	 * @throws NotAvailableOfferException if the offer can't be changed because
+	 * it is already approved/reserved/bought/denied.
 	 */
 	public void askForChanges(String text) throws NotAvailableOfferException {
 		if(this.status != WAITING && this.status != TO_CHANGE) {
