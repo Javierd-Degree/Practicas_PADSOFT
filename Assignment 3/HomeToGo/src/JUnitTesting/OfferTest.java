@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import Comment.TextComment;
+import Exceptions.DateRangeException;
 import Exceptions.NotAvailableOfferException;
 import House.House;
 import Offer.*;
@@ -38,7 +39,12 @@ public class OfferTest {
 		/*Create the host*/
 		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
 		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		} catch (DateRangeException e) {
+			System.out.println("Error triying to create Holiday Offer");
+			e.printStackTrace();
+		}
 		lOffer = new LivingOffer(100, LocalDate.of(2018, 7, 11), host, house, 442.7);
 	}
 	
@@ -48,8 +54,14 @@ public class OfferTest {
 		assertEquals(offer.equals(offer), true);
 		assertEquals(offer.equals(null), false);
 		
-		HolidayOffer offer2 =  new HolidayOffer(10, LocalDate.of(2018, 7, 18), host, house, LocalDate.of(2018,  9,  12), 799.12);
-		assertEquals(offer.equals(offer2), false);
+		HolidayOffer offer2;
+		try {
+			offer2 = new HolidayOffer(10, LocalDate.of(2018, 7, 18), host, house, LocalDate.of(2018,  9,  12), 799.12);
+			assertEquals(offer.equals(offer2), false);
+		} catch (DateRangeException e) {
+			System.out.println("Error triying to create Holiday Offer");
+			e.printStackTrace();
+		}
 		
 		/*Test if the equals works correctly on LivingOffer*/
 		assertEquals(lOffer.equals(lOffer), true);
@@ -170,7 +182,7 @@ public class OfferTest {
 			/* Reset the offer and try to buy it with an invalid credit card
 			 * The offer should remain available, and the user should be banned.*/
 			/*TODO, deberiamos llamar a system.unlog, asi que a lo mejor no hay que banearlo aqui.*/
-			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+			before();
 			offer.approveOffer();
 			offer.buyOffer(guest2, "Buy offer");
 			assertEquals(offer.getStatus(), Offer.AVAILABLE);
@@ -179,7 +191,7 @@ public class OfferTest {
 			
 			/* Reset the offer and try to buy it with subjects which starts with W or R
 			 * The offer should remain available.*/
-			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+			before();
 			offer.approveOffer();
 			offer.buyOffer(guest, "RRRR");
 			assertEquals(offer.getStatus(), Offer.AVAILABLE);

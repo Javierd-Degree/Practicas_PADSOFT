@@ -3,6 +3,7 @@ package Offer;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import Exceptions.DateRangeException;
 import House.House;
 import User.RegisteredUser;
 
@@ -28,8 +29,14 @@ public class HolidayOffer extends Offer implements Serializable{
 	 * @param enDate LocalDate which indicates when the offer ends.
 	 * @param totalPrice double with the total price the offer costs.
 	 */
-	public HolidayOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, LocalDate endDate, double totalPrice) {
+	public HolidayOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, LocalDate endDate, double totalPrice) 
+		throws DateRangeException{
 		super(deposit, startDate, host, house);
+		
+		if(startDate.isAfter(endDate)) {
+			throw new DateRangeException();
+		}
+		
 		this.endDate = endDate;
 		this.totalPrice = totalPrice;
 		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
