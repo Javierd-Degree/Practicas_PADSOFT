@@ -244,7 +244,7 @@ public class Application implements Serializable {
 			return sys;
 
 		} catch (FileNotFoundException e) {
-			String data, file2 = "fichero.txt";
+			String data, file2 = "initial_data.txt";
 			try {
 				FileReader f = new FileReader(file2);
 				BufferedReader b = new BufferedReader(f);
