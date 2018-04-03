@@ -37,8 +37,19 @@ public class OfferDemo {
 		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
 		System.out.println("The host is: " + host + ".");
 		System.out.println("The guest is: " + guest + ".");
+		System.out.println("We try to create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12.");
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12);
+			System.out.println("The offer was created. Error in constructor.");
+		}catch(DateRangeException e) {
+			System.out.println("The end date is before the start date..");
+		}
 		System.out.println("We create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12.");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			System.out.println("Unwanted exception. Error in the constructor.");
+		}
 		System.out.println("The created HolidayOffer is: " + offer + ".");
 		System.out.println("We create a LivingOffer with data:  100, LocalDate.of(2018, 7, 11), host, house, 442.7.");
 		lOffer = new LivingOffer(100, LocalDate.of(2018, 7, 11), host, house, 442.7);
@@ -57,8 +68,12 @@ public class OfferDemo {
 		}else {
 			System.out.println("The HolidayOffer is equal to null, error in equals() of HolidayOffer.");
 		}
+		try {
+			HolidayOffer offer2 =  new HolidayOffer(10, LocalDate.of(2018, 7, 18), host, house, LocalDate.of(2018,  9,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}
 		
-		HolidayOffer offer2 =  new HolidayOffer(10, LocalDate.of(2018, 7, 18), host, house, LocalDate.of(2018,  9,  12), 799.12);
 		if(offer.equals(offer2) == false) {
 			System.out.println("The HolidayOffer is not equal to another HolidayOffer with different data.");
 		}else {
@@ -115,7 +130,11 @@ public class OfferDemo {
 			System.out.println("Error in approveOffer().");
 		}
 		System.out.println("We check denyOffer().");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}
 		try {
 			offer.denyOffer();
 			if(offer.getStatus() == Offer.DENIED) {
@@ -127,11 +146,14 @@ public class OfferDemo {
 			System.out.println("The offer is not in a status that can be denied.");
 		}
 		System.out.println("We check askForChanges() with data: Anade mmas caracteristicas.");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}
 		try {
 			offer.askForChanges("Anade mas caracteristicas");
 			if(offer.getStatus() ==  Offer.TO_CHANGE){
-				/*TODO getComment*/
 				System.out.println("The offer's status was successfully changed to TO_CHANGE and the ChangeComment written is: .");
 			}else {
 				System.out.println("Error in askForChanges().");
@@ -243,7 +265,11 @@ public class OfferDemo {
 		}	
 		
 		System.out.println("We reset the offer and continue with the remaining possibilities of buyOffer.");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}
 		System.out.println("We try to directly buy an offer that is available and it has not been reserved.");
 		try {
 			offer.approveOffer();
@@ -262,8 +288,11 @@ public class OfferDemo {
 		* The offer should remain available, and the user should be banned.*/
 		/*TODO, deberiamos llamar a system.unlog, asi que a lo mejor no hay que banearlo aqui.*/
 		System.out.println("We reset again the offer and try to buy it with an invalid credit card.");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);	
 		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}try {
 			offer.approveOffer();
 			offer.buyOffer(guest2, "Buy offer");
 			if(offer.getStatus() == Offer.AVAILABLE && guest2.getStatus() == RegisteredUser.BANNED) {
@@ -282,8 +311,11 @@ public class OfferDemo {
 		/* Reset the offer and try to buy it with subjects which starts with W or R
 		 * The offer should remain available.*/
 		System.out.println("We reset the offer again and try to buy it with subjects that start with W or R.");
-		offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
-		try {	
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
+		}catch(DateRangeException e) {
+			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
+		}try {	
 			offer.approveOffer();
 			offer.buyOffer(guest, "RRRR");
 			if(offer.getStatus() == Offer.AVAILABLE) {
