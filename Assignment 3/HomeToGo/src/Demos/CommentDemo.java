@@ -1,7 +1,8 @@
 package Demos;
 
 import Comment.*;
-import User.RegisteredUser;;
+import User.RegisteredUser;
+import User.UserType;;
 
 public class CommentDemo {
 	private static ChangeComment cComment;
@@ -16,8 +17,8 @@ public class CommentDemo {
 		System.out.println("We create a ChangeComment with data: Explanation of the needed changes.");
 		cComment = new ChangeComment("Explanation of the needed changes");
 		System.out.println("The created ChangeComment is: " + cComment +".");
-		System.out.println("We create a RegisteredUser in order to create a Rating and a TextComment with data: 112, Pedro, Lopez, 1234567890123456, Hello world.");
-		user = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
+		System.out.println("We create a RegisteredUser in order to create a Rating and a TextComment with data: 112, Pedro, Lopez, 1234567890123456, Hello world, UserType.BOTH.");
+		user = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.BOTH);
 		System.out.println("The created RegisteredUser is: " + user +".");
 		System.out.println("We create a Rating with data: 4, user");
 		rating = new Rating(4, user);
@@ -87,8 +88,8 @@ public class CommentDemo {
 		
 		/*Check functionality of TextComment answerComment*/
 		System.out.println("We check the functionality of the answerComment() method of TextComment.");
-		System.out.println("We create a second user in order to create an answer, with data: 113, Maria, Ramirez, 1234567890123457, Goodbye world.");
-		RegisteredUser user2 = new RegisteredUser("113", "Maria", "Ramirez", "1234567890123457", "Goodbye world");
+		System.out.println("We create a second user in order to create an answer, with data: 113, Maria, Ramirez, 1234567890123457, Goodbye world, UserType.BOTH.");
+		RegisteredUser user2 = new RegisteredUser("113", "Maria", "Ramirez", "1234567890123457", "Goodbye world", UserType.BOTH);
 		System.out.println("The created RegisteredUser is: " + user2 +".");
 		System.out.println("We answer the comment with this new user and the text 'Respuesta a comentario de prueba'.");
 		tComment.answerComment("Respuesta a comentario de prueba", user2);
