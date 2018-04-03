@@ -18,9 +18,9 @@ public class AdministratorTest {
 	@Test
 	public void testLogin() {
 		/*Test the functions that change the administrator status.*/
-		assertEquals(admin.getLog(), false);
-		admin.changeLog(true);
-		assertEquals(admin.getLog(), true);
+		assertEquals(admin.getLogged(), false);
+		admin.changeLogged(true);
+		assertEquals(admin.getLogged(), true);
 	}
 
 }
