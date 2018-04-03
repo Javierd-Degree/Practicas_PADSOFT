@@ -30,9 +30,7 @@ import java.io.ObjectOutputStream;
 public class Application implements Serializable {
 	private static final long serialVersionUID = 1L;
 	private List<Administrator> admins;
-	private List<RegisteredUser> guests;
-	private List<RegisteredUser> hosts;
-	private List<RegisteredUser> both;
+	private List<RegisteredUser> users;
 	private List<Offer> offers;
 	private List<House> houses;
 	
@@ -45,22 +43,9 @@ public class Application implements Serializable {
 	
 	private Application() {
 		admins = new ArrayList<>();
-		guests = new ArrayList<>();
-		hosts = new ArrayList<>();
-		both = new ArrayList<>();
+		users = new ArrayList<>();
 		offers = new ArrayList<>();
-		houses = new ArrayList<>();
-		/* Lo ha puesto el profesor
-		ArrayList<Offer> toRemove = new ArrayList<Offer>();
-		for (Offer of : offers) {
-			if (of.hasExpired()) {
-				toRemove.add(of);
-				offers.remove
-			}
-		}
-		offers.removeAll(toRemove);*/
-		
-		
+		houses = new ArrayList<>();	
 	}
 
 	public static Application getInstance(){
@@ -76,38 +61,14 @@ public class Application implements Serializable {
 			if(admin.getId() == id) {
 				if(admin.getPassword().equals(password)) {
 					/*Successfully logged in*/
-					admin.changeLog(true);
+					admin.changeLogged(true);
 					return 1;
 				}else {
 					return -1;
 				}
 			}
 		}
-		for(RegisteredUser user: guests) {
-			if(user.getId() == id) {
-				if(user.getPassword().equals(password)) {
-					/*Successfully logged in*/
-					user.changeStatus(RegisteredUser.LOGGED);
-					return 1;
-				}else {
-					return -1;
-				}
-			}
-		}
-		
-		for(RegisteredUser user: hosts) {
-			if(user.getId() == id) {
-				if(user.getPassword().equals(password)) {
-					/*Successfully logged in*/
-					user.changeStatus(RegisteredUser.LOGGED);
-					return 1;
-				}else {
-					return -1;
-				}
-			}
-		}
-		
-		for(RegisteredUser user: both) {
+		for(RegisteredUser user : users) {
 			if(user.getId() == id) {
 				if(user.getPassword().equals(password)) {
 					/*Successfully logged in*/
@@ -122,7 +83,18 @@ public class Application implements Serializable {
 	}
 	
 	public void logout() {
-		/*TODO Buscar en el array y deslogear al que este logueado*/
+		//Solo hay un admin o usuario logueado, recorremos los arrays y deslogueamos.
+		for(Administrator admin : admins) {
+			if(admin.getLogged()) {
+				admin.changeLogged(false);
+				return;
+			}
+		}
+		for(RegisteredUser user : users) {
+			if(user.getStatus() == RegisteredUser.LOGGED) {
+				user.changeStatus(RegisteredUser.UNLOGGED);
+			}
+		}
 		INSTANCE.saveToFile(BACKUP_FILE);
 	}
 	
@@ -131,9 +103,6 @@ public class Application implements Serializable {
 		INSTANCE.saveToFile(BACKUP_FILE);
 	}
 	
-	public void logout(Administrator admin) {
-		admin.changeLog(false);
-	}
 	
 	public void addHouse(String id) {
 		House h = new House(id);
@@ -283,13 +252,15 @@ public class Application implements Serializable {
 				while((data = b.readLine())!=null) {
 					String[] tokens = data.split(";");
 					String[] name = tokens[2].split(",");
+					UserType type;
 					if(tokens[0].equals("O")){
-						sys.hosts.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.HOST));
+						type = UserType.HOST;
 					}else if(tokens[0].equals("D")){
-						sys.guests.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.GUEST));
+						type = UserType.GUEST;
 					}else{
-						sys.both.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.BOTH));
+						type = UserType.BOTH;
 					}
+					sys.users.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], type));
 				}
 				b.close();
 				return sys;
