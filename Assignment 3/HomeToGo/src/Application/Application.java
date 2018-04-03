@@ -34,6 +34,9 @@ public class Application implements Serializable {
 	private List<Offer> offers;
 	private List<House> houses;
 	
+	private static Application INSTANCE;
+	private static final String BACKUP_FILE = "data.obj";
+
 	public static final int HOLIDAY_OFFER = 0;
 	public static final int LIVING_OFFER = 1;
 	
@@ -56,6 +59,13 @@ public class Application implements Serializable {
 		offers.removeAll(toRemove);*/
 		
 		
+	}
+
+	public static Application getInstance(){
+		if(INSTANCE == null){
+			INSTANCE = loadFromFile(BACKUP_FILE);
+		}
+		return INSTANCE;
 	}
 	
 	public int login(String id, String password) {
@@ -111,6 +121,7 @@ public class Application implements Serializable {
 	
 	public void logout(RegisteredUser user) {
 		user.changeStatus(RegisteredUser.UNLOGGED);
+		INSTANCE.saveToFile(BACKUP_FILE);
 	}
 	
 	public void logout(Administrator admin) {
@@ -244,6 +255,7 @@ public class Application implements Serializable {
 	public static Application loadFromFile(String file) {
 		Application sys = null;
 		try { 
+			//TODO Quitar ofertas ya eliminadas, que no han pagado, etc.
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			sys = (Application) ois.readObject();
 			ois.close();
