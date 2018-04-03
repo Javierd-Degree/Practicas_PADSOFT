@@ -13,6 +13,7 @@ import Exceptions.NotAvailableOfferException;
 import House.House;
 import Offer.*;
 import User.RegisteredUser;
+import User.UserType;
 import es.uam.eps.padsof.telecard.OrderRejectedException;
 
 /*As the unique difference between HolidayOffer and LivingOffer
@@ -37,8 +38,8 @@ public class OfferTest {
 		house.addCharacteristic("Street", "Little avenue");
 		
 		/*Create the host*/
-		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
-		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
+		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.HOST);
+		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.HOST);
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		} catch (DateRangeException e) {
@@ -165,7 +166,7 @@ public class OfferTest {
 		 * the graphical user interface.*/
 		
 		try {
-			RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world");
+			RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.GUEST);
 			/*Reserve the offer and try to buy it with a different user
 			 * In this case, the user won't be bought and the guest
 			 * won't change*/
@@ -186,7 +187,7 @@ public class OfferTest {
 			offer.approveOffer();
 			offer.buyOffer(guest2, "Buy offer");
 			assertEquals(offer.getStatus(), Offer.AVAILABLE);
-			assertEquals(offer.getGuest().getStatus(), RegisteredUser.BANNED);
+			assertEquals(guest2.getStatus(), RegisteredUser.BANNED);
 			
 			
 			/* Reset the offer and try to buy it with subjects which starts with W or R
@@ -204,7 +205,7 @@ public class OfferTest {
 	
 	@Test
 	public void testCommentAndRating() {
-		RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world");
+		RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.GUEST);
 		/*Test the text comments and that the application can distinguish between text and rating comments.
 		 * We create a new comment as in this case, we do not have access to the user interface in order
 		 * to select the same comment*/

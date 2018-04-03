@@ -5,9 +5,11 @@ import java.util.List;
 import java.io.Serializable;
 import java.util.ArrayList;
 import User.RegisteredUser;
+import User.UserType;
 import Exceptions.*;
 import Comment.*;
 import House.House;
+import Application.Application;
 import es.uam.eps.padsof.telecard.*;
 
 /**
@@ -144,7 +146,7 @@ public abstract class Offer implements Serializable{
 	 * Reserve an offer so that it is marked as RESERVED, its Guest
 	 * is set to guest, and the offer is added to the guest's
 	 * bought/reserved offers list.
-	 * We do not make sure if the user is a host or a guest, as
+	 * TODO We do not make sure if the user is a host or a guest, as
 	 * this restriction will be implemented using the graphical
 	 * user interface.
 	 * 
@@ -167,9 +169,6 @@ public abstract class Offer implements Serializable{
 	 * Buy an offer so that it is marked as BOUGHT, its Guest
 	 * is set to guest, and the offer is added to the guest's
 	 * bought/reserved offers list (in case it was not added before).
-	 * We do not make sure if the user is a host or a guest, as
-	 * this restriction will be implemented using the graphical
-	 * user interface.
 	 * 
 	 * @param guest The RegisteredUser who wants to buy the offer.
 	 * @param subject String which describes the bought.
@@ -188,15 +187,26 @@ public abstract class Offer implements Serializable{
 		}else if(this.status == BOUGHT || this.status == WAITING || this.status == DENIED 
 				|| this.status == TO_CHANGE) {
 			throw new NotAvailableOfferException();
+		}else if(guest.getType()== UserType.HOST) {
+			throw new NotAvailableOfferException();
 		}
 		
 		
 		try {
-			TeleChargeAndPaySystem.charge(guest.getCreditCard(), subject, this.getPrice());
+			TeleChargeAndPaySystem.charge(guest.getCreditCard(), subject, -this.getPrice());
+			/*TODO Pagar al administrador.*/
 		} catch (InvalidCardNumberException e) {
-			/*TODO The user should be unlogged.*/
-			guest.changeStatus(RegisteredUser.BANNED);
-			throw e;
+			if(!TeleChargeAndPaySystem.isValidCardNumber(guest.getCreditCard())) {
+				/*If the guest credit card is not valid,*/
+				guest.changeStatus(RegisteredUser.BANNED);
+				guest.removeOffer(this, RegisteredUser.HIST_OFFER);
+				this.guest = null;
+				this.status = AVAILABLE;
+				Application.getInstance().logout();
+			}else {
+				host.sumDebtMoney(m);
+			}
+			return;
 		}
 		
 		this.status = BOUGHT;
@@ -205,6 +215,12 @@ public abstract class Offer implements Serializable{
 		/*In case it is already added, it would just return false.*/
 		guest.addOffer(this, RegisteredUser.HIST_OFFER);
 	}
+	
+	/**
+	 * Return the commissions an offer has.
+	 * @return double of the offer commissions.
+	 */
+	public abstract double commissions();
 	
 	/**
 	 * Calculate the average rating of all the offer's comments.

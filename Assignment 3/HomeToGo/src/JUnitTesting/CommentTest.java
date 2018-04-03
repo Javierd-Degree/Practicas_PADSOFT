@@ -5,7 +5,8 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 import Comment.*;
-import User.RegisteredUser;;
+import User.RegisteredUser;
+import User.UserType;;
 
 public class CommentTest {
 	private static ChangeComment cComment;
@@ -15,7 +16,7 @@ public class CommentTest {
 	
 	@Before
 	public void before() {
-		user = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
+		user = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.BOTH);
 		cComment = new ChangeComment("Explanation of the needed changes");
 		rating = new Rating(4, user);
 		tComment = new TextComment("Comentario de prueba", user);

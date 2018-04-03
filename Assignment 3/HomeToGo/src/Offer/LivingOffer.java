@@ -51,6 +51,15 @@ public class LivingOffer extends Offer implements Serializable{
 	}
 	
 	/**
+	 * Return the commissions an offer has.
+	 * For living offers is 0.1% of the offer total price.
+	 * @return double of the offer commissions.
+	 */
+	public double commissions() {
+		return 0.001;
+	}
+	
+	/**
 	 * Return the total price of a holiday offer.
 	 * 
 	 * @return double with the total price the user needs to pay.

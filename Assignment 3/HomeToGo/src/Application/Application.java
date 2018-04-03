@@ -1,6 +1,7 @@
 package Application;
 import java.util.List;
 
+import Exceptions.DateRangeException;
 import Exceptions.NotAvailableOfferException;
 
 import java.io.Serializable;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import Offer.*;
 
 import User.RegisteredUser;
+import User.UserType;
 
 import java.time.LocalDate;
 
@@ -119,6 +121,11 @@ public class Application implements Serializable {
 		return -2;
 	}
 	
+	public void logout() {
+		/*TODO Buscar en el array y deslogear al que este logueado*/
+		INSTANCE.saveToFile(BACKUP_FILE);
+	}
+	
 	public void logout(RegisteredUser user) {
 		user.changeStatus(RegisteredUser.UNLOGGED);
 		INSTANCE.saveToFile(BACKUP_FILE);
@@ -164,7 +171,13 @@ public class Application implements Serializable {
 				return false;
 			}
 		}
-		HolidayOffer o = new HolidayOffer(deposit, startDate, host, house, endDate, totalPrice);
+		HolidayOffer o;
+		try {
+			o = new HolidayOffer(deposit, startDate, host, house, endDate, totalPrice);
+		} catch (DateRangeException e) {
+			System.out.println(e);
+			return false;
+		}
 		offers.add(o);
 		return true;
 	}
@@ -271,11 +284,11 @@ public class Application implements Serializable {
 					String[] tokens = data.split(";");
 					String[] name = tokens[2].split(",");
 					if(tokens[0].equals("O")){
-						sys.hosts.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3]));
+						sys.hosts.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.HOST));
 					}else if(tokens[0].equals("D")){
-						sys.guests.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3]));
+						sys.guests.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.GUEST));
 					}else{
-						sys.both.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3]));
+						sys.both.add(new RegisteredUser(tokens[1], name[0], name[1], tokens[4], tokens[3], UserType.BOTH));
 					}
 				}
 				b.close();

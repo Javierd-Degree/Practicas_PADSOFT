@@ -59,6 +59,15 @@ public class HolidayOffer extends Offer implements Serializable{
 	}
 	
 	/**
+	 * Return the commissions an offer has.
+	 * For holiday offers is 2% of the offer total price.
+	 * @return double of the offer commissions.
+	 */
+	public double commissions() {
+		return 0.02;
+	}
+	
+	/**
 	 * Return the total price of a holiday offer.
 	 * 
 	 * @return double with the total price the user needs to pay.

@@ -21,10 +21,12 @@ public class RegisteredUser implements Serializable{
 	private String surname;
 	private String creditCard;
 	private String password;
+	private UserType type;
 	private int status;
 	private List<Offer> boughtOffers;
 	private List<Offer> createdOffers;
 	private List<House> createdHouses;
+	private double debtMoney;
 	
 	public final static int UNLOGGED = 0;
 	public final static int LOGGED = 1;
@@ -44,16 +46,18 @@ public class RegisteredUser implements Serializable{
 	 * It should have 16 digits to be well-formed and avoid exceptions.
 	 * @param password String with the user's password.
 	 */
-	public RegisteredUser(String id, String name, String surname, String creditCard, String password) {
+	public RegisteredUser(String id, String name, String surname, String creditCard, String password, UserType type) {
 		this.id = id;
 		this.name = name;
 		this.surname = surname;
 		this.creditCard = creditCard;
 		this.password = password;
+		this.type = type;
 		this.status = RegisteredUser.UNLOGGED;
 		this.boughtOffers = new ArrayList<>();
 		this.createdOffers = new ArrayList<>();
 		this.createdHouses = new ArrayList<>();
+		this.debtMoney = 0.0;
 	}
 	
 	/**
@@ -87,6 +91,14 @@ public class RegisteredUser implements Serializable{
 	 */
 	public String getPassword() {
 		return password;
+	}
+	
+	/**
+	 * Getter of the user's type, which can be HOST, GUEST or BOTH.
+	 * @return UserType with the user's type.
+	 */
+	public UserType getType() {
+		return type;
 	}
 	
 	/**
@@ -140,6 +152,17 @@ public class RegisteredUser implements Serializable{
 	 */
 	public List<Offer> seeHistory(){
 		return this.boughtOffers;
+	}
+	
+	/**
+	 * Add money to the sum of user's debt money.
+	 * If the host credit card is not valid, the money we should pay him
+	 * is stored on this variable.
+	 * 
+	 * @param m double to sum on the user's debt money.
+	 */
+	public void sumDebtMoney(double m) {
+		this.debtMoney += m;
 	}
 	
 	/**
