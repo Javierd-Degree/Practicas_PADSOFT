@@ -51,10 +51,10 @@ public class Administrator implements Serializable{
 		return password;
 	}
 	
-	public boolean getLog() {
+	public boolean getLogged() {
 		return this.logged;
 	}
-	public void changeLog(boolean logged) {
+	public void changeLogged(boolean logged) {
 		this.logged = logged;
 	}
 	

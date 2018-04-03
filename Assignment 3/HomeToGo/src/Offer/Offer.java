@@ -102,7 +102,7 @@ public abstract class Offer implements Serializable{
 	/**
 	 * Deny an offer which the administrator consider it is not valid,
 	 * or because it is not reserved an the host wants to remove it.
-	 * The offer will be markes as DENIED.
+	 * The offer will be marked as DENIED.
 	 * If it was already denied, we just exit the function, in
 	 * order to avoid a silly exception.
 	 * 
@@ -136,6 +136,7 @@ public abstract class Offer implements Serializable{
 		if(this.status != WAITING && this.status != TO_CHANGE) {
 			throw new NotAvailableOfferException();
 		}
+		
 		ChangeComment comment = new ChangeComment(text);
 		this.status = TO_CHANGE;
 		this.lastModifiedDate = LocalDate.now();
@@ -157,6 +158,8 @@ public abstract class Offer implements Serializable{
 		/**TODO make sure the user id a guest?*/
 		if(this.status != AVAILABLE) {
 			throw new NotAvailableOfferException();
+		}else if(guest.getType() == UserType.HOST) {
+			throw new NotAvailableOfferException();
 		}
 		
 		this.status = RESERVED;
@@ -169,6 +172,13 @@ public abstract class Offer implements Serializable{
 	 * Buy an offer so that it is marked as BOUGHT, its Guest
 	 * is set to guest, and the offer is added to the guest's
 	 * bought/reserved offers list (in case it was not added before).
+	 * Pay the guest and the host.
+	 * 
+	 * If the guest credit card is not valid, he is banned, the offer is
+	 * marked as available, and he is logged out.
+	 * 
+	 * If the host credit card s not valid, he is banned and the money is
+	 * added to his debt money.
 	 * 
 	 * @param guest The RegisteredUser who wants to buy the offer.
 	 * @param subject String which describes the bought.
@@ -187,13 +197,14 @@ public abstract class Offer implements Serializable{
 		}else if(this.status == BOUGHT || this.status == WAITING || this.status == DENIED 
 				|| this.status == TO_CHANGE) {
 			throw new NotAvailableOfferException();
-		}else if(guest.getType()== UserType.HOST) {
+		}else if(guest.getType() == UserType.HOST) {
 			throw new NotAvailableOfferException();
 		}
 		
 		
 		try {
 			TeleChargeAndPaySystem.charge(guest.getCreditCard(), subject, -this.getPrice());
+			TeleChargeAndPaySystem.charge(host.getCreditCard(), subject, this.getPrice()*(1 - this.commissions()));
 			/*TODO Pagar al administrador.*/
 		} catch (InvalidCardNumberException e) {
 			if(!TeleChargeAndPaySystem.isValidCardNumber(guest.getCreditCard())) {
@@ -204,7 +215,8 @@ public abstract class Offer implements Serializable{
 				this.status = AVAILABLE;
 				Application.getInstance().logout();
 			}else {
-				host.sumDebtMoney(m);
+				host.sumDebtMoney(this.getPrice()*(1 - this.commissions()));
+				host.changeStatus(RegisteredUser.BANNED);
 			}
 			return;
 		}

@@ -3,6 +3,10 @@ import java.io.Serializable;
 import java.util.*;
 import House.House;
 import Offer.*;
+import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
+import es.uam.eps.padsof.telecard.InvalidCardNumberException;
+import es.uam.eps.padsof.telecard.OrderRejectedException;
+import es.uam.eps.padsof.telecard.TeleChargeAndPaySystem;
 
 
 /**
@@ -120,12 +124,20 @@ public class RegisteredUser implements Serializable{
 	
 	/**
 	 * Change the credit card of a user in order to un-ban it.
-	 * @param creditCard
+	 * If the user has debt money, we pay it to him.
+	 * We suppose that the credit card is not going to be wrong twice.
+	 * 
+	 * @param creditCard The user new credit card
 	 */
 	public void changeCreditCard(String creditCard) {
 		this.creditCard = creditCard;
-		//TODO ¿Deberiamos desbloquearle al llamar a esta función?
-		//TODO ¿Por que teniamos esto? this.status = UNLOGGED;
+		this.status = UNLOGGED;
+		try {
+			TeleChargeAndPaySystem.charge(creditCard, "Debt payments", this.debtMoney);
+		} catch (InvalidCardNumberException e) {
+		} catch (FailedInternetConnectionException e) {
+		} catch (OrderRejectedException e) {
+		}
 	}
 	
 	/**
