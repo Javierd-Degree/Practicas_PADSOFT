@@ -3,10 +3,12 @@ package Demos;
 import java.time.LocalDate;
 
 import Comment.TextComment;
+import Exceptions.DateRangeException;
 import Exceptions.NotAvailableOfferException;
 import House.House;
 import Offer.*;
 import User.RegisteredUser;
+import User.UserType;
 import es.uam.eps.padsof.telecard.*;
 
 /*As the unique difference between HolidayOffer and LivingOffer
@@ -33,8 +35,8 @@ public class OfferDemo {
 		System.out.println("The house created is: " + house + ".");
 		System.out.println("We create a host and a guest for the offers");
 		/*Create the host*/
-		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world");
-		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
+		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.BOTH);
+		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH);
 		System.out.println("The host is: " + host + ".");
 		System.out.println("The guest is: " + guest + ".");
 		System.out.println("We try to create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12.");
@@ -70,15 +72,16 @@ public class OfferDemo {
 		}
 		try {
 			HolidayOffer offer2 =  new HolidayOffer(10, LocalDate.of(2018, 7, 18), host, house, LocalDate.of(2018,  9,  12), 799.12);
+			if(offer.equals(offer2) == false) {
+				System.out.println("The HolidayOffer is not equal to another HolidayOffer with different data.");
+			}else {
+				System.out.println("The HolidayOffer is equal to another HolidayOffer with different data, error in equals() of HolidayOffer.");
+			}
 		}catch(DateRangeException e) {
 			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
 		}
 		
-		if(offer.equals(offer2) == false) {
-			System.out.println("The HolidayOffer is not equal to another HolidayOffer with different data.");
-		}else {
-			System.out.println("The HolidayOffer is equal to another HolidayOffer with different data, error in equals() of HolidayOffer.");
-		}
+		
 		
 		/*Test if the equals works correctly on LivingOffer*/
 		System.out.println("We do the same for the equals() of LivingOffer");
@@ -123,11 +126,15 @@ public class OfferDemo {
 		/*Change the status of the offer to make sure it is working as it should*/
 		System.out.println("We check the functionality of the methods that chenge the offer's status.");
 		System.out.println("We check approveOffer().");
-		offer.approveOffer();
-		if(offer.getStatus() == Offer.AVAILABLE) {
-			System.out.println("The offer was successfully approved.");
-		}else {
-			System.out.println("Error in approveOffer().");
+		try {
+			offer.approveOffer();
+			if(offer.getStatus() == Offer.AVAILABLE) {
+				System.out.println("The offer was successfully approved.");
+			}else {
+				System.out.println("Error in approveOffer().");
+			}
+		}catch(NotAvailableOfferException e) {
+			System.out.println("Unwanted exception in approveOffer.");
 		}
 		System.out.println("We check denyOffer().");
 		try {
@@ -175,7 +182,11 @@ public class OfferDemo {
 			System.out.println("The reservation could not be done because the offer is not available.");
 		}
 		System.out.println("We approve the offer and try again.");
-		offer.approveOffer();
+		try {
+			offer.approveOffer();
+		}catch(NotAvailableOfferException e) {
+			System.out.println("Unwanted exception in approveOffer");
+		}
 		try {
 			offer.reserveOffer(guest);
 			if(offer.getStatus() == Offer.RESERVED) {
@@ -188,7 +199,7 @@ public class OfferDemo {
 			e1.printStackTrace();
 		}
 		System.out.println("We create a new guest that tries to reserve the already reerved offer");
-		RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world");
+		RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.BOTH);
 		try {
 			offer.reserveOffer(guest2);
 			if(offer.getStatus() == Offer.RESERVED && offer.getGuest() == guest2) {
@@ -334,7 +345,7 @@ public class OfferDemo {
 		}
 
 		
-		guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world");
+		guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.BOTH);
 		/*Test the text comments and that the application can distinguish between text and rating comments.
 		 * We create a new comment as in this case, we do not have access to the user interface in order
 		 * to select the same comment*/

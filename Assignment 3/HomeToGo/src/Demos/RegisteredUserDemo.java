@@ -6,6 +6,7 @@ import House.House;
 import Offer.LivingOffer;
 import Offer.Offer;
 import User.RegisteredUser;
+import User.UserType;
 
 /*We do not test the getters and setters as they are
  * extremely simple and they do not return anything.*/
@@ -14,11 +15,11 @@ public class RegisteredUserDemo {
 	private static RegisteredUser user;
 	
 	public void main() {
-		System.out.println("We initialise a RegisteredUser with data: 198, Juan, Ramirez, 9876543219876543, Hello world.");
-		user = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world");
+		System.out.println("We initialise a RegisteredUser with data: 198, Juan, Ramirez, 9876543219876543, Hello world, UserType.BOTH.");
+		user = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH);
 		System.out.println("The user created is: " + user + ".");
-		System.out.println("We initialise another RegisteredUser with data: 197, Juan, Ramirez, 9876543219876543, Hello world.");
-		RegisteredUser user2 = new RegisteredUser("197", "Juan", "Ramirez", "9876543219876543", "Hello world");
+		System.out.println("We initialise another RegisteredUser with data: 197, Juan, Ramirez, 9876543219876543, Hello world, UserType.BOTH.");
+		RegisteredUser user2 = new RegisteredUser("197", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH);
 		System.out.println("The user created is: " + user2 + ".");
 		System.out.println("We check the functionality of the equals method.");
 		
@@ -38,7 +39,7 @@ public class RegisteredUserDemo {
 		}else {
 			System.out.println("A user is equal to another user with different id, error in equals.");
 		}
-		if(user.equals(new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world")) == true) {
+		if(user.equals(new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH)) == true) {
 			System.out.println("A user is equal to another user with the same id.");
 		}else {
 			System.out.println("A user is not equal to another user with the same id, error in equals.");
