@@ -255,8 +255,8 @@ public class RegisteredUser implements Serializable{
 	 */
 	@Override
 	public String toString() {
-		String result = this.name + this.surname + " has the ID: " + this.id + "and the credit card: " + this.creditCard + 
-				"and has the password: " + this.password + "and status: " + this.status;
+		String result = this.name + " " + this.surname + " has the ID: " + this.id + " and the credit card: " + this.creditCard + 
+				" and has the password: " + this.password + " and status: " + this.status + " and is a: " + this.type;
 		return result;
 	}
 	

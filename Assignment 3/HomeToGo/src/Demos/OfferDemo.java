@@ -26,7 +26,7 @@ public class OfferDemo {
 	private static RegisteredUser host;
 	private static RegisteredUser guest;
 	
-	public void main() {
+	public static void main(String args[]) {
 		System.out.println("This demo checks the functionality of the class Offer");
 		System.out.println("First we create a house for the offer");
 		/*Create the house*/

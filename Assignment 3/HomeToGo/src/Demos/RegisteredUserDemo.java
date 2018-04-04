@@ -14,7 +14,7 @@ import User.UserType;
 public class RegisteredUserDemo {
 	private static RegisteredUser user;
 	
-	public void main() {
+	public static void main(String args[]) {
 		System.out.println("We initialise a RegisteredUser with data: 198, Juan, Ramirez, 9876543219876543, Hello world, UserType.BOTH.");
 		user = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH);
 		System.out.println("The user created is: " + user + ".");
@@ -92,11 +92,10 @@ public class RegisteredUserDemo {
 		System.out.println("We check the functionality of removeOffer.");
 		System.out.println("We remove an offer that is in the user's created offer's list.");
 		result = user.removeOffer(offer, RegisteredUser.CREATED_OFFER);
-		result = user.addOffer(offer, RegisteredUser.HIST_OFFER);
 		if(result == true) {
 			System.out.println("The offer was removed successfully.");
 		}else {
-			System.out.println("Error in removedOffer.");
+			System.out.println("Error in removeOffer.");
 		}
 		
 		/*Remove a created offer that is not added*/
@@ -105,7 +104,7 @@ public class RegisteredUserDemo {
 		if(result == false) {
 			System.out.println("The offer was not removed as it is not in the array.");
 		}else {
-			System.out.println("The offer was removed, error in addOffer.");
+			System.out.println("The offer was removed, error in removeOffer.");
 		}
 		
 		/*Remove a bought offer that is already added*/

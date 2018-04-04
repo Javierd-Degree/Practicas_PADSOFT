@@ -347,6 +347,21 @@ public abstract class Offer implements Serializable{
 		return this.startDate;
 	}
 	
+	
+	/**
+	 *Transforms the offer data into a string so that it can be printed.
+	 *
+	 *@return String with the offer's data.
+	 */
+	@Override
+	public String toString() {
+		if(this instanceof LivingOffer) {
+			return "This living offer is from " + this.host.getName() + " in the house " + this.house + ", has the price " + this.getPrice() + " and is currently " + this.status;
+		}else {
+			return "This holiday offer is from " + this.host.getName() + " in the house " + this.house + ", has the price " + this.getPrice() + " and is currently " + this.status;
+		}
+	}	
+	
 	/**
 	 * Compare two Offer to know if they are the same one.
 	 * 
