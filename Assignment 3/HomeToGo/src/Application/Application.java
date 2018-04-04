@@ -56,7 +56,12 @@ public class Application implements Serializable {
 		offers = new ArrayList<>();
 		houses = new ArrayList<>();	
 	}
-
+	
+	/**
+	 * Method that returns an instance of Application so that there
+	 * cannot be 2 instances of application at the same time.
+	 * @return Instance of Application.
+	 */
 	public static Application getInstance(){
 		if(INSTANCE == null){
 			INSTANCE = loadFromFile(BACKUP_FILE);
@@ -64,6 +69,9 @@ public class Application implements Serializable {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Method that adds a user to the array of the system.
+	 */
 	public void addUser(RegisteredUser user) {
 		this.users.add(user);
 	}
@@ -72,6 +80,9 @@ public class Application implements Serializable {
 		return this.users;
 	}
 	
+	/**
+	 * Method that adds an administrator to the array of the system.
+	 */
 	public void addAdmin(Administrator admin) {
 		this.admins.add(admin);
 	}
@@ -155,21 +166,23 @@ public class Application implements Serializable {
 			((RegisteredUser) logged).changeStatus(RegisteredUser.UNLOGGED);
 		}
 		INSTANCE.saveToFile(BACKUP_FILE);
+		INSTANCE = null;
 	}
 	
 	/**
 	 * Method that creates a new house and adds it to the application's list.
 	 * @param id of the new house to add.
+	 * @return boolean to check if the house was correctly added or not.
 	 */
-	public void addHouse(String id) {
+	public boolean addHouse(String id) {
 		Object logged = this.searchLoggedIn();
 		if(logged instanceof RegisteredUser && (
 				((RegisteredUser) logged).getType() != UserType.GUEST)) {
 			House h = new House(id);
 			houses.add(h);
-			((RegisteredUser) logged).addHouse(h);
+			return((RegisteredUser) logged).addHouse(h);
 		}
-		
+		return false;	
 	}
 	
 	/**
@@ -219,6 +232,9 @@ public class Application implements Serializable {
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double totalPrice, LocalDate startDate, LocalDate endDate, House house, RegisteredUser host) {
+		if(house == null || host == null || startDate == null || endDate == null) {
+			return false;
+		}
 		for(Offer o : offers) {
 			if(o instanceof HolidayOffer && o.getHouse() == house) {
 				return false;
@@ -245,6 +261,9 @@ public class Application implements Serializable {
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host) {
+		if(house == null || host == null || startDate == null) {
+			return false;
+		}
 		for(Offer o : offers) {
 			if(o instanceof LivingOffer && o.getHouse() == house) {
 				return false;
@@ -281,9 +300,15 @@ public class Application implements Serializable {
 	public List<Offer> searchByDate(LocalDate startDate, LocalDate endDate){
 		List<Offer> offs = new ArrayList<>();
 		for(Offer o : offers) {
-			if(o.getStartDate().isAfter(startDate) && o.getStartDate().isBefore(endDate)) {
-				offs.add(o);
-			}
+			if(o instanceof LivingOffer) {
+				if(o.getStartDate().isAfter(startDate) && o.getStartDate().isBefore(endDate)) {
+					offs.add(o);
+				}
+			}else if(o instanceof HolidayOffer) {
+				if(o.getStartDate().isAfter(startDate) && ((HolidayOffer)o).getEndDate().isBefore(endDate)) {
+					offs.add(o);
+				}
+			}	
 		}
 		return offs;
 	}

@@ -42,6 +42,15 @@ public class HolidayOffer extends Offer implements Serializable{
 		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
 	}
 	
+	
+	/**
+	 * Getter of the end date of the HolidayOffer.
+	 * @return
+	 */
+	public LocalDate getEndDate() {
+		return this.endDate;
+	}
+	
 	/**
 	 * Compare two HolidayOffer to know if they are the same one.
 	 * 
