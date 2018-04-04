@@ -10,7 +10,7 @@ public class CommentDemo {
 	private static TextComment tComment;
 	private static RegisteredUser user;
 	
-	public void main() {
+	public static void main(String args[]) {
 		System.out.println("This demo test the funcionality of the Comment class.");
 		System.out.println("We create the different types of comments and then we print them to assure they were correctly initialised and that the toString() method is correct.");
 		

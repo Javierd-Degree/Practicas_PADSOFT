@@ -5,7 +5,7 @@ import House.House;
 public class HouseDemo{
 	private static House h;
 
-	public void main() {
+	public static void main(String args[]) {
 		System.out.println("This demo test the funcionality of the Comment class.");
 		System.out.println("We create a House with ID: H9FMHJ7.");
 		h = new House("H9FMHJ7");
