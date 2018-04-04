@@ -56,7 +56,12 @@ public class Application implements Serializable {
 		offers = new ArrayList<>();
 		houses = new ArrayList<>();	
 	}
-
+	
+	/**
+	 * Method that returns an instance of Application so that there
+	 * cannot be 2 instances of application at the same time.
+	 * @return Instance of Application.
+	 */
 	public static Application getInstance(){
 		if(INSTANCE == null){
 			INSTANCE = loadFromFile(BACKUP_FILE);
@@ -64,6 +69,9 @@ public class Application implements Serializable {
 		return INSTANCE;
 	}
 	
+	/**
+	 * Method that adds a user to the array of the system.
+	 */
 	public void addUser(RegisteredUser user) {
 		this.users.add(user);
 	}
@@ -72,6 +80,9 @@ public class Application implements Serializable {
 		return this.users;
 	}
 	
+	/**
+	 * Method that adds an administrator to the array of the system.
+	 */
 	public void addAdmin(Administrator admin) {
 		this.admins.add(admin);
 	}
