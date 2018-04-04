@@ -39,7 +39,7 @@ public class OfferTest {
 		
 		/*Create the host*/
 		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.HOST);
-		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.HOST);
+		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.GUEST);
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		} catch (DateRangeException e) {
@@ -70,6 +70,11 @@ public class OfferTest {
 		
 		LivingOffer lOffer2 = new LivingOffer(90, LocalDate.of(2018, 9, 11), host, house, 442.7);
 		assertEquals(lOffer.equals(lOffer2), false);
+	}
+	
+	@Test
+	public void testValidOffer() {
+		//TODO
 	}
 	
 	@Test
