@@ -18,9 +18,9 @@ public class ApplicationDemo {
 		int result = app.login("abcd", "abcde");
 		if(result == 0) {
 			System.out.println("Login sucessful, error.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found.");
 		}
 		Object o = app.searchLoggedIn();
@@ -37,9 +37,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(6).getId(), users.get(4).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful, error.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -54,9 +54,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(6).getId(), users.get(6).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -71,9 +71,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(4).getId(), users.get(4).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful, error.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -116,9 +116,13 @@ public class ApplicationDemo {
 		
 		
 		RegisteredUser user = ((RegisteredUser)o);
+		if(user == null) {
+			System.out.println("El usuario es null, error");
+			return;
+		}
 		
 		user.getCreatedHouses().get(0).addCharacteristic("ZIP_CODE", "E322");
-		user.getCreatedHouses().get(0).addCharacteristic("ZIP_CODE", "E333");
+		user.getCreatedHouses().get(1).addCharacteristic("ZIP_CODE", "E333");
 		
 		
 		res = app.addOffer(100, 400, LocalDate.of(2018, 7, 13), app.getHouses().get(0), null);
@@ -241,9 +245,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(3).getId(), users.get(3).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -256,6 +260,10 @@ public class ApplicationDemo {
 		}
 		
 		RegisteredUser user2 = ((RegisteredUser)o);
+		if(user2 == null) {
+			System.out.println("El usuario es null, error");
+			return;
+		}
 		
 		res = app.addHouse("ABCDE");
 		if(res == true) {
@@ -316,9 +324,9 @@ public class ApplicationDemo {
 		app.login(admin.getId(), admin.getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -331,6 +339,10 @@ public class ApplicationDemo {
 		}
 		
 		admin = ((Administrator)o);
+		if(admin == null) {
+			System.out.println("El administrador es null, error");
+			return;
+		}
 		
 		List<Offer> notApproved = app.seeNonApprovedOffer();
 		
@@ -349,9 +361,9 @@ public class ApplicationDemo {
 		result = app.login(user.getId(), user.getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -364,14 +376,21 @@ public class ApplicationDemo {
 		}
 		
 		user = ((RegisteredUser)o);
-		
-		for(Offer off : user.seeOffers()) {
-			off.setPrice(300);
-			if(off.getStatus() == Offer.WAITING) {
-				System.out.println("The offer: " + off + " was sucessfully changed and is waiting for approval.");
-			}
+		if(user == null) {
+			System.out.println("El usuario es null, error");
+			return;
 		}
 		
+		try {
+			for(Offer off : user.seeOffers()) {
+					off.setDeposit(150);
+				if(off.getStatus() == Offer.WAITING) {
+					System.out.println("The offer: " + off + " was sucessfully changed and is waiting for approval.");
+				}
+			}
+		}catch(NotAvailableOfferException e) {
+			System.out.println("Some offers were not in the status TO_CHANGE");
+		}
 		app.logout();
 		
 		
@@ -381,9 +400,9 @@ public class ApplicationDemo {
 		
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -396,6 +415,10 @@ public class ApplicationDemo {
 		}
 		
 		admin = ((Administrator)o);
+		if(admin == null) {
+			System.out.println("El administrador es null, error");
+			return;
+		}
 		
 
 		notApproved = app.seeNonApprovedOffer();
@@ -415,9 +438,9 @@ public class ApplicationDemo {
 		result = app.login(user2.getId(), user2.getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -430,6 +453,10 @@ public class ApplicationDemo {
 		}
 		
 		user2 = ((RegisteredUser)o);
+		if(user2 == null) {
+			System.out.println("El usuario es null, error");
+			return;
+		}
 		
 		dates = app.searchByDate(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 12, 31));
 		System.out.println("The offers in this dates are: " + dates + ".");
@@ -471,9 +498,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(3).getId(), users.get(3).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -514,9 +541,9 @@ public class ApplicationDemo {
 		
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -550,9 +577,9 @@ public class ApplicationDemo {
 		result = app.login(users.get(0).getId(), users.get(0).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
-		}else if(result == -1) {
+		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
-		}else if(result == -2) {
+		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
 		}
 		o = app.searchLoggedIn();
@@ -563,8 +590,6 @@ public class ApplicationDemo {
 		}else {
 			System.out.println("There user: " + ((RegisteredUser)o) + " is logged in.");
 		}
-		
-		RegisteredUser user4 = ((RegisteredUser)o);
 		
 		System.out.println("The already reserved offers are: " + app.searchReservedOffers() + ".");
 		System.out.println("The already bought offers are: " + app.searchBoughtOffers() + ".");	

@@ -46,6 +46,11 @@ public class Application implements Serializable {
 
 	public static final int HOLIDAY_OFFER = 0;
 	public static final int LIVING_OFFER = 1;
+	public static final int SOMEONE_LOGGED = -3;
+	public static final int NOT_FOUND_ID = -2;
+	public static final int NO_MATCHED = -1;
+	public static final int SUCCESS = 1;
+		
 	
 	/**
 	 * Constructor of the Application class.
@@ -110,14 +115,18 @@ public class Application implements Serializable {
 		/*Once the user or administrator is logged in we load the screen 
 		 * for the administrator or the different types of user.*/
 		/*Change 1, -1, -2 to MACROS*/
+		Object o = this.searchLoggedIn();
+		if(o != null) {
+			return SOMEONE_LOGGED;
+		}
 		for(Administrator admin : admins) {
 			if(admin.getId() == id) {
 				if(admin.getPassword().equals(password)) {
 					/*Successfully logged in*/
 					admin.changeLogged(true);
-					return 1;
+					return SUCCESS;
 				}else {
-					return -1;
+					return NO_MATCHED;
 				}
 			}
 		}
@@ -126,13 +135,13 @@ public class Application implements Serializable {
 				if(user.getPassword().equals(password)) {
 					/*Successfully logged in*/
 					user.changeStatus(RegisteredUser.LOGGED);
-					return 1;
+					return SUCCESS;
 				}else {
-					return -1;
+					return NO_MATCHED;
 				}
 			}
 		}
-		return -2;
+		return NOT_FOUND_ID;
 	}
 	
 	
@@ -224,6 +233,21 @@ public class Application implements Serializable {
 			}
 		}
 		return offs;
+	}
+	
+	
+	/**
+	 * Method that selects from all the users the ones who are banned.
+	 * @return List of all the banned users.
+	 */
+	public List<RegisteredUser> seeBannedUsers(){
+		List<RegisteredUser> banned = new ArrayList<>();
+		for(RegisteredUser u : users) {
+			if(u.getStatus() == RegisteredUser.BANNED) {
+				banned.add(u);
+			}
+		}
+		return banned;
 	}
 	
 	/**
