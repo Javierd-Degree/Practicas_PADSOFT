@@ -282,7 +282,8 @@ public class Application implements Serializable {
 	}
 	
 	/**
-	 * Method that adds a new holiday offer to the offers array.
+	 * Method that creates a new holiday offer, and adds it to the offers array,
+	 * and to the host created offers list.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param totalPrice Price of the offer (without the deposit).
@@ -298,7 +299,7 @@ public class Application implements Serializable {
 			return false;
 		}
 		for(Offer o : offers) {
-			if(o instanceof HolidayOffer && o.getHouse() == house) {
+			if(o instanceof HolidayOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -316,11 +317,12 @@ public class Application implements Serializable {
 		}
 		
 		offers.add(o);
-		return true;
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
 	}
 	
 	/**
-	 * Method that adds a new living offer with the default number of months to the offers array.
+	 * Method that creates a new living offer with the default number of months,
+	 * and adds it to the offers array and to the host created offers list.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
@@ -336,7 +338,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Offer o : offers) {
-			if(o instanceof LivingOffer && o.getHouse() == house) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -347,11 +349,12 @@ public class Application implements Serializable {
 		}
 		
 		offers.add(o);
-		return true;
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
 	}
 	
 	/**
-	 * Method that adds a new living offer with a number of months to the offers array.
+	 * Method that creates a new living offer with a number of months, and adds it to the offers 
+	 * array and to the host created offers list.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
@@ -371,7 +374,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Offer o : offers) {
-			if(o instanceof LivingOffer && o.getHouse() == house) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -388,7 +391,8 @@ public class Application implements Serializable {
 			return false;
 		}
 		offers.add(o);
-		return true;
+		
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
 	}
 	
 	/**
