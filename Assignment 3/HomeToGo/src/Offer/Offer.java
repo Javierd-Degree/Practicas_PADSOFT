@@ -319,6 +319,9 @@ public abstract class Offer implements Serializable{
 			}else {
 				host.sumDebtMoney(this.getPrice()*(1 - this.commissions()));
 				host.changeStatus(RegisteredUser.BANNED);
+				this.status = BOUGHT;
+				this.lastModifiedDate = LocalDate.now();
+				this.guest = guest;
 			}
 			return;
 		}
