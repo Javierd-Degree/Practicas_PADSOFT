@@ -16,7 +16,7 @@ public class ApplicationDemo {
 		Application app = Application.getInstance();
 		
 		int result = app.login("abcd", "abcde");
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful, error.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -35,7 +35,7 @@ public class ApplicationDemo {
 		List<RegisteredUser> users = app.getUsers();
 		
 		result = app.login(users.get(6).getId(), users.get(4).getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful, error.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id.");
@@ -51,8 +51,8 @@ public class ApplicationDemo {
 			System.out.println("There is a user logged in, error.");
 		}
 		
-		result = app.login(users.get(6).getId(), users.get(6).getPassword());
-		if(result == 0) {
+		result = app.login(users.get(5).getId(), users.get(5).getPassword());
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -69,13 +69,16 @@ public class ApplicationDemo {
 		}
 		
 		result = app.login(users.get(4).getId(), users.get(4).getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful, error.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
 		}else if(result == Application.NOT_FOUND_ID) {
 			System.out.println("The id could not be found, error.");
+		}else if(result == Application.SOMEONE_LOGGED) {
+			System.out.println("There is someon already logged in.");
 		}
+		
 		o = app.searchLoggedIn();
 		if(o == null) {
 			System.out.println("There is noone logged in, error");
@@ -220,7 +223,7 @@ public class ApplicationDemo {
 			System.out.println("The offer could not be added.");
 		}
 		
-		res = app.addOffer(90, 450, LocalDate.of(2018, 9, 1), LocalDate.of(2019, 12, 5), user.getCreatedHouses().get(1), user);
+		res = app.addOffer(90, 450, LocalDate.of(2018, 9, 1), LocalDate.of(2018, 12, 5), user.getCreatedHouses().get(1), user);
 		if(res == true) {
 			System.out.println("The offer was sucessfully added.");
 		}else {
@@ -242,8 +245,10 @@ public class ApplicationDemo {
 			System.out.println("There is a user logged in, error.");
 		}
 		
+		users = app.getUsers();
+		
 		result = app.login(users.get(3).getId(), users.get(3).getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -315,14 +320,17 @@ public class ApplicationDemo {
 		
 		app.logout();
 		
+
 		app = Application.getInstance();
+		
+		users = app.getUsers();
 		
 		Administrator admin = new Administrator("001", "Pedro", "Fernandez", "pepe123");
 		
 		app.addAdmin(admin);
 		
 		app.login(admin.getId(), admin.getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -358,7 +366,9 @@ public class ApplicationDemo {
 		
 		app = Application.getInstance();
 		
-		result = app.login(user.getId(), user.getPassword());
+		users = app.getUsers();
+		
+		result = app.login(users.get(5).getId(), users.get(5).getPassword());
 		if(result == 0) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
@@ -396,9 +406,9 @@ public class ApplicationDemo {
 		
 		app = Application.getInstance();
 		
-		result = app.login(admin.getId(), admin.getPassword());
+		result = app.login(app.getAdmins().get(0).getId(), app.getAdmins().get(0).getPassword());
 		
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -435,8 +445,10 @@ public class ApplicationDemo {
 		
 		app = Application.getInstance();
 		
-		result = app.login(user2.getId(), user2.getPassword());
-		if(result == 0) {
+		users = app.getUsers();
+		
+		result = app.login(users.get(2).getId(), users.get(2).getPassword());
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -478,15 +490,15 @@ public class ApplicationDemo {
 		
 		try {
 			dates.get(1).buyOffer(user2, "BUY");
-			System.out.println("The offer was sucessfully bought, error.");
-		}catch(NotAvailableOfferException | OrderRejectedException e) {
-			if(dates.get(1).getHost().getStatus() == RegisteredUser.BANNED) {
-				System.out.println("The host's credit card is incorrect, the offer was bought, the debt to the host was added, the host was sucessfully banned.");
-			}else if(user2.getStatus() == RegisteredUser.BANNED) {
+			if(user2.getStatus() == RegisteredUser.BANNED) {
 				System.out.println("The guest's credit card is incorrect, the offer was not bought, the guest was sucessfully banned, error.");	
+			}else if(dates.get(1).getHost().getStatus() == RegisteredUser.BANNED) {
+				System.out.println("The host's credit card is incorrect, the offer was bought, the debt to the host was added, the host was sucessfully banned.");
 			}else {
-				System.out.println("The offer was not available, error.");
+				System.out.println("The offer was sucessfully bought, error.");
 			}
+		}catch(OrderRejectedException | NotAvailableOfferException e) {
+				System.out.println("The offer was not available, error.");
 		}
 		
 		System.out.println("The bought offer is: " + user2.seeHistory() + ".");
@@ -495,8 +507,10 @@ public class ApplicationDemo {
 		
 		app = Application.getInstance();
 		
+		users = app.getUsers();
+		
 		result = app.login(users.get(3).getId(), users.get(3).getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -513,22 +527,28 @@ public class ApplicationDemo {
 		}
 		
 		RegisteredUser user3 = ((RegisteredUser)o);
+		if(user3 == null) {
+			return;
+		}
 		
 		try {
-			dates.get(3).buyOffer(user3, "BUY");
-			System.out.println("The offer was sucessfully bought, error.");
-		}catch(NotAvailableOfferException | OrderRejectedException e) {
-			if(dates.get(1).getHost().getStatus() == RegisteredUser.BANNED) {
-				System.out.println("The host's credit card is incorrect, the offer was bought, the debt to the host was added, the host was sucessfully banned, error.");
-			}else if(user2.getStatus() == RegisteredUser.BANNED) {
+			dates.get(2).buyOffer(user3, "BUY");
+			if(user3.getStatus() == RegisteredUser.BANNED) {
 				System.out.println("The guest's credit card is incorrect, the offer was not bought, the guest was sucessfully banned.");	
+			}else if(dates.get(1).getHost().getStatus() == RegisteredUser.BANNED) {
+				System.out.println("The host's credit card is incorrect, the offer was bought, the debt to the host was added, the host was sucessfully banned, error.");
 			}else {
-				System.out.println("The offer was not available, error.");
+				System.out.println("The offer was sucessfully bought, error.");
 			}
+		}catch(NotAvailableOfferException | OrderRejectedException e) {
+			System.out.println("The offer was not available, error.");
 		}
 		
 		
+		
 		app = Application.getInstance();
+		
+		users = app.getUsers();
 		
 		o = app.searchLoggedIn();
 		if(o != null) {
@@ -537,9 +557,9 @@ public class ApplicationDemo {
 			System.out.println("There is noone logged in.");
 		}
 		
-		result = app.login(admin.getId(), admin.getPassword());
+		result = app.login(app.getAdmins().get(0).getId(), app.getAdmins().get(0).getPassword());
 		
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -574,8 +594,10 @@ public class ApplicationDemo {
 		
 		app = Application.getInstance();
 		
+		users = app.getUsers();
+		
 		result = app.login(users.get(0).getId(), users.get(0).getPassword());
-		if(result == 0) {
+		if(result == Application.SUCCESS) {
 			System.out.println("Login sucessful.");
 		}else if(result == Application.NO_MATCHED) {
 			System.out.println("The password does not match the id, error.");
@@ -593,6 +615,122 @@ public class ApplicationDemo {
 		
 		System.out.println("The already reserved offers are: " + app.searchReservedOffers() + ".");
 		System.out.println("The already bought offers are: " + app.searchBoughtOffers() + ".");	
+		
+		app.logout();	
+		
+		
+		app = Application.getInstance();
+		
+		users = app.getUsers();
+		
+		result = app.login(users.get(5).getId(), users.get(5).getPassword());
+		if(result == Application.SUCCESS) {
+			System.out.println("Login sucessful.");
+		}else if(result == Application.NO_MATCHED) {
+			System.out.println("The password does not match the id, error.");
+		}else if(result == Application.NOT_FOUND_ID) {
+			System.out.println("The id could not be found, error.");
+		}
+		o = app.searchLoggedIn();
+		if(o == null) {
+			System.out.println("There is noone logged in, error");
+		}else if(o instanceof Administrator) {
+			System.out.println("There is an administrator logged in, error");
+		}else {
+			System.out.println("The user: " + ((RegisteredUser)o) + " is logged in.");
+		}
+		
+		user = ((RegisteredUser)o);
+		if(user == null) {
+			return;
+		}
+		
+		res = app.addHouse("XEDR");
+		
+		if(res == true) {
+			System.out.println("The house was successfully added");
+		}else {
+			System.out.println("Error");
+		}
+		
+		res = app.addOffer(90, 100, LocalDate.of(2018, 6, 20), user.getCreatedHouses().get(2), user);
+		if(res == true) {
+			System.out.println("The offer was successfully added");
+		}else {
+			System.out.println("Error");
+		}
+		
+		res = app.addOffer(80, 400, LocalDate.of(2018, 5, 18), LocalDate.of(2018, 6, 17), user.getCreatedHouses().get(2), user);
+		if(res == true) {
+			System.out.println("The offer was successfully added");
+		}else {
+			System.out.println("Error");
+		}
+		
+		try {
+			for(Offer of : user.seeOffers()) {
+				if(of.getStatus()==Offer.WAITING || of.getStatus() == Offer.TO_CHANGE) {
+					app.cancelOffer(of);
+					System.out.println("The offer was successfully cancelled.");
+					break;
+				}
+			}
+		}catch(NotAvailableOfferException e) {
+			System.out.println("The offer could not be cancelled as it is already approved, error.");
+		}
+		
+		try {
+			for(Offer of : user.seeOffers()) {
+				if(of.getStatus() != Offer.WAITING && of.getStatus() != Offer.TO_CHANGE) {
+					app.cancelOffer(of);
+					System.out.println("The offer was successfully cancelled, error.");
+					break;
+				}
+			}
+		}catch(NotAvailableOfferException e) {
+			System.out.println("The offer could not be cancelled as it is already approved.");
+		}
+		
+		app.logout();
+		
+		app = Application.getInstance();
+		
+		users = app.getUsers();
+		
+		result = app.login(users.get(3).getId(), users.get(3).getPassword());
+		if(result == Application.SUCCESS) {
+			System.out.println("Login sucessful.");
+		}else if(result == Application.NO_MATCHED) {
+			System.out.println("The password does not match the id, error.");
+		}else if(result == Application.NOT_FOUND_ID) {
+			System.out.println("The id could not be found, error.");
+		}
+		o = app.searchLoggedIn();
+		if(o == null) {
+			System.out.println("There is noone logged in, error");
+		}else if(o instanceof Administrator) {
+			System.out.println("There is an administrator logged in, error");
+		}else {
+			System.out.println("The user: " + ((RegisteredUser)o) + " is logged in.");
+		}
+		
+		user = ((RegisteredUser)o);
+		if(user == null) {
+			return;
+		}
+		
+		
+		try {
+			for(Offer of : users.get(5).seeOffers()) {
+				if(of.getStatus()==Offer.WAITING || of.getStatus() == Offer.TO_CHANGE) {
+					app.cancelOffer(of);
+					System.out.println("The offer was successfully cancelled, error.");
+					break;
+				}
+			}
+		}catch(NotAvailableOfferException e) {
+			System.out.println("The offer could not be cancelled the logged user is not its host.");
+		}
 		
 		app.logout();	
 	}
