@@ -160,6 +160,11 @@ public class Application implements Serializable {
 	 */
 	public void logout() {
 		Object logged = this.searchLoggedIn();
+		if(logged == null) {
+			/*On some tests we need to ban the user, but we do not have initialized the application,
+			 * so we need to check this.*/
+			return;
+		}
 		if(logged instanceof Administrator) {
 			((Administrator) logged).changeLogged(false);
 		}else {

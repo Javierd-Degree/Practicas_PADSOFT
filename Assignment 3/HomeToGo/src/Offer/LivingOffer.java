@@ -3,6 +3,8 @@ package Offer;
 import java.io.Serializable;
 import java.time.LocalDate;
 
+import Exceptions.DateRangeException;
+import Exceptions.NotAvailableOfferException;
 import House.House;
 import User.RegisteredUser;
 
@@ -17,9 +19,10 @@ import User.RegisteredUser;
 public class LivingOffer extends Offer implements Serializable{
 	private static final long serialVersionUID = 6202450079263161446L;
 	private double pricePerMonth;
+	private int nMonths;
 	
 	/**
-	 * Constructor of the LivingOffer class.
+	 * Constructor of the LivingOffer class with five months for the offer.
 	 * 
 	 * @param deposit double with the money the offer's deposit costs.
 	 * @param startDate LocalDate which indicates when the offer starts.
@@ -30,8 +33,60 @@ public class LivingOffer extends Offer implements Serializable{
 	public LivingOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, double pricePerMonth) {
 		super(deposit, startDate, host, house);
 		this.pricePerMonth = pricePerMonth;
+		this.nMonths = 5;
+	}
+	
+	/**
+	 * Constructor of the LivingOffer class with a custom number of
+	 * months for the offer.
+	 * 
+	 * @param deposit double with the money the offer's deposit costs.
+	 * @param startDate LocalDate which indicates when the offer starts.
+	 * @param host RegisteredUser who creates the offer.
+	 * @param house House in which the offer takes place.
+	 * @param pricePerMonth double with the monthly price the offer costs.
+	 * @param nMonths number of months the living offer is going to be availabe.
+	 */
+	public LivingOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, double pricePerMonth, int nMonths) throws DateRangeException{
+		super(deposit, startDate, host, house);
+		this.pricePerMonth = pricePerMonth;
+		this.nMonths = nMonths;
 		
-		/*TODO Anadir al array del usuario y del sistema, al crearlo, dentro de System*/
+		if(nMonths <= 0) {
+			throw new DateRangeException();
+		}
+	}
+	
+	/**
+	 * Setter of the offer's price per month in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param d double with the new offer's new price per month.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setPricePerMonth(double d) throws NotAvailableOfferException {
+		if(this.getStatus() != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.pricePerMonth = d;
+		this.setWaiting();
+	}
+	
+	/**
+	 * Setter of the offer's number of months in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param n int with the offer's new number of months.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setNumberMonths(int n) throws NotAvailableOfferException {
+		if(this.getStatus() != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.nMonths = n;
+		this.setWaiting();
 	}
 	
 	/**
@@ -47,7 +102,8 @@ public class LivingOffer extends Offer implements Serializable{
 		}
 		
 		LivingOffer h = (LivingOffer) ob;
-		return super.equals(h) && this.pricePerMonth == h.pricePerMonth;
+		return super.equals(h) && this.pricePerMonth == h.pricePerMonth
+				&& this.nMonths == h.nMonths;
 	}
 	
 	/**

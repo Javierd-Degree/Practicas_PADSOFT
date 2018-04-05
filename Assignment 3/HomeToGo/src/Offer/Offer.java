@@ -33,6 +33,7 @@ public abstract class Offer implements Serializable{
 	public static final int WAITING = 0;
 	public static final int TO_CHANGE = -1;
 	public static final int DENIED = -2;
+	public static final int NOT_AVAILABLE = -2;
 	public static final int AVAILABLE = 1;
 	public static final int RESERVED = 2;
 	public static final int BOUGHT = 3;
@@ -54,8 +55,98 @@ public abstract class Offer implements Serializable{
 		this.guest = null;
 		this.house = house;
 		this.comments = new ArrayList<>();
+	}
+	
+	/**
+	 * Method that validates an offer and solves possible problems.
+	 * In case the offer is reserved since five or more days, but 
+	 * the guest has not paid we mark it as available,or as not 
+	 * available if the offer has already started.
+	 * 
+	 * An offer is not valid just when more than five days have passes
+	 * since the administrator asked for changes.
+	 * 
+	 * @return
+	 */
+	public boolean isValid(LocalDate todayDate) {
+		System.out.print(todayDate.toString() +"\n"+ this.lastModifiedDate +"\n");
+		/*The host has not made the necessary changes*/
+		if(this.status == TO_CHANGE && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
+			/*The offer is denied and deleted if needed on Application*/
+			System.out.print("1");
+			return false;
+		}
+		/*The guest has not paid*/
+		if(this.status == RESERVED && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
+			System.out.print("2");
+			this.status = AVAILABLE;
+			this.lastModifiedDate = LocalDate.now();
+			this.guest.removeOffer(this, RegisteredUser.HIST_OFFER);
+			this.guest = null;
+		}
 		
-		/*TODO Anadir al array del usuario y del sistema*/
+		if(startDate.isBefore(todayDate) && this.status != BOUGHT) {
+			if(this.status == RESERVED) {
+				this.guest.removeOffer(this, RegisteredUser.HIST_OFFER);
+				this.guest = null;
+			}
+			
+			this.status = NOT_AVAILABLE;
+			this.lastModifiedDate = LocalDate.now();
+		}
+		
+		return true;
+	}
+	
+	/**
+	 * Setter of the offer's starting date in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param l new offer's starting date.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setStartDate(LocalDate l) throws NotAvailableOfferException {
+		if(this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.startDate = l;
+		this.lastModifiedDate = LocalDate.now();
+		this.status = WAITING;
+	}
+	
+	/**
+	 * Setter of the offer's deposit in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param d double with the new offer's deposit.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setDeposit(double d) throws NotAvailableOfferException {
+		if(this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.deposit = d;
+		this.lastModifiedDate = LocalDate.now();
+		this.status = WAITING;
+	}
+	
+	/**
+	 * Setter of the offer's house in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param h new offer's house.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setHouse(House h) throws NotAvailableOfferException {
+		if(this.status != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.house = h;
+		this.lastModifiedDate = LocalDate.now();
+		this.status = WAITING;
 	}
 	
 	/**
@@ -65,8 +156,19 @@ public abstract class Offer implements Serializable{
 	 * 
 	 * @param date LocalDate when the last modification was made.
 	 */
-	public void setLastModifiedDate(LocalDate date) {
+	protected void setLastModifiedDate(LocalDate date) {
 		this.lastModifiedDate = date;
+	}
+	
+	/**
+	 * Protected function used by LivingOffer and HolidayOffer
+	 * to notify they have made changes on the offer.
+	 * 
+	 * @param date LocalDate when the last modification was made.
+	 */
+	protected void setWaiting() {
+		this.status = WAITING;
+		this.lastModifiedDate = LocalDate.now();
 	}
 	
 	/**
@@ -195,7 +297,7 @@ public abstract class Offer implements Serializable{
 		if(this.status == RESERVED && !this.guest.equals(guest)) {
 			throw new NotAvailableOfferException();
 		}else if(this.status == BOUGHT || this.status == WAITING || this.status == DENIED 
-				|| this.status == TO_CHANGE) {
+				|| this.status == TO_CHANGE || this.status == NOT_AVAILABLE) {
 			throw new NotAvailableOfferException();
 		}else if(guest.getType() == UserType.HOST) {
 			throw new NotAvailableOfferException();

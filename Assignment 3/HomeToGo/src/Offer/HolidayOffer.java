@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.time.LocalDate;
 
 import Exceptions.DateRangeException;
+import Exceptions.NotAvailableOfferException;
 import House.House;
 import User.RegisteredUser;
 
@@ -42,6 +43,21 @@ public class HolidayOffer extends Offer implements Serializable{
 		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
 	}
 	
+	/**
+	 * Setter of the offer's ending date in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param d LocalDate with the new offer's ending date.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setEndDate(LocalDate d) throws NotAvailableOfferException {
+		if(this.getStatus() != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.endDate = d;
+		this.setWaiting();
+	}
 	
 	/**
 	 * Getter of the end date of the HolidayOffer.
