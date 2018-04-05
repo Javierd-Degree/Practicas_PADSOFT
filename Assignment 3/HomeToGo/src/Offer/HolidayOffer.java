@@ -40,7 +40,6 @@ public class HolidayOffer extends Offer implements Serializable{
 		
 		this.endDate = endDate;
 		this.totalPrice = totalPrice;
-		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
 	}
 	
 	/**
@@ -56,6 +55,22 @@ public class HolidayOffer extends Offer implements Serializable{
 		}
 		
 		this.endDate = d;
+		this.setWaiting();
+	}
+	
+	/**
+	 * Setter of the offer's total price date in case the administrator asks for
+	 * changes on the offer.
+	 *  
+	 * @param t double with the new offer's total price.
+	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
+	 */
+	public void setTotalPrice(double t) throws NotAvailableOfferException {
+		if(this.getStatus() != TO_CHANGE) {
+			throw new NotAvailableOfferException();
+		}
+		
+		this.totalPrice = t;
 		this.setWaiting();
 	}
 	

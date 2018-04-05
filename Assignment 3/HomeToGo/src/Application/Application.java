@@ -47,6 +47,12 @@ public class Application implements Serializable {
 	public static final int HOLIDAY_OFFER = 0;
 	public static final int LIVING_OFFER = 1;
 	
+	public static final int SOMEONE_LOGGED = -3;
+	public static final int NOT_FOUND_ID = -2;
+	public static final int NO_MATCHED = -1;
+	public static final int SUCCESS = 1;
+		
+	
 	/**
 	 * Constructor of the Application class.
 	 */
@@ -60,6 +66,7 @@ public class Application implements Serializable {
 	/**
 	 * Method that returns an instance of Application so that there
 	 * cannot be 2 instances of application at the same time.
+	 * 
 	 * @return Instance of Application.
 	 */
 	public static Application getInstance(){
@@ -76,6 +83,11 @@ public class Application implements Serializable {
 		this.users.add(user);
 	}
 	
+	/**
+	 * Return the list of registered users on the application.
+	 * 
+	 * @return List of application's RegisteredUsers.
+	 */
 	public List<RegisteredUser> getUsers(){
 		return this.users;
 	}
@@ -87,14 +99,29 @@ public class Application implements Serializable {
 		this.admins.add(admin);
 	}
 	
+	/**
+	 * Return the list of administrators on the application.
+	 * 
+	 * @return List of application's Administrators.
+	 */
 	public List<Administrator> getAdmins(){
 		return this.admins;
 	}
 	
+	/**
+	 * Return the list of House on the application.
+	 * 
+	 * @return List of application's Houses.
+	 */
 	public List<House> getHouses(){
 		return this.houses;
 	}
 	
+	/**
+	 * Return the list of Offer on the application.
+	 * 
+	 * @return List of application's Offers.
+	 */
 	public List<Offer> getOffers(){
 		return this.offers;
 	}
@@ -110,14 +137,18 @@ public class Application implements Serializable {
 		/*Once the user or administrator is logged in we load the screen 
 		 * for the administrator or the different types of user.*/
 		/*Change 1, -1, -2 to MACROS*/
+		Object o = this.searchLoggedIn();
+		if(o != null) {
+			return SOMEONE_LOGGED;
+		}
 		for(Administrator admin : admins) {
 			if(admin.getId() == id) {
 				if(admin.getPassword().equals(password)) {
 					/*Successfully logged in*/
 					admin.changeLogged(true);
-					return 1;
+					return SUCCESS;
 				}else {
-					return -1;
+					return NO_MATCHED;
 				}
 			}
 		}
@@ -126,18 +157,19 @@ public class Application implements Serializable {
 				if(user.getPassword().equals(password)) {
 					/*Successfully logged in*/
 					user.changeStatus(RegisteredUser.LOGGED);
-					return 1;
+					return SUCCESS;
 				}else {
-					return -1;
+					return NO_MATCHED;
 				}
 			}
 		}
-		return -2;
+		return NOT_FOUND_ID;
 	}
 	
 	
 	/**
 	 * Method that searches for the user or administrator who is logged in.
+	 * 
 	 * @return Administrator or RegisteredUser logged in casted as Object. 
 	 */
 	public Object searchLoggedIn() {
@@ -176,15 +208,19 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that creates a new house and adds it to the application's list.
+	 * 
 	 * @param id of the new house to add.
+	 * 
 	 * @return boolean to check if the house was correctly added or not.
 	 */
 	public boolean addHouse(String id) {
 		Object logged = this.searchLoggedIn();
-		if(logged instanceof RegisteredUser && (
+		if(id != null && logged instanceof RegisteredUser && (
 				((RegisteredUser) logged).getType() != UserType.GUEST)) {
 			House h = new House(id);
-			houses.add(h);
+			if(!houses.contains(h)) {
+				houses.add(h);
+			}
 			return((RegisteredUser) logged).addHouse(h);
 		}
 		return false;	
@@ -192,7 +228,9 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that is used by the host to cancel his own offer if it is not reserved or bought yet.
+	 *
 	 * @param o Offer to cancel.
+	 * 
 	 * @throws NotAvailableOfferException Exception that indicates that the offer is already reserved or bought, or that the user who tries to cancel it is not the host of the offer.
 	 */
 	public void cancelOffer(Offer o) throws NotAvailableOfferException {
@@ -214,6 +252,7 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects from the offers array the ones that are not approved yet.
+	 * 
 	 * @return List with the offer that are waiting to be approved.
 	 */
 	public List<Offer> seeNonApprovedOffer(){
@@ -226,14 +265,33 @@ public class Application implements Serializable {
 		return offs;
 	}
 	
+	
 	/**
-	 * Method that adds a new holiday offer to the offers array.
+	 * Method that selects from all the users the ones who are banned.
+	 * 
+	 * @return List of all the banned users.
+	 */
+	public List<RegisteredUser> seeBannedUsers(){
+		List<RegisteredUser> banned = new ArrayList<>();
+		for(RegisteredUser u : users) {
+			if(u.getStatus() == RegisteredUser.BANNED) {
+				banned.add(u);
+			}
+		}
+		return banned;
+	}
+	
+	/**
+	 * Method that creates a new holiday offer, and adds it to the offers array,
+	 * and to the host created offers list.
+	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param totalPrice Price of the offer (without the deposit).
 	 * @param startDate Starting date of the offer.
 	 * @param endDate Ending date of the offer.
 	 * @param house House in which the guest will stay if he buys the offer.
 	 * @param host User that created the offer
+	 * 
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double totalPrice, LocalDate startDate, LocalDate endDate, House house, RegisteredUser host) {
@@ -241,10 +299,11 @@ public class Application implements Serializable {
 			return false;
 		}
 		for(Offer o : offers) {
-			if(o instanceof HolidayOffer && o.getHouse() == house) {
+			if(o instanceof HolidayOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
+		
 		HolidayOffer o;
 		try {
 			o = new HolidayOffer(deposit, startDate, host, house, endDate, totalPrice);
@@ -252,36 +311,95 @@ public class Application implements Serializable {
 			System.out.println(e);
 			return false;
 		}
+		
+		if(offers.contains(o)) {
+			return false;
+		}
+		
 		offers.add(o);
-		return true;
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
 	}
 	
 	/**
-	 * Method that adds a new living offer to the offers array.
+	 * Method that creates a new living offer with the default number of months,
+	 * and adds it to the offers array and to the host created offers list.
+	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
 	 * @param startDate Starting day of the offer.
 	 * @param house House in which the guest will stay if he buys the offer.
 	 * @param host User that created the offer.
+	 * 
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host) {
 		if(house == null || host == null || startDate == null) {
 			return false;
 		}
+		
 		for(Offer o : offers) {
-			if(o instanceof LivingOffer && o.getHouse() == house) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
 		LivingOffer o = new LivingOffer(deposit, startDate, host, house, pricePerMonth);
+		
+		if(offers.contains(o)) {
+			return false;
+		}
+		
 		offers.add(o);
-		return true;
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
+	}
+	
+	/**
+	 * Method that creates a new living offer with a number of months, and adds it to the offers 
+	 * array and to the host created offers list.
+	 * 
+	 * @param deposit Deposit of the offer.
+	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
+	 * @param startDate Starting day of the offer.
+	 * @param house House in which the guest will stay if he buys the offer.
+	 * @param host User that created the offer.
+	 * @param nMonths number of months the offer has. 
+	 * 
+	 * @return boolean indicating if the offer was successfully added or not.
+	 */
+	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host, int nMonths) {
+		if(house == null || host == null || startDate == null) {
+			return false;
+		}
+		if(nMonths <= 0) {
+			return false;
+		}
+		
+		for(Offer o : offers) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
+				return false;
+			}
+		}
+		
+		LivingOffer o;
+		/*As we have checked that nMonths > 0 before, it is not going to happen.*/
+		try {
+			o = new LivingOffer(deposit, startDate, host, house, pricePerMonth, nMonths);
+		} catch (DateRangeException e) {
+			return false;
+		}
+		
+		if(offers.contains(o)) {
+			return false;
+		}
+		offers.add(o);
+		
+		return host.addOffer(o, RegisteredUser.CREATED_OFFER);
 	}
 	
 	/**
 	 * Method that selects from all the offers the one with the given ZIP code.
+	 * 
 	 * @param zip ZIP code of the requested offers.
+	 * 
 	 * @return List of the offers with the given ZIP code.
 	 */
 	public List<Offer> searchByZIP(String zip){
@@ -298,8 +416,10 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects all the offers that start between 2 given dates.
+	 * 
 	 * @param startDate Date in which the given date range starts. 
 	 * @param endDate Date in which the given date range ends.
+	 * 
 	 * @return List of the offers between the 2 given dates.
 	 */
 	public List<Offer> searchByDate(LocalDate startDate, LocalDate endDate){
@@ -320,7 +440,9 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects all the offers with the given type (living or holiday).
-	 * @param offerType Int that indicates the type of offer.
+	 * 
+	 * @param offerType int that indicates the type of offer.
+	 * 
 	 * @return List of the offers of the given type.
 	 */
 	public List<Offer> searchByType(int offerType){
@@ -344,7 +466,9 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects the offers which have a rating equal or superior to the one given.
+	 * 
 	 * @param rating Minimum rating the offer has to have in order to be selected.
+	 * 
 	 * @return List of offers with an equal or superior rating than the one provided.
 	 */
 	public List<Offer> searchByRating(double rating){
@@ -359,6 +483,7 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects all the offers that are reserved.
+	 * 
 	 * @return List of the offers that are reserved.
 	 */
 	public List<Offer> searchReservedOffers(){
@@ -373,6 +498,7 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that selects all the offers that are bought.
+	 * 
 	 * @return List of the offers that are bought.
 	 */
 	public List<Offer> searchBoughtOffers(){
