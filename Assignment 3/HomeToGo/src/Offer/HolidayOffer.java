@@ -40,7 +40,6 @@ public class HolidayOffer extends Offer implements Serializable{
 		
 		this.endDate = endDate;
 		this.totalPrice = totalPrice;
-		/*TODO Anadir al array del usuario y del sistema  al crearlo, dentro de System*/
 	}
 	
 	/**
