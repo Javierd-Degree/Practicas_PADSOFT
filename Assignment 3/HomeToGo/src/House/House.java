@@ -102,7 +102,7 @@ public class House implements Serializable{
 		}
 		House h = (House) o;
 		
-		return  this.id.equals(h.id) && this.characteristics.equals(h.characteristics);
+		return  this.id.equals(h.id);
 	}
 	
 }

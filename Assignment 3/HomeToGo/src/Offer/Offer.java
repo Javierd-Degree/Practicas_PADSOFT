@@ -8,6 +8,7 @@ import User.RegisteredUser;
 import User.UserType;
 import Exceptions.*;
 import Comment.*;
+import Date.ModificableDate;
 import House.House;
 import Application.Application;
 import es.uam.eps.padsof.telecard.*;
@@ -69,7 +70,6 @@ public abstract class Offer implements Serializable{
 	 * @return
 	 */
 	public boolean isValid(LocalDate todayDate) {
-		System.out.print(todayDate.toString() +"\n"+ this.lastModifiedDate +"\n");
 		/*The host has not made the necessary changes*/
 		if(this.status == TO_CHANGE && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
 			/*The offer is denied and deleted if needed on Application*/
@@ -209,12 +209,14 @@ public abstract class Offer implements Serializable{
 	 * order to avoid a silly exception.
 	 * 
 	 * @throws NotAvailableOfferException if the offer can't be denied
-	 * because it is already approved/reserved/bought.
+	 * because it is already approved/reserved/bought, or if it is
+	 * a valid offer.
 	 */
 	public void denyOffer() throws NotAvailableOfferException {
 		if(this.status == DENIED) return;
 		
-		if(this.status != WAITING && this.status != TO_CHANGE) {
+		if(this.status != WAITING && this.status != TO_CHANGE
+				&& this.isValid(ModificableDate.getModifiableDate())) {
 			throw new NotAvailableOfferException();
 		}
 		this.status = DENIED;

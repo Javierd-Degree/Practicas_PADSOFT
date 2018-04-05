@@ -6,7 +6,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertEquals;
 
-import org.junit.After;
 import org.junit.Before;
 
 public class HouseTest{
@@ -15,11 +14,6 @@ public class HouseTest{
 	@Before
 	public void before() {
 		h = new House("H9FMHJ7");
-	}
-	
-	@After
-	public void after() {
-		System.out.print("Adios");
 	}
 	
 	@Test
@@ -48,17 +42,5 @@ public class HouseTest{
 		assertEquals(h.equals(h), true);
 		assertEquals(h.equals(new House("123")), false);
 		assertEquals(h.equals(new House("H9FMHJ7")), true);
-		
-		/*Test if the equals works with characteristics.*/
-		h.addCharacteristic("ZIP CODE", "28041");
-		House h2 = new House("H9FMHJ7");
-		assertEquals(h.equals(h2), false);
-		
-		h2.addCharacteristic("ZIP CODE", "28041");
-		assertEquals(h.equals(h2), true);
-		
-		h.addCharacteristic("Street", "Little avenue");
-		h2.addCharacteristic("Street", "Big avenue");
-		assertEquals(h.equals(h2), false);
 	}
 }

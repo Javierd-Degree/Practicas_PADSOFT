@@ -2,9 +2,12 @@ package JUnitTesting;
 
 import static org.junit.Assert.*;
 
+import java.time.LocalDate;
+
 import org.junit.Before;
 import org.junit.Test;
 
+import Application.Administrator;
 import Application.Application;
 import User.RegisteredUser;
 import User.UserType;
@@ -46,7 +49,23 @@ public class ApplicationTest {
 	
 	@Test
 	public void testLoginAdmin() {
+		/*Add a new administrator that is not included.*/
+		Administrator admin = new Administrator("001", "Pedro", "Fernandez", "pepe123");
+		assertEquals(app.addAdmin(admin), true);
+
+		/*Try to add an administrator that is already added.*/
+		assertEquals(app.addAdmin(admin), false);
 		
+		/*Log with the administrator.*/
+		assertEquals(app.login(admin.getId(), admin.getPassword()), Application.SUCCESS);
+		assertEquals(app.searchLoggedIn(), admin);
+		
+		/*Try to login with a different administrator/user*/
+		RegisteredUser user2 = app.getUsers().get(0);
+		assertEquals(app.login(user2.getId(), user2.getPassword()), Application.SOMEONE_LOGGED);
+		/*Try to get the logged user (user)*/
+		assertEquals(app.searchLoggedIn(), admin);
+		app.logout();
 	}
 	
 	@Test 
@@ -82,6 +101,12 @@ public class ApplicationTest {
 		assertEquals(app.getHouses().get(0).getCharacteristics().size(), 1);
 		assertEquals(app.getHouses().get(1).getCharacteristics().size(), 1);
 		assertEquals(user.getCreatedHouses().size(), 2);
-
+		app.logout();
+	}
+	
+	@Test 
+	public void testAddOffer() {
+		/*Try to add a house with some parameter null*/
+		assertEquals(app.addOffer(100, 400, LocalDate.of(2018, 7, 13), app.getHouses().get(0), null), false);
 	}
 }

@@ -1,6 +1,7 @@
 package Application;
 import java.util.List;
 
+import Date.ModificableDate;
 import Exceptions.DateRangeException;
 import Exceptions.NotAvailableOfferException;
 
@@ -94,9 +95,15 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that adds an administrator to the array of the system.
+	 * @param
+	 * @return
 	 */
-	public void addAdmin(Administrator admin) {
+	public boolean addAdmin(Administrator admin) {
+		if(this.admins.contains(admin)) {
+			return false;
+		}
 		this.admins.add(admin);
+		return true;
 	}
 	
 	/**
@@ -141,6 +148,7 @@ public class Application implements Serializable {
 		if(o != null) {
 			return SOMEONE_LOGGED;
 		}
+		
 		for(Administrator admin : admins) {
 			if(admin.getId() == id) {
 				if(admin.getPassword().equals(password)) {
@@ -207,7 +215,8 @@ public class Application implements Serializable {
 	}
 	
 	/**
-	 * Method that creates a new house and adds it to the application's list.
+	 * Method that creates a new house and adds it to the application's list, and
+	 * into the host's houses list, making sure that the user is not a guest.
 	 * 
 	 * @param id of the new house to add.
 	 * 
@@ -217,10 +226,13 @@ public class Application implements Serializable {
 		Object logged = this.searchLoggedIn();
 		if(id != null && logged instanceof RegisteredUser && (
 				((RegisteredUser) logged).getType() != UserType.GUEST)) {
+			
 			House h = new House(id);
-			if(!houses.contains(h)) {
-				houses.add(h);
+			if(houses.contains(h)) {
+				return false;
 			}
+			
+			houses.add(h);
 			return((RegisteredUser) logged).addHouse(h);
 		}
 		return false;	
@@ -236,8 +248,8 @@ public class Application implements Serializable {
 	public void cancelOffer(Offer o) throws NotAvailableOfferException {
 		Object logged = this.searchLoggedIn();
 		if(logged instanceof RegisteredUser &&
-				((RegisteredUser) logged) == o.getHost()) {
-			if(o.getStatus() == Offer.RESERVED || o.getStatus() == Offer.BOUGHT) {
+				o.getHost().equals(logged)) {
+			if(o.getStatus() != Offer.WAITING && o.getStatus() != Offer.TO_CHANGE) {
 				throw new NotAvailableOfferException();
 			}
 			if(offers.contains(o)==true) {
@@ -283,7 +295,7 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that creates a new holiday offer, and adds it to the offers array,
-	 * and to the host created offers list.
+	 * and to the host created offers list, making sure that the user is not a guest.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param totalPrice Price of the offer (without the deposit).
@@ -298,6 +310,11 @@ public class Application implements Serializable {
 		if(house == null || host == null || startDate == null || endDate == null) {
 			return false;
 		}
+		
+		if(host.getType() == UserType.GUEST || !host.equals(searchLoggedIn())) {
+			return false;
+		}
+		
 		for(Offer o : offers) {
 			if(o instanceof HolidayOffer && o.getHouse().equals(house)) {
 				return false;
@@ -322,7 +339,8 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that creates a new living offer with the default number of months,
-	 * and adds it to the offers array and to the host created offers list.
+	 * and adds it to the offers array and to the host created offers list,
+	 * making sure that the user is not a guest.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
@@ -334,6 +352,10 @@ public class Application implements Serializable {
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host) {
 		if(house == null || host == null || startDate == null) {
+			return false;
+		}
+		
+		if(host.getType() == UserType.GUEST || !host.equals(searchLoggedIn())) {
 			return false;
 		}
 		
@@ -354,7 +376,7 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that creates a new living offer with a number of months, and adds it to the offers 
-	 * array and to the host created offers list.
+	 * array and to the host created offers list, making sure that the user is not a guest.
 	 * 
 	 * @param deposit Deposit of the offer.
 	 * @param pricePerMonth Price to be paid per month to the host in order to buy the offer.
@@ -366,10 +388,11 @@ public class Application implements Serializable {
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host, int nMonths) {
-		if(house == null || host == null || startDate == null) {
+		if(house == null || host == null || startDate == null || nMonths <= 0) {
 			return false;
 		}
-		if(nMonths <= 0) {
+		
+		if(host.getType() == UserType.GUEST || !host.equals(searchLoggedIn())) {
 			return false;
 		}
 		
@@ -514,16 +537,40 @@ public class Application implements Serializable {
 	/**
 	 * Method that loads all the system from a backup file, if the file does not exist yet 
 	 * it loads the first users from the file initial_data.txt.
+	 * Once the file is restored, we remove the not valid offers or update them.
+	 * For example if the guest reserved the offer but after five days he has not paid it,
+	 * the offer is marked as available and removed from the user's reserved/bought offers.
+	 * If the offer is not valid and it is a holiday offer, it is removed from the system, 
+	 * otherwise, it is marked as denied and stored. 
+	 * 
 	 * @param file String with the name of the backup file.
+	 * 
 	 * @return The loaded application
 	 */
 	public static Application loadFromFile(String file) {
 		Application sys = null;
 		try { 
-			//TODO Quitar ofertas ya eliminadas, que no han pagado, etc.
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
 			sys = (Application) ois.readObject();
 			ois.close();
+			
+			for(Offer o: sys.offers) {
+				if(!o.isValid(ModificableDate.getModifiableDate())) {
+					try {
+						o.denyOffer();
+					} catch (NotAvailableOfferException e) {
+						/* As the offer is not valid, this will never
+						 * be reached*/
+						e.printStackTrace();
+					}
+					if(o instanceof HolidayOffer) {
+						//TODO Remove from system etc.
+						o.getHost().removeOffer(o, RegisteredUser.CREATED_OFFER);
+						sys.offers.remove(o);
+					}
+				}
+			}
+			
 			return sys;
 
 		} catch (FileNotFoundException e) {
