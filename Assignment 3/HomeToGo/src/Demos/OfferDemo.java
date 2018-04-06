@@ -297,7 +297,6 @@ public class OfferDemo {
 		
 		/* Try to buy the offer with an invalid credit card
 		* The offer should remain available, and the user should be banned.*/
-		/*TODO, deberiamos llamar a system.unlog, asi que a lo mejor no hay que banearlo aqui.*/
 		System.out.println("We reset again the offer and try to buy it with an invalid credit card.");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);

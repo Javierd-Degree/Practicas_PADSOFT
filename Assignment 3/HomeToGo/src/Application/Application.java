@@ -257,6 +257,7 @@ public class Application implements Serializable {
 			}
 			RegisteredUser host = o.getHost();
 			host.removeOffer(o, RegisteredUser.CREATED_OFFER);
+			o.denyOffer();
 		}else {
 			throw new NotAvailableOfferException();
 		}
@@ -272,7 +273,7 @@ public class Application implements Serializable {
 		if(ob instanceof Administrator) {
 			List<Offer> offs = new ArrayList<>();
 			for(Offer o : offers) {
-				if(o.getStatus() == Offer.WAITING) {
+				if(o.getStatus() == Offer.WAITING || o.getStatus() == Offer.TO_CHANGE) {
 					offs.add(o);
 				}
 			}
@@ -448,7 +449,7 @@ public class Application implements Serializable {
 		for(Offer o : offers) {
 			House h = o.getHouse();
 			String s = h.getCharacteristics().get("ZIP_CODE");
-			if(s.equals(zip)) {
+			if(s != null && s.equals(zip)) {
 				offs.add(o);
 			}				
 		}
@@ -587,6 +588,7 @@ public class Application implements Serializable {
 			sys = (Application) ois.readObject();
 			ois.close();
 			
+			List<Offer> toRemoveOffers = new ArrayList<>();
 			for(Offer o: sys.offers) {
 				if(!o.isValid(ModificableDate.getModifiableDate())) {
 					try {
@@ -597,13 +599,13 @@ public class Application implements Serializable {
 						e.printStackTrace();
 					}
 					if(o instanceof HolidayOffer) {
-						//TODO Remove from system etc.
+						toRemoveOffers.add(o);
 						o.getHost().removeOffer(o, RegisteredUser.CREATED_OFFER);
-						sys.offers.remove(o);
 					}
 				}
 			}
 			
+			sys.offers.removeAll(toRemoveOffers);
 			return sys;
 
 		} catch (FileNotFoundException e) {
@@ -629,17 +631,13 @@ public class Application implements Serializable {
 				b.close();
 				return sys;
 			} catch (FileNotFoundException ex) {
-				// TODO Auto-generated catch block
 				ex.printStackTrace();
 			} catch (IOException ex) {
-				// TODO Auto-generated catch block
 				ex.printStackTrace();
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 

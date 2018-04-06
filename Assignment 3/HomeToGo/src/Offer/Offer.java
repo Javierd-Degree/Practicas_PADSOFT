@@ -73,12 +73,10 @@ public abstract class Offer implements Serializable{
 		/*The host has not made the necessary changes*/
 		if(this.status == TO_CHANGE && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
 			/*The offer is denied and deleted if needed on Application*/
-			System.out.print("1");
 			return false;
 		}
 		/*The guest has not paid*/
 		if(this.status == RESERVED && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
-			System.out.print("2");
 			this.status = AVAILABLE;
 			this.lastModifiedDate = LocalDate.now();
 			this.guest.removeOffer(this, RegisteredUser.HIST_OFFER);
@@ -251,9 +249,6 @@ public abstract class Offer implements Serializable{
 	 * Reserve an offer so that it is marked as RESERVED, its Guest
 	 * is set to guest, and the offer is added to the guest's
 	 * bought/reserved offers list.
-	 * TODO We do not make sure if the user is a host or a guest, as
-	 * this restriction will be implemented using the graphical
-	 * user interface.
 	 * 
 	 * @param guest The RegisteredUser who wants to reserve the offer.
 	 * @throws NotAvailableOfferException in case the offer is not available.
@@ -280,7 +275,7 @@ public abstract class Offer implements Serializable{
 	 * If the guest credit card is not valid, he is banned, the offer is
 	 * marked as available, and he is logged out.
 	 * 
-	 * If the host credit card s not valid, he is banned and the money is
+	 * If the host credit card is not valid, he is banned and the money is
 	 * added to his debt money.
 	 * 
 	 * @param guest The RegisteredUser who wants to buy the offer.
@@ -308,7 +303,6 @@ public abstract class Offer implements Serializable{
 		try {
 			TeleChargeAndPaySystem.charge(guest.getCreditCard(), subject, -this.getPrice());
 			TeleChargeAndPaySystem.charge(host.getCreditCard(), subject, this.getPrice()*(1 - this.commissions()));
-			/*TODO Pagar al administrador.*/
 		} catch (InvalidCardNumberException e) {
 			if(!TeleChargeAndPaySystem.isValidCardNumber(guest.getCreditCard())) {
 				/*If the guest credit card is not valid,*/
@@ -318,6 +312,7 @@ public abstract class Offer implements Serializable{
 				this.status = AVAILABLE;
 				Application.getInstance().logout();
 			}else {
+				/*If the host credit card is not valid*/
 				host.sumDebtMoney(this.getPrice()*(1 - this.commissions()));
 				host.changeStatus(RegisteredUser.BANNED);
 				this.status = BOUGHT;
@@ -354,7 +349,7 @@ public abstract class Offer implements Serializable{
 				num++;
 			}
 		}
-		return sum/num;
+		return (num == 0) ? 0 : (sum/num);
 	}
 	
 	/**

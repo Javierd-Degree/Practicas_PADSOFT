@@ -198,8 +198,6 @@ public class RegisteredUser implements Serializable{
 				return false;
 			}
 			this.boughtOffers.add(o);
-			
-			/*TODO quitar la oferta del array si deja de estar reservada*/
 		}	
 		return true;
 	}

@@ -6,3 +6,4 @@ OD;X1130055;Lopez, Mary ;secreta;111133337777222
 D;Z2376543;Ramirez, Pepito;hello world;1234567890123456
 O;G3560856;Barbudo, Javi;1234;TarjetaMALA
 D;F5364097;Sparrow, Jack;contrasena;0987654321123456
+D;F534AM97;Jimenez, Pepito;passena;NOVALE
