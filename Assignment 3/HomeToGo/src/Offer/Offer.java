@@ -259,7 +259,6 @@ public abstract class Offer implements Serializable{
 	 * @throws NotAvailableOfferException in case the offer is not available.
 	 */
 	public void reserveOffer(RegisteredUser guest) throws NotAvailableOfferException{
-		/**TODO make sure the user id a guest?*/
 		if(this.status != AVAILABLE) {
 			throw new NotAvailableOfferException();
 		}else if(guest.getType() == UserType.HOST) {
