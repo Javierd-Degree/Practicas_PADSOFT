@@ -305,7 +305,8 @@ public class ApplicationTest {
 		assertEquals(app.seeBannedUsers().size(), 0);
 		/*Let's buy an offer having an invalid credit card 
 		 * (The last user has an invalid credit card)
-		 * The host has also an invalid credit card, so both should be banned. */
+		 * The host has also an invalid credit card, but as the user couldn't pay,
+		 * it is not banned. */
 		app.logout();
 		before();
 		RegisteredUser user = app.getUsers().get(app.getUsers().size() - 1);
@@ -317,14 +318,14 @@ public class ApplicationTest {
 		}
 		
 		assertEquals(user.getStatus(), RegisteredUser.BANNED);
-		assertEquals(app.getOffers().get(1).getHost().getStatus(), RegisteredUser.BANNED);
+		assertEquals(app.getOffers().get(1).getHost().getStatus(), RegisteredUser.UNLOGGED);
 		/*As the logged user is banned, he is logged out, and now we need to log in as an admin*/
 		app.logout();
 		before();
 		assertEquals(app.login(app.getAdmins().get(0).getId(), app.getAdmins().get(0).getPassword()), Application.SUCCESS);
 		assertEquals(app.searchLoggedIn(), app.getAdmins().get(0));
 		System.out.println(app.seeBannedUsers());
-		assertEquals(app.seeBannedUsers().size(), 2);
+		assertEquals(app.seeBannedUsers().size(), 1);
 		app.logout();
 	}
 	

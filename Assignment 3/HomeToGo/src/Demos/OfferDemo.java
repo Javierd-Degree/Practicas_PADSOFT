@@ -3,6 +3,7 @@ package Demos;
 import java.time.LocalDate;
 
 import Comment.TextComment;
+import Date.ModificableDate;
 import Exceptions.DateRangeException;
 import Exceptions.NotAvailableOfferException;
 import House.House;
@@ -117,6 +118,41 @@ public class OfferDemo {
 			System.out.println("The price was correctly calculated and is: " + lOffer.getPrice() +".");
 		}else {
 			System.out.println("Error in getPrice() of LivingOffer.");
+		}
+		
+		System.out.println("\n We check the functionality of the DateRangeException.\n");
+		System.out.println("We try to create a holiday offer with an end date before the start date.\n");
+		/*The start date cannot be after the end date*/
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018, 5, 17), 799.12);
+			System.out.println("The offer was sucessfully created, error.");
+		} catch (DateRangeException e) {
+			System.out.println("The offer could not be created as the end date is before the start date.");
+		}
+		
+		System.out.println("\nWe create a holiday offer with the same end date and start date (is allowed).\n");
+		/*The offer can end and start the same day*/
+		try {
+			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018, 5, 17), 799.12);
+			System.out.println("The offer was sucessfully created.");
+		} catch (DateRangeException e) {
+			System.out.println("The offer was not created, error.");
+		}
+		
+		System.out.println("\nWe try to create a living offer with a negative number of months.\n");
+		/*A living offer cannot have a negative or zero number of months*/
+		try {
+			new LivingOffer(90, LocalDate.of(2018, 9, 11), host, house, 442.7, -1);
+			System.out.println("The offer was sucessfully created, error.");
+		} catch (DateRangeException e) {
+			System.out.println("The offer could not be created as it cannot have a negative number of months.");
+		}
+		System.out.println("\nWe try to create a living offer with 0 months.\n");
+		try {
+			new LivingOffer(90, LocalDate.of(2018, 9, 11), host, house, 442.7, 0);
+			System.out.println("The offer was sucessfully created, error.");
+		} catch (DateRangeException e) {
+			System.out.println("The offer could not be created as it cannot have 0 months.");
 		}
 
 		/*From here, the methods are inherited from Offer, so they 
@@ -417,8 +453,80 @@ public class OfferDemo {
 		}else {
 			System.out.println("Error in postComment.");
 		}
-		System.out.println("\nLastly we calculate the rating of the offer, wich sould be 3.\n");
-		System.out.println("Thhe rating of the offer is: " + offer.calculateRating());
+		System.out.println("\nNow we calculate the rating of the offer, wich sould be 3.\n");
+		System.out.println("The rating of the offer is: " + offer.calculateRating());
+		
+		System.out.println("\nLastly we check the functionality of the isValid method.\n");
+		
+		System.out.println("We create a new offer and we ask for changes so that it is in to change status.\n");
+		Offer offer = new LivingOffer(100, LocalDate.now().plusDays(50), host, house, 442.7);
+		try {
+			offer.askForChanges("Change something");
+		} catch (NotAvailableOfferException e) {
+			e.printStackTrace();
+		}
+		
+		/*The host have not made changes but he has time.*/
+		ModificableDate.setToday();
+		ModificableDate.plusDays(4);
+		System.out.println("\nAfter 4 days the offer should still be To change.\n");
+		if(offer.isValid(ModificableDate.getModifiableDate()) == true){
+			System.out.println("The offer is still valid.");
+		}else {
+			System.out.println("Error.");
+		}
+		if(offer.getStatus() == Offer.TO_CHANGE) {
+			System.out.println("The offer is still To Change.");
+		}else {
+			System.out.println("The offer is not To Change, error.");
+		}
+
+		/*The host have not made changes and he has not more time.*/
+		System.out.println("\nAfter 6 days the offer should not be valid.\n");
+		ModificableDate.plusDays(2);
+		if(offer.isValid(ModificableDate.getModifiableDate()) == false) {
+			System.out.println("The offer is not valid.");
+		}else {
+			System.out.println("The offer is valid, error.");
+		}
+			
+		/*The user has reserved the offer and he has not paid, but he has time.*/
+		System.out.println("\nNow we approve and make a user reserve the offer so that its status is reserved.\n");
+		try {
+			offer.approveOffer();
+			offer.reserveOffer(guest);
+		} catch (NotAvailableOfferException e4) {
+			System.out.println("Error while trying to reserve the offer");
+		}
+		System.out.println("\nAfter 4 days the offer should still be reserved and valid\n.");
+		ModificableDate.setToday();
+		ModificableDate.plusDays(4);
+		if(offer.getStatus() == Offer.RESERVED) {
+			System.out.println("The offer is still reserved.");
+		}else {
+			System.out.println("The offer is not reserved, error.");
+		}
+		if(offer.isValid(ModificableDate.getModifiableDate()) == true) {
+			System.out.println("The offer is valid.");
+		}else {
+			System.out.println("The offer is not valid, error.");
+		}
+			
+		/*More than five days have passes and the user has not paid, so
+		 * the offer should be marked as available.*/
+		System.out.println("\nAfter 6 days the offer should be available and valid\n.");
+		ModificableDate.plusDays(2);
+		if(offer.isValid(ModificableDate.getModifiableDate()) == true) {
+			System.out.println("The offer is valid.");
+		}else {
+			System.out.println("The offer is not valid, error.");
+		}
+		if(offer.getStatus() == Offer.AVAILABLE && offer.getGuest() == null) {
+			System.out.println("The offer is available.");
+		}else {
+			System.out.println("The offer is not available, error.");
+		}
+
 		
 		System.out.println("\n\nEnd of the demo.\n");
 	}
