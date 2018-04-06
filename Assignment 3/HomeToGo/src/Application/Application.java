@@ -203,8 +203,10 @@ public class Application implements Serializable {
 		}else {
 			((RegisteredUser) logged).changeStatus(RegisteredUser.UNLOGGED);
 		}
-		INSTANCE.saveToFile(BACKUP_FILE);
-		INSTANCE = null;
+		if(INSTANCE != null) {
+			INSTANCE.saveToFile(BACKUP_FILE);
+			INSTANCE = null;
+		}
 	}
 	
 	/**
