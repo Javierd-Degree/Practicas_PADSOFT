@@ -67,7 +67,9 @@ public abstract class Offer implements Serializable{
 	 * An offer is not valid just when more than five days have passes
 	 * since the administrator asked for changes.
 	 * 
-	 * @return
+	 * @param todayDate current date to check if the offer is valid.
+	 * 
+	 * @return true if it's valid, false otherwise.
 	 */
 	public boolean isValid(LocalDate todayDate) {
 		/*The host has not made the necessary changes*/
@@ -161,8 +163,6 @@ public abstract class Offer implements Serializable{
 	/**
 	 * Protected function used by LivingOffer and HolidayOffer
 	 * to notify they have made changes on the offer.
-	 * 
-	 * @param date LocalDate when the last modification was made.
 	 */
 	protected void setWaiting() {
 		this.status = WAITING;
@@ -284,7 +284,7 @@ public abstract class Offer implements Serializable{
 	 * or if the offer is reserved by a different user than the one who wants
 	 * to buy it.
 	 * @throws FailedInternetConnectionException if the subject starts with W or w.
-	 * @throws OrderRejectedException
+	 * @throws OrderRejectedException if the order was rejected by the payment system.
 	 */
 	public void buyOffer(RegisteredUser guest, String subject) throws NotAvailableOfferException,
 			FailedInternetConnectionException,
@@ -467,7 +467,7 @@ public abstract class Offer implements Serializable{
 	/**
 	 * Compare two Offer to know if they are the same one.
 	 * 
-	 * @param o Object we want to compare, must be an Offer.
+	 * @param ob Object we want to compare, must be an Offer.
 	 * @return boolean true if they are the same, false otherwise.
 	 */
 	@Override

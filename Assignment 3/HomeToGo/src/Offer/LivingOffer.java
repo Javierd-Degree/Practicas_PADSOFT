@@ -46,6 +46,8 @@ public class LivingOffer extends Offer implements Serializable{
 	 * @param house House in which the offer takes place.
 	 * @param pricePerMonth double with the monthly price the offer costs.
 	 * @param nMonths number of months the living offer is going to be availabe.
+	 * 
+	 * @throws DateRangeException if the number of months is 0 or less.
 	 */
 	public LivingOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, double pricePerMonth, int nMonths) throws DateRangeException{
 		super(deposit, startDate, host, house);
@@ -92,7 +94,7 @@ public class LivingOffer extends Offer implements Serializable{
 	/**
 	 * Compare two LivingOffer to know if they are the same one.
 	 * 
-	 * @param o Object we want to compare, must be a LivingOffer.
+	 * @param ob Object we want to compare, must be a LivingOffer.
 	 * @return boolean true if they are the same, false otherwise.
 	 */
 	@Override

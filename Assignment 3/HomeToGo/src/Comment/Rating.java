@@ -21,8 +21,8 @@ public class Rating extends Comment implements Serializable{
 	 * -2 147 483 648 to +2 147 483 647. The limits are
 	 * imposed on Offer.
 	 * 
-	 * @param rating
-	 * @param user
+	 * @param rating Rating the user wants to post
+	 * @param user RegisteredUser who posts the rating.
 	 */
 	public Rating(int rating, RegisteredUser user) {
 		this.rating = rating;

@@ -88,8 +88,8 @@ public class Application implements Serializable {
 	
 	/**
 	 * Method that adds an administrator to the array of the system.
-	 * @param
-	 * @return
+	 * @param admin Administrator to be added.
+	 * @return boolean true if it was added successfully, false otherwise.
 	 */
 	public boolean addAdmin(Administrator admin) {
 		if(this.admins.contains(admin)) {

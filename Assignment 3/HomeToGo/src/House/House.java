@@ -37,7 +37,7 @@ public class House implements Serializable{
 	 * Used to display all those characteristics on the
 	 * graphical user interface.
 	 * 
-	 * @return a Map<String, String> with the name and value 
+	 * @return a Map with the name and value 
 	 * of the house's characteristics.
 	 */
 	public Map<String, String> getCharacteristics() {

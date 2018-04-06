@@ -49,6 +49,7 @@ public class RegisteredUser implements Serializable{
 	 * @param creditCard String with the user's credit card.
 	 * It should have 16 digits to be well-formed and avoid exceptions.
 	 * @param password String with the user's password.
+	 * @param type UserType that determines if it is a host, guest or both.
 	 */
 	public RegisteredUser(String id, String name, String surname, String creditCard, String password, UserType type) {
 		this.id = id;

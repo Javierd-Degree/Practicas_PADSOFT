@@ -27,8 +27,10 @@ public class HolidayOffer extends Offer implements Serializable{
 	 * @param startDate LocalDate which indicates when the offer starts.
 	 * @param host RegisteredUser who creates the offer.
 	 * @param house House in which the offer takes place.
-	 * @param enDate LocalDate which indicates when the offer ends.
+	 * @param endDate LocalDate which indicates when the offer ends.
 	 * @param totalPrice double with the total price the offer costs.
+	 * 
+	 * @throws DateRangeException if the start date is after the end date.
 	 */
 	public HolidayOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, LocalDate endDate, double totalPrice) 
 		throws DateRangeException{
@@ -76,7 +78,7 @@ public class HolidayOffer extends Offer implements Serializable{
 	
 	/**
 	 * Getter of the end date of the HolidayOffer.
-	 * @return
+	 * @return offer's ending date.
 	 */
 	public LocalDate getEndDate() {
 		return this.endDate;
@@ -85,7 +87,7 @@ public class HolidayOffer extends Offer implements Serializable{
 	/**
 	 * Compare two HolidayOffer to know if they are the same one.
 	 * 
-	 * @param o Object we want to compare, must be a HolidayOffer.
+	 * @param ob Object we want to compare, must be a HolidayOffer.
 	 * @return boolean true if they are the same, false otherwise.
 	 */
 	@Override
