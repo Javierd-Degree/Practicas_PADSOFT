@@ -293,16 +293,36 @@ public class ApplicationDemo {
 		
 		
 		List<Offer> zips = app.searchByZIP("E322");
+		if(zips == null) {
+			return;
+		}
 		System.out.println("The offers with this ZIP code are: " + zips + ".");
 		
 		List<Offer> dates = app.searchByDate(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 12, 31));
+		if(dates == null) {
+			return;
+		}
 		System.out.println("The offers in this dates are: " + dates + ".");
 		
 		List<Offer> types = app.searchByType(0);
+		if(types == null) {
+			return;
+		}
 		System.out.println("The holiday offers are: " + types + ".");
 		
 		List<Offer> types2 = app.searchByType(1);
+		if(types2 == null) {
+			return;
+		}
 		System.out.println("The living offers are: " + types2 + ".");
+		
+		zips.get(0).postComment(user2, 5);
+		
+		List<Offer> ratings = app.searchByRating(2);
+		if(ratings == null) {
+			return;
+		}
+		System.out.println("The offers with a rating higher than 2 are: " + ratings + ".");
 		
 		try {
 			dates.get(1).reserveOffer(user2);
@@ -401,6 +421,29 @@ public class ApplicationDemo {
 		}catch(NotAvailableOfferException e) {
 			System.out.println("Some offers were not in the status TO_CHANGE");
 		}
+		
+		List<Offer> reservedOffers = app.searchReservedOffers();
+		if(reservedOffers == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+		
+
+		List<Offer> boughtOffers = app.searchBoughtOffers();
+		if(boughtOffers == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+
+		ratings = app.searchByRating(2);
+		if(ratings == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+		
 		app.logout();
 		
 		
@@ -430,8 +473,35 @@ public class ApplicationDemo {
 			return;
 		}
 		
+		reservedOffers = app.searchReservedOffers();
+		if(reservedOffers == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+		
+
+		boughtOffers = app.searchBoughtOffers();
+		if(boughtOffers == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+		
+
+		ratings = app.searchByRating(2);
+		if(ratings == null) {
+			System.out.println("The current user is not a guest.");
+		}else {
+			System.out.println("Error");
+		}
+		
+		
 
 		notApproved = app.seeNonApprovedOffer();
+		if(notApproved == null) {
+			return;
+		}
 		
 		try {
 			for(Offer off: notApproved) {
@@ -591,34 +661,6 @@ public class ApplicationDemo {
 		
 		app.logout();
 		
-		
-		app = Application.getInstance();
-		
-		users = app.getUsers();
-		
-		result = app.login(users.get(0).getId(), users.get(0).getPassword());
-		if(result == Application.SUCCESS) {
-			System.out.println("Login sucessful.");
-		}else if(result == Application.NO_MATCHED) {
-			System.out.println("The password does not match the id, error.");
-		}else if(result == Application.NOT_FOUND_ID) {
-			System.out.println("The id could not be found, error.");
-		}
-		o = app.searchLoggedIn();
-		if(o == null) {
-			System.out.println("There is noone logged in, error");
-		}else if(o instanceof Administrator) {
-			System.out.println("There is an administrator logged in, error.");
-		}else {
-			System.out.println("There user: " + ((RegisteredUser)o) + " is logged in.");
-		}
-		
-		System.out.println("The already reserved offers are: " + app.searchReservedOffers() + ".");
-		System.out.println("The already bought offers are: " + app.searchBoughtOffers() + ".");	
-		
-		app.logout();	
-		
-		
 		app = Application.getInstance();
 		
 		users = app.getUsers();
@@ -733,5 +775,117 @@ public class ApplicationDemo {
 		}
 		
 		app.logout();	
+		
+		app = Application.getInstance();
+		
+		users = app.getUsers();
+		
+		result = app.login(users.get(4).getId(), users.get(4).getPassword());
+		
+		if(result == Application.SUCCESS) {
+			System.out.println("Login sucessful.");
+		}else if(result == Application.NO_MATCHED) {
+			System.out.println("The password does not match the id, error.");
+		}else if(result == Application.NOT_FOUND_ID) {
+			System.out.println("The id could not be found, error.");
+		}
+		o = app.searchLoggedIn();
+		if(o == null) {
+			System.out.println("There is noone logged in, error");
+		}else if(o instanceof Administrator) {
+			System.out.println("There is an administrator logged in, error");
+		}else {
+			System.out.println("The user: " + ((RegisteredUser)o) + " is logged in.");
+		}
+		
+		
+		res = app.addHouse("SDFG");
+		if(res == true){
+			System.out.println("The house was sucessfully added, error.");
+		}else {
+			System.out.println("The house could not be added as the logged user is not a host.");
+		}
+		
+		res = app.addOffer(90, 100, LocalDate.of(2018, 2, 27), app.getHouses().get(1), ((RegisteredUser)app.searchLoggedIn()));
+		if(res == true){
+			System.out.println("The offer was sucessfully added, error.");
+		}else {
+			System.out.println("The offer could not be added as the logged user is not a host.");
+		}
+		
+		notApproved = app.seeNonApprovedOffer();
+		if(notApproved == null) {
+			System.out.println("There is a user logged in, not an admin.");
+		}else {
+			System.out.println("Error");
+		}
+		
+		System.out.println("The already reserved offers are: " + app.searchReservedOffers() + ".");
+		System.out.println("The already bought offers are: " + app.searchBoughtOffers() + ".");	
+		
+		app.logout();
+		
+		app = Application.getInstance();
+		
+		if(app.searchLoggedIn() == null) {
+			System.out.println("There is noone logged in");
+		}else {
+			System.out.println("Error.");
+		}
+		
+		reservedOffers = app.searchReservedOffers();
+		if(reservedOffers == null) {
+			System.out.println("The current user is not a RegisteredUser.");
+		}else {
+			System.out.println("Error");
+		}
+		
+
+		boughtOffers = app.searchBoughtOffers();
+		if(boughtOffers == null) {
+			System.out.println("The current user is not a RegisteredUser.");
+		}else {
+			System.out.println("Error");
+		}
+
+		ratings = app.searchByRating(2);
+		if(ratings == null) {
+			System.out.println("The current user is not a registeredUser.");
+		}else {
+			System.out.println("Error");
+		}
+		
+		notApproved = app.seeNonApprovedOffer();
+		if(ratings == null) {
+			System.out.println("The current user is not an administrator.");
+		}else {
+			System.out.println("Error");
+		}
+		
+		types = app.searchByType(Application.HOLIDAY_OFFER);
+		System.out.println("The holiday offers are: " + types +".");
+		
+		dates = app.searchByDate(LocalDate.of(2018, 1, 1), LocalDate.of(2018, 12, 31));
+		System.out.println("The offers  between these dates are: " + dates +".");
+		
+		/*zips = app.searchByZIP("E333");
+		if(zips == null) {
+			return;
+		}
+		System.out.println("The offers with this ZIP code are: " + zips +".");*/
+		
+		res = app.addHouse("ADHG");
+		if(res == true) {
+			System.out.println("Error");
+		}else {
+			System.out.println("There is no RegisteredUser logged in");
+		}
+		
+		res = app.addOffer(90, 100, LocalDate.of(2018, 5, 5), app.getHouses().get(0), app.getUsers().get(5));
+		if(res == true) {
+			System.out.println("Error");
+		}else {
+			System.out.println("There is no RegisteredUser logged in");
+		}
 	}
 }
