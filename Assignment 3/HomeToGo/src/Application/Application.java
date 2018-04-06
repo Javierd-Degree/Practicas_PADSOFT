@@ -268,13 +268,18 @@ public class Application implements Serializable {
 	 * @return List with the offer that are waiting to be approved.
 	 */
 	public List<Offer> seeNonApprovedOffer(){
-		List<Offer> offs = new ArrayList<>();
-		for(Offer o : offers) {
-			if(o.getStatus() == Offer.WAITING) {
-				offs.add(o);
+		Object ob = searchLoggedIn();
+		if(ob instanceof Administrator) {
+			List<Offer> offs = new ArrayList<>();
+			for(Offer o : offers) {
+				if(o.getStatus() == Offer.WAITING) {
+					offs.add(o);
+				}
 			}
+			return offs;
+		}else {
+			return null;
 		}
-		return offs;
 	}
 	
 	
@@ -284,13 +289,18 @@ public class Application implements Serializable {
 	 * @return List of all the banned users.
 	 */
 	public List<RegisteredUser> seeBannedUsers(){
-		List<RegisteredUser> banned = new ArrayList<>();
-		for(RegisteredUser u : users) {
-			if(u.getStatus() == RegisteredUser.BANNED) {
-				banned.add(u);
+		Object ob = searchLoggedIn();
+		if(ob instanceof Administrator) {
+			List<RegisteredUser> banned = new ArrayList<>();
+			for(RegisteredUser u : users) {
+				if(u.getStatus() == RegisteredUser.BANNED) {
+					banned.add(u);
+				}
 			}
+			return banned;
+		}else {
+			return null;
 		}
-		return banned;
 	}
 	
 	/**
@@ -308,6 +318,10 @@ public class Application implements Serializable {
 	 */
 	public boolean addOffer(double deposit, double totalPrice, LocalDate startDate, LocalDate endDate, House house, RegisteredUser host) {
 		if(house == null || host == null || startDate == null || endDate == null) {
+			return false;
+		}
+		
+		if(!host.getCreatedHouses().contains(house)) {
 			return false;
 		}
 		
@@ -352,6 +366,10 @@ public class Application implements Serializable {
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host) {
 		if(house == null || host == null || startDate == null) {
+			return false;
+		}
+		
+		if(!host.getCreatedHouses().contains(house)) {
 			return false;
 		}
 		
@@ -495,13 +513,18 @@ public class Application implements Serializable {
 	 * @return List of offers with an equal or superior rating than the one provided.
 	 */
 	public List<Offer> searchByRating(double rating){
-		List<Offer> offs = new ArrayList<>();
-		for(Offer o : offers) {
-			if(o.calculateRating() >= rating) {
-				offs.add(o);
+		Object ob = searchLoggedIn();
+		if(ob instanceof RegisteredUser && ((RegisteredUser)ob).getType() != UserType.HOST) {
+			List<Offer> offs = new ArrayList<>();
+			for(Offer o : offers) {
+				if(o.calculateRating() >= rating) {
+					offs.add(o);
+				}
 			}
+			return offs;
+		}else {
+			return null;
 		}
-		return offs;
 	}
 	
 	/**
@@ -510,13 +533,18 @@ public class Application implements Serializable {
 	 * @return List of the offers that are reserved.
 	 */
 	public List<Offer> searchReservedOffers(){
-		List<Offer> offs = new ArrayList<>();
-		for(Offer o : offers) {
-			if(o.getStatus() == Offer.RESERVED) {
-				offs.add(o);
+		Object ob = searchLoggedIn();
+		if(ob instanceof RegisteredUser && ((RegisteredUser)ob).getType() != UserType.HOST) {
+			List<Offer> offs = new ArrayList<>();
+			for(Offer o : offers) {
+				if(o.getStatus() == Offer.RESERVED) {
+					offs.add(o);
+				}
 			}
+			return offs;
+		}else {
+			return null;
 		}
-		return offs;
 	}
 	
 	/**
@@ -525,13 +553,18 @@ public class Application implements Serializable {
 	 * @return List of the offers that are bought.
 	 */
 	public List<Offer> searchBoughtOffers(){
-		List<Offer> offs = new ArrayList<>();
-		for(Offer o : offers) {
-			if(o.getStatus() == Offer.BOUGHT) {
-				offs.add(o);
+		Object ob = searchLoggedIn();
+		if(ob instanceof RegisteredUser && ((RegisteredUser)ob).getType() != UserType.HOST) {
+			List<Offer> offs = new ArrayList<>();
+			for(Offer o : offers) {
+				if(o.getStatus() == Offer.BOUGHT) {
+					offs.add(o);
+				}
 			}
+			return offs;
+		}else {
+			return null;
 		}
-		return offs;
 	}
 	
 	/**
