@@ -78,13 +78,6 @@ public class Application implements Serializable {
 	}
 	
 	/**
-	 * Method that adds a user to the array of the system.
-	 */
-	public void addUser(RegisteredUser user) {
-		this.users.add(user);
-	}
-	
-	/**
 	 * Return the list of registered users on the application.
 	 * 
 	 * @return List of application's RegisteredUsers.
@@ -581,7 +574,7 @@ public class Application implements Serializable {
 	 * 
 	 * @return The loaded application
 	 */
-	public static Application loadFromFile(String file) {
+	private static Application loadFromFile(String file) {
 		Application sys = null;
 		try { 
 			ObjectInputStream ois = new ObjectInputStream(new FileInputStream(file));
@@ -648,7 +641,7 @@ public class Application implements Serializable {
 	 * Method that saves all the application's data into a backup file.
 	 * @param file String with the name of the backup file.
 	 */
-	public void saveToFile(String file) {
+	private void saveToFile(String file) {
 		ObjectOutputStream oos;
 		try {
 			oos = new ObjectOutputStream( new FileOutputStream(file));
