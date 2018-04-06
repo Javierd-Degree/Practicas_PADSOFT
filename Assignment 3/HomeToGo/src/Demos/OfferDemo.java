@@ -27,38 +27,38 @@ public class OfferDemo {
 	private static RegisteredUser guest;
 	
 	public static void main(String args[]) {
-		System.out.println("This demo checks the functionality of the class Offer");
-		System.out.println("First we create a house for the offer");
+		System.out.println("This demo checks the functionality of the class Offer\n");
+		System.out.println("\nFirst we create a house for the offer\n");
 		/*Create the house*/
 		house = new House("H9FMHJ7");
 		house.addCharacteristic("Street", "Little avenue");
 		System.out.println("The house created is: " + house + ".");
-		System.out.println("We create a host and a guest for the offers");
+		System.out.println("\nWe create a host and a guest for the offers\n");
 		/*Create the host*/
-		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.BOTH);
+		host = new RegisteredUser("112", "Pedro", "Lopez", "1234567890123456", "Hello world", UserType.HOST);
 		guest = new RegisteredUser("198", "Juan", "Ramirez", "9876543219876543", "Hello world", UserType.BOTH);
 		System.out.println("The host is: " + host + ".");
 		System.out.println("The guest is: " + guest + ".");
-		System.out.println("We try to create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12.");
+		System.out.println("\nWe try to create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  5,  12), 799.12);
 			System.out.println("The offer was created. Error in constructor.");
 		}catch(DateRangeException e) {
-			System.out.println("The end date is before the start date..");
+			System.out.println("The end date is before the start date.");
 		}
-		System.out.println("We create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12.");
+		System.out.println("\nWe create a HolidayOffer with data:  100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
 			System.out.println("Unwanted exception. Error in the constructor.");
 		}
 		System.out.println("The created HolidayOffer is: " + offer + ".");
-		System.out.println("We create a LivingOffer with data:  100, LocalDate.of(2018, 7, 11), host, house, 442.7.");
+		System.out.println("\nWe create a LivingOffer with data:  100, LocalDate.of(2018, 7, 11), host, house, 442.7.\n");
 		lOffer = new LivingOffer(100, LocalDate.of(2018, 7, 11), host, house, 442.7);
 		System.out.println("The created LivingOffer is: " + lOffer + ".");
 		
 		/*Test if the equals works correctly on HolidayOffer*/
-		System.out.println("Now we check the functionality of equals for HolidayOffer.");
+		System.out.println("\nNow we check the functionality of equals for HolidayOffer.\n");
 		if(offer.equals(offer)) {
 			System.out.println("The HolidayOffer is equal to itself.");
 		}else {
@@ -84,7 +84,7 @@ public class OfferDemo {
 		
 		
 		/*Test if the equals works correctly on LivingOffer*/
-		System.out.println("We do the same for the equals() of LivingOffer");
+		System.out.println("\nWe do the same for the equals() of LivingOffer.\n");
 		if(lOffer.equals(lOffer)) {
 			System.out.println("The LivingOffer is equal to itself.");
 		}else {
@@ -104,7 +104,7 @@ public class OfferDemo {
 		}
 	
 		/*Check if the get price function works on HolidayOffer*/
-		System.out.println("We check the functionality of getPrice() of HolidayOffer.");
+		System.out.println("\nWe check the functionality of getPrice() of HolidayOffer.\n");
 		if(offer.getPrice() == 100+799.12) {
 			System.out.println("The price was correctly calculated and is: " + offer.getPrice() +".");
 		}else {
@@ -112,7 +112,7 @@ public class OfferDemo {
 		}
 		
 		/*Check if the get price function works on LivingOffer*/
-		System.out.println("We do the same with LivingOffer.");
+		System.out.println("\nWe do the same with LivingOffer.\n");
 		if(lOffer.getPrice() == 100+442.7) {
 			System.out.println("The price was correctly calculated and is: " + lOffer.getPrice() +".");
 		}else {
@@ -121,11 +121,11 @@ public class OfferDemo {
 
 		/*From here, the methods are inherited from Offer, so they 
 		 * are the same from Holiday and Living Offers*/
-		System.out.println("From this poit the methods are the same for living and holiday offers so we just check them onec.");
+		System.out.println("\n\nFrom this point the methods are the same for living and holiday offers so we just check them once.\n");
 
 		/*Change the status of the offer to make sure it is working as it should*/
-		System.out.println("We check the functionality of the methods that chenge the offer's status.");
-		System.out.println("We check approveOffer().");
+		System.out.println("We check the functionality of the methods that chenge the offer's status.\n");
+		System.out.println("We check approveOffer().\n");
 		try {
 			offer.approveOffer();
 			if(offer.getStatus() == Offer.AVAILABLE) {
@@ -136,7 +136,7 @@ public class OfferDemo {
 		}catch(NotAvailableOfferException e) {
 			System.out.println("Unwanted exception in approveOffer.");
 		}
-		System.out.println("We check denyOffer().");
+		System.out.println("\nWe check denyOffer().\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
@@ -152,7 +152,7 @@ public class OfferDemo {
 		}catch(NotAvailableOfferException e) {
 			System.out.println("The offer is not in a status that can be denied.");
 		}
-		System.out.println("We check askForChanges() with data: Anade mmas caracteristicas.");
+		System.out.println("\nWe check askForChanges() with data: Anade mas caracteristicas.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
@@ -170,7 +170,7 @@ public class OfferDemo {
 		}
 		
 		/*The offer needs to be approved in order to reserve it.*/
-		System.out.println("We check reserveOffer() havong in mind that the offer must be available in order to reserve it.");
+		System.out.println("\nWe check reserveOffer() havong in mind that the offer must be available in order to reserve it.\n");
 		try {
 			offer.reserveOffer(guest);
 			if(offer.getStatus()== Offer.RESERVED) {
@@ -181,7 +181,7 @@ public class OfferDemo {
 		} catch (NotAvailableOfferException e1) {
 			System.out.println("The reservation could not be done because the offer is not available.");
 		}
-		System.out.println("We approve the offer and try again.");
+		System.out.println("\nWe approve the offer and try again.\n");
 		try {
 			offer.approveOffer();
 		}catch(NotAvailableOfferException e) {
@@ -198,7 +198,7 @@ public class OfferDemo {
 			System.out.println("Error while trying to reserve the offer.");
 			e1.printStackTrace();
 		}
-		System.out.println("We create a new guest that tries to reserve the already reerved offer");
+		System.out.println("\nWe create a new guest that tries to reserve the already reerved offer.\n");
 		RegisteredUser guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.BOTH);
 		try {
 			offer.reserveOffer(guest2);
@@ -212,14 +212,29 @@ public class OfferDemo {
 		} catch (NotAvailableOfferException e1) {
 			System.out.println("An exception was catched because a user tried to reserve an already reserved offer.");
 		}
+		
+		System.out.println("\nWe create a new offer and try to reserve it as a host.\n");
+		
+		Offer offer2 = new LivingOffer(90, LocalDate.of(2018, 5, 1), host, house, 400);
+		
+		try {
+			offer2.reserveOffer(host);
+			if(offer2.getStatus()== Offer.RESERVED) {
+				System.out.println("The offer was successfully reserved but the user is a host, error in reserveOffer().");
+			}else {
+				System.out.println("The offer was not reserved.");
+			}
+		} catch (NotAvailableOfferException e1) {
+			System.out.println("The reservation could not be done because the user is a host.");
+		}
 		/*Test the different combinations of buy offer.
 		 * In this case, we simply ignore the exceptions and 
 		 * check the status of the offer, as we do not 
 		 * need to manage the exceptions here, but on 
 		 * the graphical user interface.*/
 		
-		System.out.println("Now we check the buyOffer method with all the possibilities");
-		System.out.println("First we try to buy the offer by a user that is not the one who reserved it previously.");
+		System.out.println("\n\nNow we check the buyOffer method with all the possibilities.\n");
+		System.out.println("First we try to buy the offer by a user that is not the one who reserved it previously.\n");
 		try {
 			offer.buyOffer(guest2, "Buy");
 			if(offer.getStatus() == Offer.BOUGHT) {
@@ -233,7 +248,7 @@ public class OfferDemo {
 			System.out.println("Caught exception in buyOffer as someone tried to buy an already reserved offer.");
 		}
 		
-		System.out.println("We try to buy the offer by the same user that previously reserved it.");
+		System.out.println("\nWe try to buy the offer by the same user that previously reserved it.\n");
 		try {
 			offer.buyOffer(guest, "Buy");
 			if(offer.getStatus() == Offer.BOUGHT) {
@@ -246,7 +261,7 @@ public class OfferDemo {
 			e.printStackTrace();
 		}
 		
-		System.out.println("We try to, as another user, buy the offer which is already bought.");
+		System.out.println("\nWe try to, as another user, buy the offer which is already bought.\n");
 		try {
 			
 			offer.buyOffer(guest2, "Buy");
@@ -261,7 +276,7 @@ public class OfferDemo {
 			System.out.println("Exception caught as someone tried to buy an alread bought offer.");
 		}
 		
-		System.out.println("We go back to reserveOffer() to try to reserve an already bought offer.");
+		System.out.println("\n\nWe go back to reserveOffer() to try to reserve an already bought offer.\n");
 		try {
 			offer.reserveOffer(guest2);
 			if(offer.getStatus() == Offer.BOUGHT && offer.getGuest() == guest) {
@@ -275,13 +290,13 @@ public class OfferDemo {
 			System.out.println("Caught exception in reserveOffer as someone tried to reserve an already bought offer.");
 		}	
 		
-		System.out.println("We reset the offer and continue with the remaining possibilities of buyOffer.");
+		System.out.println("\n\nWe reset the offer and continue with the remaining possibilities of buyOffer.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
 			/*We ignore the exception as we have already proved it works and we know this offer is correct*/
 		}
-		System.out.println("We try to directly buy an offer that is available and it has not been reserved.");
+		System.out.println("We try to directly buy an offer that is available and it has not been reserved.\n");
 		try {
 			offer.approveOffer();
 			offer.buyOffer(guest, "Buy");
@@ -297,7 +312,7 @@ public class OfferDemo {
 		
 		/* Try to buy the offer with an invalid credit card
 		* The offer should remain available, and the user should be banned.*/
-		System.out.println("We reset again the offer and try to buy it with an invalid credit card.");
+		System.out.println("\nWe reset again the offer and try to buy it with an invalid credit card.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
@@ -320,7 +335,7 @@ public class OfferDemo {
 			
 		/* Reset the offer and try to buy it with subjects which starts with W or R
 		 * The offer should remain available.*/
-		System.out.println("We reset the offer again and try to buy it with subjects that start with W or R.");
+		System.out.println("\nWe reset the offer again and try to buy it with subjects that start with W or R.\n");
 		try {
 			offer = new HolidayOffer(100, LocalDate.of(2018, 5, 18), host, house, LocalDate.of(2018,  6,  12), 799.12);
 		}catch(DateRangeException e) {
@@ -344,13 +359,29 @@ public class OfferDemo {
 		}
 
 		
+		System.out.println("\nWe try to buy the offer as a host.\n");
+		
+		try {	
+			offer.approveOffer();
+			offer.buyOffer(host, "BUY");
+			if(offer.getStatus() == Offer.AVAILABLE) {
+				System.out.println("The offer remains available as the buyer was a host.");
+			}else {
+				System.out.println("Error in buyOffer.");
+			}
+		}catch(NotAvailableOfferException | OrderRejectedException e) {
+			System.out.println("Not available offer exception caught as wanted.");
+		}
+		
 		guest2 = new RegisteredUser("226", "Manuel", "Perez", "579", "Hello world", UserType.BOTH);
+		
+		
 		/*Test the text comments and that the application can distinguish between text and rating comments.
 		 * We create a new comment as in this case, we do not have access to the user interface in order
 		 * to select the same comment*/
 		
-		System.out.println("Finally we check the functionality of the postComment and calculateRating methods.");
-		System.out.println("We create a comment with the text: Texto. We post it in the offer and another user posts the answer: Respuesta.");
+		System.out.println("\nFinally we check the functionality of the postComment and calculateRating methods.\n");
+		System.out.println("We create a comment with the text: Texto. We post it in the offer and another user posts the answer: Respuesta.\n");
 		TextComment comment = new TextComment("Texto", guest);
 		if(offer.postComment(guest, "Texto") == true) {
 			System.out.println("The comment was posted correctly.");
@@ -365,7 +396,7 @@ public class OfferDemo {
 		
 		
 		/*Test the rating comments*/
-		System.out.println("We post several ratings to the offer: 4, 17, 2, -1.");
+		System.out.println("\nWe post several ratings to the offer: 4, 17, 2, -1.\n");
 		if(offer.postComment(guest, 4)== true) {
 			System.out.println("The rating was posted correctly.");
 		}else {
@@ -386,7 +417,9 @@ public class OfferDemo {
 		}else {
 			System.out.println("Error in postComment.");
 		}
-		System.out.println("Lastly we calculate the rating of the offer, wich sould be 3.");
+		System.out.println("\nLastly we calculate the rating of the offer, wich sould be 3.\n");
 		System.out.println("Thhe rating of the offer is: " + offer.calculateRating());
+		
+		System.out.println("\n\nEnd of the demo.\n");
 	}
 }

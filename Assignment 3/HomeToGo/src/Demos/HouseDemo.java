@@ -6,14 +6,14 @@ public class HouseDemo{
 	private static House h;
 
 	public static void main(String args[]) {
-		System.out.println("This demo test the funcionality of the Comment class.");
-		System.out.println("We create a House with ID: H9FMHJ7.");
+		System.out.println("This demo test the funcionality of the Comment class.\n");
+		System.out.println("We create a House with ID: H9FMHJ7.\n");
 		h = new House("H9FMHJ7");
 		System.out.println("The created house is: " + h + ".");
 		
 	
 		/*Add a new characteristic*/
-		System.out.println("We add the house a new characteristic: Street, Little avenue.");
+		System.out.println("\nWe add the house a new characteristic: Street, Little avenue.\n");
 		boolean result = h.addCharacteristic("Street", "Little avenue");
 		if(result == true) {
 			System.out.println("The characteristic was added successfully.");
@@ -23,7 +23,7 @@ public class HouseDemo{
 		}
 		
 		/*Add a new value for a characteristic it already has*/
-		System.out.println("We modify an existing characteristic of the house: Street, 5th avenue.");
+		System.out.println("\nWe modify an existing characteristic of the house: Street, 5th avenue.\n");
 		result = h.addCharacteristic("Street", "5th avenue");
 		if(result == false) {
 			System.out.println("The characteristic was not added as it already exists.");
@@ -33,7 +33,7 @@ public class HouseDemo{
 		}
 		
 		/*Remove a characteristic it has*/
-		System.out.println("We remove an existing characteristic of the house: Street.");
+		System.out.println("\nWe remove an existing characteristic of the house: Street.\n");
 		result = h.removeCharacteristic("Street");
 		if(result == true) {
 			System.out.println("The characteristic was removed successfully.");
@@ -43,7 +43,7 @@ public class HouseDemo{
 		}
 		
 		/*Remove a characteristic it does not have*/
-		System.out.println("We try to remove a characteristic that the house does not have: ZIP CODE.");
+		System.out.println("\nWe try to remove a characteristic that the house does not have: ZIP CODE.\n");
 		result = h.removeCharacteristic("ZIP CODE");
 		if(result == false) {
 			System.out.println("The characteristic was not removed as it doesnt exist.");
@@ -53,7 +53,7 @@ public class HouseDemo{
 		}
 	
 		/*Test if the equals works*/
-		System.out.println("We check the functionalitu of equals() of House without any characteristics.");
+		System.out.println("\nWe check the functionality of equals() of House without any characteristics.\n");
 		if(h.equals(h) == true) {
 			System.out.println("A house is equal to itself.");
 		}else {
@@ -72,29 +72,6 @@ public class HouseDemo{
 			System.out.println("A house is not equal to another house with the same ID, error in equals() of House.");
 		}
 		
-		/*Test if the equals works with characteristics.*/
-		System.out.println("We check the functionalitu of equals() of House with characteristics.");
-		h.addCharacteristic("ZIP CODE", "28041");
-		House h2 = new House("H9FMHJ7");
-		if(h.equals(h2) == false) {
-			System.out.println("A house is not equal to another house with the same ID but different characteristics.");
-		}else {
-			System.out.println("A house is equal to another house with the same ID but different characteristics, error in equals() of House.");
-		}
-		
-		h2.addCharacteristic("ZIP CODE", "28041");
-		if(h.equals(h2) == true) {
-			System.out.println("A house is equal to another house with the same ID and characteristics.");
-		}else {
-			System.out.println("A house is not equal to another house with the same ID and characteristics, error in equals() of House.");
-		}
-		
-		h.addCharacteristic("Street", "Little avenue");
-		h2.addCharacteristic("Street", "Big avenue");
-		if(h.equals(h2) == false) {
-			System.out.println("A house is not equal to another house with the same ID and first characteristic, but different second characteristic.");
-		}else {
-			System.out.println("A house is not equal to another house with the same ID and first characteristic, but different second characteristic, error in equals() of House.");
-		}
+		System.out.println("\n\nEnd of the demo.\n");
 	}
 }

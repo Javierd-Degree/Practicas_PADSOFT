@@ -311,8 +311,7 @@ public abstract class Offer implements Serializable{
 				this.guest = null;
 				this.status = AVAILABLE;
 				Application.getInstance().logout();
-			}
-			if(!TeleChargeAndPaySystem.isValidCardNumber(host.getCreditCard())){
+			}else{
 				/*If the host credit card is not valid*/
 				host.sumDebtMoney(this.getPrice()*(1 - this.commissions()));
 				host.changeStatus(RegisteredUser.BANNED);
