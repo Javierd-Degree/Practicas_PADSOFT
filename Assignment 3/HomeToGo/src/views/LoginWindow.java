@@ -3,6 +3,7 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.event.ActionListener;
 
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
@@ -20,6 +21,8 @@ public class LoginWindow {
 	private HintTextField nameTextField;
 	private HintPasswordField passTextField;
 	private JLabel logoLabelText;
+	
+	private SearchView s;
 	
 	public static int LOGIN_WIDTH = 100;
 	public static int LOGIN_HEIGHT = 50;
@@ -48,11 +51,18 @@ public class LoginWindow {
 		logoLabelText.setHorizontalAlignment(JLabel.CENTER);
 		logoLabelText.setFont(new Font("Comic Sans MS", 50, 50));
 		 
+		s = new SearchView(frame, false);
+		
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
+		cont.add(s.getView(), BorderLayout.CENTER);
 		
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void setController(ActionListener c) {
+		logButton.addActionListener(c);
 	}
 	
 	public void setVisible(boolean v) {
@@ -75,5 +85,9 @@ public class LoginWindow {
 	public void clear() {
 		passTextField.setText("");
 		nameTextField.setText("");
+	}
+	
+	public String getSearchText() {
+		return s.getSearchText();
 	}
 }
