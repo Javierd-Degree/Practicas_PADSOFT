@@ -3,7 +3,11 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+<<<<<<< HEAD
 import java.awt.GridLayout;
+=======
+import java.awt.event.ActionListener;
+>>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
 
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
@@ -22,6 +26,8 @@ public class LoginWindow {
 	private HintTextField nameTextField;
 	private HintPasswordField passTextField;
 	private JLabel logoLabelText;
+	
+	private SearchView s;
 	
 	public static int LOGIN_WIDTH = 100;
 	public static int LOGIN_HEIGHT = 50;
@@ -51,12 +57,22 @@ public class LoginWindow {
 		logoLabelText.setHorizontalAlignment(JLabel.CENTER);
 		logoLabelText.setFont(new Font("Comic Sans MS", 50, 50));
 		 
+		s = new SearchView(frame, false);
+		
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
+<<<<<<< HEAD
 		cont.add(search.getPanel(), BorderLayout.CENTER);
+=======
+		cont.add(s.getView(), BorderLayout.CENTER);
+>>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
 		
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	}
+	
+	public void setController(ActionListener c) {
+		logButton.addActionListener(c);
 	}
 	
 	public void setVisible(boolean v) {
@@ -79,5 +95,9 @@ public class LoginWindow {
 	public void clear() {
 		passTextField.setText("");
 		nameTextField.setText("");
+	}
+	
+	public String getSearchText() {
+		return s.getSearchText();
 	}
 }
