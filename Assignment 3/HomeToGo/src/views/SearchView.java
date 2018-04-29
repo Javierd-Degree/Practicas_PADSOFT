@@ -1,138 +1,115 @@
 package views;
 
-import java.awt.FlowLayout;
-import java.awt.event.KeyEvent;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
 import components.HintTextField;
 
-public class SearchView {
+public class SearchView extends JPanel{
 
-	private JPanel panel;
+	private static final long serialVersionUID = -7097337999510494878L;
+	
 	private HintTextField searchTextField;
 	private JButton searchButton;
+	
 	private JRadioButton zipRadioButton;
-
-	private int searchMode;
-
-	public SearchView(JFrame frame, boolean loggedUser) {
-		this.searchMode = 0;
-<<<<<<< HEAD
-		this.panel = new JPanel();
-		BorderLayout layout = new BorderLayout();
-		searchButton = new JButton("Search");
-		searchTextField = new HintTextField("Insert ZIP code", 12);
+	private JRadioButton offerRadioButton;
+	private JRadioButton dateRadioButton;
+	private JRadioButton ratingRadioButton;
+	private JRadioButton reservedRadioButton;
+	private JRadioButton bookedRadioButton;
+	
+	public SearchView(boolean loggedUser) {
+		super();
+		setLayout(new GridBagLayout());
 		
-		JRadioButton zipRadioButton = new JRadioButton("zip");
-		 zipRadioButton.setMnemonic(KeyEvent.VK_B);
-		 zipRadioButton.setActionCommand("zip");
-		 zipRadioButton.setSelected(true);
-		 
-		    //Group the radio buttons.
-		    ButtonGroup group = new ButtonGroup();
-		    group.add(zipRadioButton);
-
-		    //Register a listener for the radio buttons.
-		    //zipRadioButton.addActionListener(this);
-		    
-		this.panel.setLayout(layout);
-		this.panel.add(searchTextField, BorderLayout.CENTER);
-		this.panel.add(searchButton, BorderLayout.EAST);
-		this.panel.add(zipRadioButton, BorderLayout.SOUTH);
-		this.panel.setBorder(BorderFactory.createEmptyBorder(200, 150, 385, 150));
-=======
-		panel = new JPanel();
-		/**GroupLayout layout = new GroupLayout(panel);
-		panel.setLayout(layout);
-
-		searchButton = new JButton();
+		setBorder(BorderFactory.createTitledBorder("Search"));
+		
+		GridBagConstraints c = new GridBagConstraints();
+		
 		searchTextField = new HintTextField("Insert ZIP code", 12);
-
-		JRadioButton zipRadioButton = new JRadioButton("zip");
-		zipRadioButton.setMnemonic(KeyEvent.VK_B);
-		zipRadioButton.setActionCommand("zip");
-		zipRadioButton.setSelected(true);
-
-		// Group the radio buttons.
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 2;
+		c.weightx = 0;
+		c.gridheight = 1;
+		c.fill = GridBagConstraints.HORIZONTAL;
+		add(searchTextField, c);
+		
+		searchButton = new JButton("Search");
+		c.fill = GridBagConstraints.NONE;
+		c.gridx = 2;
+		c.gridwidth = 1;
+		add(searchButton, c);
+		
+		zipRadioButton = new JRadioButton("ZIP Code");
+		zipRadioButton.setActionCommand("ZIP_SEARCH");
+		c.anchor = GridBagConstraints.WEST;
+		c.gridx = 0;
+		c.gridy = 1;
+		add(zipRadioButton, c);
+		
+		offerRadioButton = new JRadioButton("Offer type");
+		offerRadioButton.setActionCommand("OFFER_SEARCH");
+		c.gridx = 1;
+		add(offerRadioButton, c);
+		
+		dateRadioButton = new JRadioButton("Date");
+		dateRadioButton.setActionCommand("DATE_SEARCH");
+		c.gridx = 2;
+		add(dateRadioButton, c);
+		
+		ratingRadioButton = new JRadioButton("Rating");
+		ratingRadioButton.setActionCommand("RATING_SEARCH");
+		c.gridx = 0;
+		c.gridy = 2;
+		add(ratingRadioButton, c);
+		
+		reservedRadioButton = new JRadioButton("Reserved");
+		reservedRadioButton.setActionCommand("RESERVED_SEARCH");
+		c.gridx = 1;
+		add(reservedRadioButton, c);
+		
+		bookedRadioButton = new JRadioButton("Booked");
+		bookedRadioButton.setActionCommand("BOOKED_SEARCH");
+		c.gridx = 2;
+		add(bookedRadioButton, c);
+		
+		//Group the radio buttons.
 		ButtonGroup group = new ButtonGroup();
 		group.add(zipRadioButton);
-
-		// Register a listener for the radio buttons.
-		// zipRadioButton.addActionListener(this);
-
-		layout.setVerticalGroup(layout.createSequentialGroup()
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE).addComponent(searchTextField)
-						.addComponent(searchButton))
-				.addGroup(layout.createParallelGroup(GroupLayout.Alignment.LEADING)));*/
+		group.add(offerRadioButton);
+		group.add(dateRadioButton);
+		group.add(ratingRadioButton);
+		group.add(reservedRadioButton);
+		group.add(bookedRadioButton);
 		
 		
-		 GroupLayout layout = new GroupLayout(panel);
-		    panel.setLayout(layout);
-
-		    JLabel one = new JLabel("one");
-		    JLabel two = new JLabel("two");
-		    JLabel three = new JLabel("three");
-		    JLabel four = new JLabel("four");
-		    JLabel five = new JLabel("five");
-		    JLabel six = new JLabel("six");
-		    
-		    layout.setHorizontalGroup(layout
-		    	    .createParallelGroup(GroupLayout.Alignment.LEADING)
-		    	    .addGroup(layout.createSequentialGroup()
-		    	        .addComponent(one, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		    	        .addComponent(two, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		    	        .addComponent(three, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		    	    .addGroup(layout.createSequentialGroup()
-		    	        .addComponent(four, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-		    	        .addComponent(five, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-		    	    .addComponent(six, 0, GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE));
-
-		    	layout.setVerticalGroup(layout.createSequentialGroup()
-		    	    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-		    	        .addComponent(one).addComponent(two).addComponent(three))
-		    	    .addGroup(layout.createParallelGroup(GroupLayout.Alignment.BASELINE)
-		    	        .addComponent(four).addComponent(five))
-		    	    .addComponent(six));
-		
-		/**panel.setLayout(new FlowLayout());
-		searchButton = new JButton("Search");
-		searchTextField = new HintTextField("Insert ZIP code", 12);
-		panel.add(searchButton);
-		panel.add(searchTextField);*/
-	}
-
-	public JPanel getView() {
-		return this.panel;
->>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
+		if(!loggedUser) {
+			ratingRadioButton.setEnabled(false);
+			reservedRadioButton.setEnabled(false);
+			bookedRadioButton.setEnabled(false);
+		}
 	}
 
 	public String getSearchText() {
 		return searchTextField.getText();
 	}
-<<<<<<< HEAD
-	
-	public JPanel getPanel() {
-		return this.panel;
-	}
-	
-=======
 
->>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
-	public int getSearchMode() {
-		return searchMode;
-	}
-
-	public void setSearchMode(int mode) {
-		this.searchMode = mode;
-		/* TODO */
-
+	public void setController(ActionListener e) {
+		zipRadioButton.addActionListener(e);
+		offerRadioButton.addActionListener(e);
+		dateRadioButton.addActionListener(e);
+		ratingRadioButton.addActionListener(e);
+		reservedRadioButton.addActionListener(e);
+		bookedRadioButton.addActionListener(e);
 	}
 }

@@ -1,16 +1,14 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Container;
-import java.awt.Font;
-<<<<<<< HEAD
-import java.awt.GridLayout;
-=======
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
->>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
 
 import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,35 +35,49 @@ public class LoginWindow {
 		frame = new JFrame("Login window");
 		Container cont = frame.getContentPane();
 		cont.setLayout(new BorderLayout());
-		SearchView search = new SearchView(frame, false);
+		
 		/*Create the login layout*/
 		login = new JPanel();
-		login.setLayout(new GridLayout(3, 1, 0, 3));
-		login.setBorder(BorderFactory.createEmptyBorder(10, 10, 540, 10)); 
+		login.setLayout(new GridBagLayout());
+		login.setBorder(BorderFactory.createTitledBorder("Login"));
+		
+		GridBagConstraints c = new GridBagConstraints();
+		c.insets = new Insets(8, 4, 0, 4);
+		
+		nameTextField = new HintTextField("User name", 12);
+		c.gridx = 0;
+		c.gridy = 0;
+		c.gridwidth = 3;
+		c.gridheight = 1;
+		login.add(nameTextField, c);
+		
+		passTextField = new HintPasswordField("Password", 12);
+		c.gridy = 1;
+		login.add(passTextField, c);
 		
 		logButton = new JButton("Login");
-		nameTextField = new HintTextField("User name", 12);
-		passTextField = new HintPasswordField("Password", 12);
-		login.add(nameTextField);
-		login.add(passTextField);
-		login.add(logButton);
+		c.gridy = 2;
+		/* We need to make the column larger,
+		 * and then to align the button at the 
+		 * top.*/
+		c.weighty = 1.0;
+		c.anchor = GridBagConstraints.NORTH;
+		login.add(logButton, c);
+		
+		login.setAlignmentY(Component.TOP_ALIGNMENT);
 		
 		
 		/*Create the logo*/
-		//logoLabelText = new JLabel("<html><centre><span style='font-size:20px'> HOME TO GO </span></centre></html>");
 		logoLabelText = new JLabel("HOME TO GO");
 		logoLabelText.setHorizontalAlignment(JLabel.CENTER);
-		logoLabelText.setFont(new Font("Comic Sans MS", 50, 50));
+		logoLabelText.setFont(logoLabelText.getFont().deriveFont(42.0f));
+		logoLabelText.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
 		 
-		s = new SearchView(frame, false);
+		s = new SearchView(false);
 		
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
-<<<<<<< HEAD
-		cont.add(search.getPanel(), BorderLayout.CENTER);
-=======
-		cont.add(s.getView(), BorderLayout.CENTER);
->>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
+		cont.add(s, BorderLayout.CENTER);
 		
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
