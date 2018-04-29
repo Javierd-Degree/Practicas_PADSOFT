@@ -35,6 +35,23 @@ public class ChangeComment extends Comment implements Serializable{
 	}
 	
 	/**
+	 * Method that returns the comment text, without the user.
+	 * @return comment text.
+	 */
+	public String getComment() {
+		return this.text;
+	}
+	
+	/**
+	 * Method that returns the name of the user who posted
+	 * the comment.
+	 * @return String with a user name.
+	 */
+	public String getUserName() {
+		return "Administrator";
+	}
+	
+	/**
 	 * Compare two ChangeComment to know if they are the same one.
 	 * 
 	 * @param o Object we want to compare, must be a ChangeComment.

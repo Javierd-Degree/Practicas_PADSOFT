@@ -105,4 +105,16 @@ public class House implements Serializable{
 		return  this.id.equals(h.id);
 	}
 	
+	/**
+	 * Method that provides a string with the house characteristics.
+	 * @return String with the house characteristics;
+	 */
+	public String getHouseCharsStyled() {
+		String result = "";
+		for(Map.Entry<String, String> entry: this.characteristics.entrySet()) {
+			result += entry.getKey()+": "+entry.getValue() + "\t";
+		}
+		return result;
+	}
+	
 }

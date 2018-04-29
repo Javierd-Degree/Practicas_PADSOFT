@@ -49,6 +49,23 @@ public class TextComment extends Comment implements Serializable{
 	}
 	
 	/**
+	 * Method that returns the comment text, without the user.
+	 * @return comment text.
+	 */
+	public String getComment() {
+		return this.text;
+	}
+	
+	/**
+	 * Method that returns the name of the user who posted
+	 * the comment.
+	 * @return String with a user name.
+	 */
+	public String getUserName() {
+		return this.user.getName();
+	}
+	
+	/**
 	 * Answer a TextComment.
 	 * 
 	 * @param text Text the user wants to answer.

@@ -27,4 +27,24 @@ public abstract class Comment implements Serializable{
 	 */
 	@Override
 	public abstract boolean equals(Object o);
+	
+	/**
+	 * Method that provides a simple String for a comment.
+	 * @return String with the comment content.
+	 */
+	@Override
+	public abstract String toString();
+	
+	/**
+	 * Method that returns the comment text, without the user.
+	 * @return comment text.
+	 */
+	public abstract String getComment();
+	
+	/**
+	 * Method that returns the name of the user who posted
+	 * the comment.
+	 * @return String with a user name.
+	 */
+	public abstract String getUserName();
 }

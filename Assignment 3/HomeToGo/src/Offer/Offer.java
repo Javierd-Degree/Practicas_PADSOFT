@@ -254,6 +254,9 @@ public abstract class Offer implements Serializable{
 	 * @throws NotAvailableOfferException in case the offer is not available.
 	 */
 	public void reserveOffer(RegisteredUser guest) throws NotAvailableOfferException{
+		if(guest == null) {
+			throw new NotAvailableOfferException();
+		}
 		if(this.status != AVAILABLE) {
 			throw new NotAvailableOfferException();
 		}else if(guest.getType() == UserType.HOST) {
@@ -289,6 +292,9 @@ public abstract class Offer implements Serializable{
 	public void buyOffer(RegisteredUser guest, String subject) throws NotAvailableOfferException,
 			FailedInternetConnectionException,
 		    OrderRejectedException {
+		if(guest == null) {
+			throw new NotAvailableOfferException();
+		}
 		
 		if(this.status == RESERVED && !this.guest.equals(guest)) {
 			throw new NotAvailableOfferException();
@@ -319,7 +325,7 @@ public abstract class Offer implements Serializable{
 				this.lastModifiedDate = LocalDate.now();
 				this.guest = guest;
 			}
-			return;
+			throw new InvalidCardNumberException("Credit card not valid");
 		}
 		
 		this.status = BOUGHT;
@@ -448,6 +454,14 @@ public abstract class Offer implements Serializable{
 		return this.startDate;
 	}
 	
+	/**
+	 * Getter of the offer's comments.
+	 * @return List of the offer's comments.
+	 */
+	public List<Comment> getComments(){
+		return this.comments;
+	}
+	
 	
 	/**
 	 *Transforms the offer data into a string so that it can be printed.
@@ -461,7 +475,22 @@ public abstract class Offer implements Serializable{
 		}else {
 			return "This holiday offer is from " + this.host.getName() + " in the house " + this.house + ", has the price " + this.getPrice() + " and is currently " + this.status;
 		}
-	}	
+	}
+	
+	/**
+	 * Method that allows us to get a simple offer name.
+	 * @return String with the offer name.
+	 */
+	public abstract String getName();
+	
+	/**
+	 * Method that allows us to get some basic offer
+	 * information.
+	 * @param logged Boolean that indicates whether the user is logged in 
+	 * or not, in order to show more information.
+	 * @return String with some offer information.
+	 */
+	public abstract String getInfo(boolean logged);
 	
 	/**
 	 * Compare two Offer to know if they are the same one.

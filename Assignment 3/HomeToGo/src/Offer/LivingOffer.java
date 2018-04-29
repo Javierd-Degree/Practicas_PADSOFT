@@ -125,4 +125,32 @@ public class LivingOffer extends Offer implements Serializable{
 	public double getPrice() {
 		return this.pricePerMonth + this.getDeposit();
 	}
+	
+	/**
+	 * Method that allow us to get a simple offer name.
+	 * @return String with the offer name.
+	 */
+	@Override
+	public String getName() {
+		return "Living offer in house "+this.getHouse().getId()+".";
+	}
+	
+	/**
+	 * Method that allows us to get some basic offer
+	 * information.
+	 * @param logged Boolean that indicates whether the user is logged in 
+	 * or not, in order to show more information.
+	 * @return String with some offer information.
+	 */
+	@Override
+	public String getInfo(boolean logged) {
+		String result = "";
+		result += "Start date:\t\t" + this.getStartDate()+"\n";
+		if(logged) {
+			result += "Deposit:\t\t" + this.getDeposit()+"\n";
+			result += "Price per month:\t" + (this.getPrice()-this.getDeposit())+"\n";
+		}
+		
+		return result;
+	}
 }

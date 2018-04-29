@@ -51,6 +51,23 @@ public class Rating extends Comment implements Serializable{
 	}
 	
 	/**
+	 * Method that returns the comment text, without the user.
+	 * @return comment text.
+	 */
+	public String getComment() {
+		return ""+getRating();
+	}
+	
+	/**
+	 * Method that returns the name of the user who posted
+	 * the comment.
+	 * @return String with a user name.
+	 */
+	public String getUserName() {
+		return this.user.getName();
+	}
+	
+	/**
 	 * Compare two Rating to know if they are the same one.
 	 * 
 	 * @param o Object we want to compare, must be a Rating.
