@@ -3,8 +3,9 @@ package views;
 import java.awt.FlowLayout;
 import java.awt.event.KeyEvent;
 
+import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
-import javax.swing.GroupLayout;
+import java.awt.BorderLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,6 +25,30 @@ public class SearchView {
 
 	public SearchView(JFrame frame, boolean loggedUser) {
 		this.searchMode = 0;
+<<<<<<< HEAD
+		this.panel = new JPanel();
+		BorderLayout layout = new BorderLayout();
+		searchButton = new JButton("Search");
+		searchTextField = new HintTextField("Insert ZIP code", 12);
+		
+		JRadioButton zipRadioButton = new JRadioButton("zip");
+		 zipRadioButton.setMnemonic(KeyEvent.VK_B);
+		 zipRadioButton.setActionCommand("zip");
+		 zipRadioButton.setSelected(true);
+		 
+		    //Group the radio buttons.
+		    ButtonGroup group = new ButtonGroup();
+		    group.add(zipRadioButton);
+
+		    //Register a listener for the radio buttons.
+		    //zipRadioButton.addActionListener(this);
+		    
+		this.panel.setLayout(layout);
+		this.panel.add(searchTextField, BorderLayout.CENTER);
+		this.panel.add(searchButton, BorderLayout.EAST);
+		this.panel.add(zipRadioButton, BorderLayout.SOUTH);
+		this.panel.setBorder(BorderFactory.createEmptyBorder(200, 150, 385, 150));
+=======
 		panel = new JPanel();
 		/**GroupLayout layout = new GroupLayout(panel);
 		panel.setLayout(layout);
@@ -86,12 +111,21 @@ public class SearchView {
 
 	public JPanel getView() {
 		return this.panel;
+>>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
 	}
 
 	public String getSearchText() {
 		return searchTextField.getText();
 	}
+<<<<<<< HEAD
+	
+	public JPanel getPanel() {
+		return this.panel;
+	}
+	
+=======
 
+>>>>>>> 76fd4e0c283f469823d676fc1b9f7a1f2e45e9ba
 	public int getSearchMode() {
 		return searchMode;
 	}
