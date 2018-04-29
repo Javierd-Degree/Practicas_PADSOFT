@@ -3,7 +3,9 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Container;
 import java.awt.Font;
+import java.awt.GridLayout;
 
+import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -29,10 +31,11 @@ public class LoginWindow {
 		frame = new JFrame("Login window");
 		Container cont = frame.getContentPane();
 		cont.setLayout(new BorderLayout());
-		
+		SearchView search = new SearchView(frame, false);
 		/*Create the login layout*/
 		login = new JPanel();
-		login.setLayout(new BoxLayout(login, BoxLayout.Y_AXIS));
+		login.setLayout(new GridLayout(3, 1, 0, 3));
+		login.setBorder(BorderFactory.createEmptyBorder(10, 10, 540, 10)); 
 		
 		logButton = new JButton("Login");
 		nameTextField = new HintTextField("User name", 12);
@@ -50,6 +53,7 @@ public class LoginWindow {
 		 
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
+		cont.add(search.getPanel(), BorderLayout.CENTER);
 		
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

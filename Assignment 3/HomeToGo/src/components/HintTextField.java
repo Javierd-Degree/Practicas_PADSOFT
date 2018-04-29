@@ -14,7 +14,7 @@ public class HintTextField extends JTextField implements FocusListener {
 		super(hint, n);
 		this.hint = hint;
 		this.showingHint = true;
-//		this.setHorizontalAlignment(JTextField.CENTER);
+		this.setHorizontalAlignment(JTextField.CENTER);
 		super.addFocusListener(this);
 	}
 
