@@ -26,10 +26,6 @@ public class LoginWindow implements WindowInterface{
 	private HintPasswordField passTextField;
 	private JLabel logoLabelText;
 	
-	public static int LOGIN_WIDTH = 100;
-	public static int LOGIN_HEIGHT = 50;
-
-	
 	public LoginWindow() {
 		frame = new JFrame("Login window");
 		Container cont = frame.getContentPane();
@@ -43,7 +39,7 @@ public class LoginWindow implements WindowInterface{
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(8, 4, 0, 4);
 		
-		nameTextField = new HintTextField("User name", 12);
+		nameTextField = new HintTextField("User id", 12);
 		c.gridx = 0;
 		c.gridy = 0;
 		c.gridwidth = 3;
@@ -90,6 +86,9 @@ public class LoginWindow implements WindowInterface{
 		frame.setVisible(v);
 	}
 	
+	public void delete() {
+		this.frame.dispose();
+	}
 	
 	public void setSecondaryView(JPanel view) {
 		BorderLayout layout = (BorderLayout) frame.getContentPane().getLayout();

@@ -6,8 +6,14 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import Application.Administrator;
 import Application.Application;
+import User.RegisteredUser;
+import User.UserType;
+import views.GuestWindow;
+import views.HostWindow;
 import views.LoginWindow;
+import views.SearchView;
 
 public class LoginController implements ActionListener{
 	private LoginWindow window;
@@ -20,9 +26,9 @@ public class LoginController implements ActionListener{
 	public void actionPerformed(ActionEvent arg0) {
 		switch(arg0.getActionCommand()) {
 		case "LOGIN":
-			String name = window.getName();
+			String name = window.getName().replaceAll(" ", "");
 			String pass = window.getPass();
-			System.out.println("Vamos a loggerar a " + name + ", "+ pass);
+
 			int result = Application.getInstance().login(name, pass);
 			
 			if(result == Application.NOT_FOUND_ID) {
@@ -41,6 +47,42 @@ public class LoginController implements ActionListener{
 			}
 			
 			/*CAMBIAR DE PANTALLA Y LOGGEARNOS.*/
+			Application.getWindow().setVisible(false);
+			Application.getWindow().delete();
+			Object logged = Application.getInstance().searchLoggedIn();
+			if(logged instanceof Administrator) {
+				
+				//TODO
+				
+				return;
+			}
+			
+			RegisteredUser user = (RegisteredUser) logged;
+			
+			if(user.getType() == UserType.GUEST) {
+				GuestWindow guest = new GuestWindow(user);
+				GuestController cont = new GuestController(guest);
+				guest.setController(cont);
+				
+				SearchView s = new SearchView(true);
+				SearchController controller = new SearchController(s);
+				s.setController(controller);
+				guest.setSecondaryView(s);
+				
+				guest.setVisible(true);
+			}else if(user.getType() == UserType.HOST){
+				HostWindow host = new HostWindow(user);
+				HostController cont = new HostController(host);
+				host.setController(cont);
+				
+				SearchView s = new SearchView(false);
+				SearchController controller = new SearchController(s);
+				s.setController(controller);
+				host.setSecondaryView(s);
+				
+				host.setVisible(true);
+			}
+			
 			
 			break;
 		}

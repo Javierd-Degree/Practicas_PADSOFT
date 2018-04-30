@@ -13,7 +13,9 @@ import User.RegisteredUser;
 import es.uam.eps.padsof.telecard.FailedInternetConnectionException;
 import es.uam.eps.padsof.telecard.InvalidCardNumberException;
 import es.uam.eps.padsof.telecard.OrderRejectedException;
+import views.LoginWindow;
 import views.OfferView;
+import views.SearchView;
 
 public class OfferController implements ActionListener {
 
@@ -44,9 +46,24 @@ public class OfferController implements ActionListener {
 			} catch (NotAvailableOfferException e1) {
 				errorMessage("You cannot buy this offer.");
 			} catch (InvalidCardNumberException e1) {
-				errorMessage("Not valid credit card. You are now unlogged and banned"
+				errorMessage("Not valid credit card. You are now unlogged and banned "
 						+ "until the administrator changes it.");
-				/*TODO Poner la pantalla de no loggeado y sacar.*/
+				
+				Application.getInstance().logout();
+				Application.getWindow().setVisible(false);
+				Application.getWindow().delete();
+				
+				LoginWindow login = new LoginWindow();
+				LoginController cont = new LoginController(login);
+				login.setController(cont);
+				
+				SearchView s = new SearchView(false);
+				SearchController controller = new SearchController(s);
+				s.setController(controller);
+				login.setSecondaryView(s);
+				
+				login.setVisible(true);
+				
 			} catch (OrderRejectedException e1) {
 				errorMessage("You cannot reserve this offer.");
 			}

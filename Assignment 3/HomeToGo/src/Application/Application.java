@@ -148,7 +148,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Administrator admin : admins) {
-			if(admin.getId() == id) {
+			if(admin.getId().equals(id)) {
 				if(admin.getPassword().equals(password)) {
 					/*Successfully logged in*/
 					admin.changeLogged(true);
@@ -159,7 +159,7 @@ public class Application implements Serializable {
 			}
 		}
 		for(RegisteredUser user : users) {
-			if(user.getId() == id) {
+			if(user.getId().equals(id)) {
 				if(user.getPassword().equals(password)) {
 					if(user.getStatus() == RegisteredUser.BANNED) {
 						return BANNED_USER;

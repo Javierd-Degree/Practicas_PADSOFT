@@ -20,9 +20,11 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.border.EmptyBorder;
 
+import Application.Application;
 import Comment.ChangeComment;
 import Comment.Comment;
 import Offer.Offer;
+import User.RegisteredUser;
 import controllers.CommentAnswerController;
 
 public class OfferView extends JPanel{
@@ -95,7 +97,10 @@ public class OfferView extends JPanel{
         charsPanel.add(charsLabelText);
         
         JPanel buttonsPanel = new JPanel(new FlowLayout());
-        if(this.offer.getStatus() == Offer.RESERVED) {
+        Object o = Application.getInstance().searchLoggedIn();
+        if(this.offer.getStatus() == Offer.RESERVED 
+        		&& (o instanceof RegisteredUser) && ((RegisteredUser)o).equals(offer.getGuest())) {
+        	payButton.setText("Pay offer");
         	buttonsPanel.add(payButton);
         }else if(this.offer.getStatus() == Offer.AVAILABLE) {
         	buttonsPanel.add(payButton);
@@ -111,24 +116,33 @@ public class OfferView extends JPanel{
         c.anchor = GridBagConstraints.NORTHWEST;
         view.add(nameLabelText, c);
         
-        c.gridy = 1;
-        c.gridwidth = 1;
-        c.anchor = GridBagConstraints.SOUTHWEST;
-        view.add(charsTitle, c);
-        
         c.gridx = 2;
         c.weightx = 1.0;
+        c.insets = new Insets(40, 4, 0, 4);
         c.anchor = GridBagConstraints.NORTHEAST;
         view.add(infoLabelText, c);
         
+        c.gridy = 1;
+        c.gridx = 0;
+        c.gridwidth = 1;
+        c.weightx = 0.0;
+        c.insets = new Insets(0, 4, 0, 4);
+        c.anchor = GridBagConstraints.SOUTHWEST;
+        view.add(charsTitle, c);
+        
         c.gridy = 2;
         c.gridx = 0;
-        c.gridwidth = 3;
-        c.weightx = 0.0;
+        c.gridwidth = 2;
         c.weighty = 1.0;
         c.anchor = GridBagConstraints.NORTHWEST;
         c.insets = new Insets(8, 4, 0, 4);
         view.add(charsLabelText, c);
+        
+        c.gridx = 2;
+        c.gridy = 2;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.SOUTHEAST;
+        view.add(buttonsPanel, c);
             
         return view;
 	}
