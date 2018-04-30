@@ -15,6 +15,7 @@ import Offer.*;
 
 import User.RegisteredUser;
 import User.UserType;
+import views.WindowInterface;
 
 import java.time.LocalDate;
 
@@ -37,6 +38,9 @@ import java.io.ObjectOutputStream;
  */
 public class Application implements Serializable {
 	private static final long serialVersionUID = 1L;
+	
+	private static WindowInterface window;
+	
 	private List<Administrator> admins;
 	private List<RegisteredUser> users;
 	private List<Offer> offers;
@@ -48,6 +52,7 @@ public class Application implements Serializable {
 	public static final int HOLIDAY_OFFER = 0;
 	public static final int LIVING_OFFER = 1;
 	
+	public static final int BANNED_USER = -4;
 	public static final int SOMEONE_LOGGED = -3;
 	public static final int NOT_FOUND_ID = -2;
 	public static final int NO_MATCHED = -1;
@@ -156,6 +161,10 @@ public class Application implements Serializable {
 		for(RegisteredUser user : users) {
 			if(user.getId() == id) {
 				if(user.getPassword().equals(password)) {
+					if(user.getStatus() == RegisteredUser.BANNED) {
+						return BANNED_USER;
+					}
+					
 					/*Successfully logged in*/
 					user.changeStatus(RegisteredUser.LOGGED);
 					return SUCCESS;
@@ -653,6 +662,25 @@ public class Application implements Serializable {
 			e.printStackTrace();
 		}
 		
+	}
+	
+	/**
+	 * Method that allows us to change the Application
+	 * window reference.
+	 * 
+	 * @return the current Application's WindowInterface.
+	 */
+	public static WindowInterface getWindow() {
+		return Application.window;
+	}
+	
+	/**
+	 * Method that allows us to change the Application
+	 * window reference.
+	 * @param window New WindowInterface.
+	 */
+	public static void setWindow(WindowInterface window) {
+		Application.window = window;
 	}
 }
 

@@ -7,32 +7,37 @@ import java.awt.event.ActionListener;
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
+import Application.Application;
+import User.RegisteredUser;
+import User.UserType;
 import components.HintTextField;
 
 public class SearchView extends JPanel{
 
 	private static final long serialVersionUID = -7097337999510494878L;
 	
+	private boolean logged;
+	
 	private HintTextField searchTextField;
 	private JButton searchButton;
-	
 	private JRadioButton zipRadioButton;
 	private JRadioButton offerRadioButton;
 	private JRadioButton dateRadioButton;
 	private JRadioButton ratingRadioButton;
 	private JRadioButton reservedRadioButton;
 	private JRadioButton bookedRadioButton;
+	private ButtonGroup group;
 	
 	public SearchView(boolean loggedUser) {
 		super();
+		
+		this.logged = loggedUser;
+		
 		setLayout(new GridBagLayout());
-		
 		setBorder(BorderFactory.createTitledBorder("Search"));
-		
 		GridBagConstraints c = new GridBagConstraints();
 		
 		searchTextField = new HintTextField("Insert ZIP code", 12);
@@ -45,6 +50,7 @@ public class SearchView extends JPanel{
 		add(searchTextField, c);
 		
 		searchButton = new JButton("Search");
+		searchButton.setActionCommand("SEARCH");
 		c.fill = GridBagConstraints.NONE;
 		c.gridx = 2;
 		c.gridwidth = 1;
@@ -52,6 +58,7 @@ public class SearchView extends JPanel{
 		
 		zipRadioButton = new JRadioButton("ZIP Code");
 		zipRadioButton.setActionCommand("ZIP_SEARCH");
+		zipRadioButton.setSelected(true);
 		c.anchor = GridBagConstraints.WEST;
 		c.gridx = 0;
 		c.gridy = 1;
@@ -84,7 +91,7 @@ public class SearchView extends JPanel{
 		add(bookedRadioButton, c);
 		
 		//Group the radio buttons.
-		ButtonGroup group = new ButtonGroup();
+		group = new ButtonGroup();
 		group.add(zipRadioButton);
 		group.add(offerRadioButton);
 		group.add(dateRadioButton);
@@ -92,8 +99,9 @@ public class SearchView extends JPanel{
 		group.add(reservedRadioButton);
 		group.add(bookedRadioButton);
 		
-		
-		if(!loggedUser) {
+		Object o = Application.getInstance().searchLoggedIn();
+		if(!loggedUser || 
+				(o != null && o instanceof RegisteredUser && ((RegisteredUser)o).getType() != UserType.GUEST)) {
 			ratingRadioButton.setEnabled(false);
 			reservedRadioButton.setEnabled(false);
 			bookedRadioButton.setEnabled(false);
@@ -103,8 +111,25 @@ public class SearchView extends JPanel{
 	public String getSearchText() {
 		return searchTextField.getText();
 	}
+	
+	public void setTextHint(String text) {
+		searchTextField.setHint(text);
+	}
+	
+	public void enableTextField(Boolean b) {
+		searchTextField.setEnabled(b);
+	}
+	
+	public String getSelected() {
+		return group.getSelection().getActionCommand();
+	}
+	
+	public boolean getLogged() {
+		return this.logged;
+	}
 
 	public void setController(ActionListener e) {
+		searchButton.addActionListener(e);
 		zipRadioButton.addActionListener(e);
 		offerRadioButton.addActionListener(e);
 		dateRadioButton.addActionListener(e);

@@ -1,7 +1,6 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.DefaultListModel;
@@ -10,6 +9,7 @@ import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListSelectionListener;
 
 import Offer.Offer;
 
@@ -29,7 +29,7 @@ public class SearchResultsView extends JPanel{
 		setLayout(new BorderLayout());
 		setBorder(new EmptyBorder(10, 10, 10, 10));
         add(new JLabel("Search results:\n"), BorderLayout.NORTH);
-        // Create list book and set to scrollpane and add to panel
+        // Create list and set to scrollpane and add to panel
         add(new JScrollPane((offersList = createListOffers())),
                 BorderLayout.CENTER);
 	}
@@ -48,7 +48,15 @@ public class SearchResultsView extends JPanel{
         return list;
     }
     
-    public void setController(ActionListener c) {
-    	
+    public boolean getLogged() {
+    	return this.logged;
+    }
+    
+    public JList<Offer> getList(){
+    	return this.offersList;
+    }
+    
+    public void setController(ListSelectionListener c) {
+    	offersList.addListSelectionListener(c);
 	}
 }

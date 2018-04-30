@@ -14,18 +14,17 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 
+import Application.Application;
 import components.HintPasswordField;
 import components.HintTextField;
 
-public class LoginWindow {
+public class LoginWindow implements WindowInterface{
 	private JFrame frame;
 	private JPanel login;
 	private JButton logButton;
 	private HintTextField nameTextField;
 	private HintPasswordField passTextField;
 	private JLabel logoLabelText;
-	
-	private SearchView s;
 	
 	public static int LOGIN_WIDTH = 100;
 	public static int LOGIN_HEIGHT = 50;
@@ -56,6 +55,7 @@ public class LoginWindow {
 		login.add(passTextField, c);
 		
 		logButton = new JButton("Login");
+		logButton.setActionCommand("LOGIN");
 		c.gridy = 2;
 		/* We need to make the column larger,
 		 * and then to align the button at the 
@@ -72,15 +72,14 @@ public class LoginWindow {
 		logoLabelText.setHorizontalAlignment(JLabel.CENTER);
 		logoLabelText.setFont(logoLabelText.getFont().deriveFont(42.0f));
 		logoLabelText.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
-		 
-		s = new SearchView(false);
 		
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
-		cont.add(s, BorderLayout.CENTER);
 		
 		frame.setSize(1280, 720);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		
+		Application.setWindow(this);
 	}
 	
 	public void setController(ActionListener c) {
@@ -91,10 +90,23 @@ public class LoginWindow {
 		frame.setVisible(v);
 	}
 	
-	/**public void setControlador(ActionListener c) {
-		_accept.addActionListener(c);
-		_cancel.addActionListener(c);
-	}*/
+	
+	public void setSecondaryView(JPanel view) {
+		BorderLayout layout = (BorderLayout) frame.getContentPane().getLayout();
+		JPanel current = (JPanel) layout.getLayoutComponent(BorderLayout.CENTER);
+		if(current != null) {
+			frame.getContentPane().remove(current);
+		}
+		
+		frame.getContentPane().add(view, BorderLayout.CENTER);
+		frame.getContentPane().validate();
+		frame.getContentPane().repaint();
+	}
+	
+	public JPanel getSecondaryView() {
+		BorderLayout layout = (BorderLayout) frame.getContentPane().getLayout();
+		return (JPanel) layout.getLayoutComponent(BorderLayout.CENTER);
+	}
 	
 	public String getName() {
 		return nameTextField.getText();
@@ -107,9 +119,5 @@ public class LoginWindow {
 	public void clear() {
 		passTextField.setText("");
 		nameTextField.setText("");
-	}
-	
-	public String getSearchText() {
-		return s.getSearchText();
 	}
 }

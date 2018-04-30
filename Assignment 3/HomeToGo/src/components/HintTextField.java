@@ -7,7 +7,7 @@ import javax.swing.JTextField;
 
 public class HintTextField extends JTextField implements FocusListener {
 	private static final long serialVersionUID = 9103381074774663712L;
-	private final String hint;
+	private String hint;
 	private boolean showingHint;
 
 	public HintTextField(final String hint, int n) {
@@ -16,6 +16,12 @@ public class HintTextField extends JTextField implements FocusListener {
 		this.showingHint = true;
 		this.setHorizontalAlignment(JTextField.CENTER);
 		super.addFocusListener(this);
+	}
+	
+	public void setHint(String hint) {
+		this.hint = hint;
+		this.setText(hint);
+		showingHint = true;
 	}
 
 	@Override

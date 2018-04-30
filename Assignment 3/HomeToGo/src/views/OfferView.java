@@ -4,9 +4,13 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -48,8 +52,9 @@ public class OfferView extends JPanel{
 	
 	public JPanel createOfferView(Offer offer) {
 		JPanel view = new JPanel();
-		view.setLayout(new BorderLayout(2, 2));
-        
+		view.setBorder(BorderFactory.createTitledBorder("Offer information."));
+		view.setLayout(new GridBagLayout());
+		
         nameLabelText = new JLabel();
         charsTitle = new JLabel("Characteristics: ");
         charsLabelText = new JLabel();
@@ -97,10 +102,33 @@ public class OfferView extends JPanel{
         	buttonsPanel.add(reserveButton);
         }
         
-        view.add(nameLabelText, BorderLayout.NORTH);
-        view.add(charsPanel, BorderLayout.CENTER);
-        view.add(buttonsPanel, BorderLayout.SOUTH);
-        view.add(infoLabelText, BorderLayout.EAST);
+        GridBagConstraints c = new GridBagConstraints();
+        c.insets = new Insets(0, 4, 0, 4);
+        c.gridx = 0;
+        c.gridy = 0;
+        c.gridwidth = 3;
+        c.gridheight = 1;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        view.add(nameLabelText, c);
+        
+        c.gridy = 1;
+        c.gridwidth = 1;
+        c.anchor = GridBagConstraints.SOUTHWEST;
+        view.add(charsTitle, c);
+        
+        c.gridx = 2;
+        c.weightx = 1.0;
+        c.anchor = GridBagConstraints.NORTHEAST;
+        view.add(infoLabelText, c);
+        
+        c.gridy = 2;
+        c.gridx = 0;
+        c.gridwidth = 3;
+        c.weightx = 0.0;
+        c.weighty = 1.0;
+        c.anchor = GridBagConstraints.NORTHWEST;
+        c.insets = new Insets(8, 4, 0, 4);
+        view.add(charsLabelText, c);
             
         return view;
 	}
@@ -108,6 +136,7 @@ public class OfferView extends JPanel{
 	
 	public JPanel createCommentView(Offer offer) {
 		JPanel view = new JPanel();
+		view.setBorder(BorderFactory.createTitledBorder("Comments/Ratings."));
 		view.setLayout(new BorderLayout(6, 6));
 		
 		JPanel buttons = new JPanel(new FlowLayout());
@@ -119,8 +148,6 @@ public class OfferView extends JPanel{
 		buttons.add(commentButton);
 		buttons.add(rateButton);
 		
-		
-		view.add(new JLabel("Comments/Rating: "), BorderLayout.NORTH);
 		view.add(buttons, BorderLayout.EAST);
 		view.add(new JScrollPane(createListComments()),
                 BorderLayout.CENTER);

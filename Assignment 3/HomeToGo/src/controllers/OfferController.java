@@ -46,11 +46,11 @@ public class OfferController implements ActionListener {
 			} catch (InvalidCardNumberException e1) {
 				errorMessage("Not valid credit card. You are now unlogged and banned"
 						+ "until the administrator changes it.");
+				/*TODO Poner la pantalla de no loggeado y sacar.*/
 			} catch (OrderRejectedException e1) {
 				errorMessage("You cannot reserve this offer.");
 			}
 
-			System.out.println("Pagamos la oferta.");
 			break;
 
 		case "RESERVE":
@@ -64,7 +64,6 @@ public class OfferController implements ActionListener {
 			} catch (NotAvailableOfferException e) {
 				errorMessage("You cannot reserve this offer.");
 			}
-			System.out.println("Reservamos la oferta.");
 			break;
 
 		case "COMMENT":
@@ -80,7 +79,6 @@ public class OfferController implements ActionListener {
 			}
 
 			offer.postComment((RegisteredUser) logged, comment);
-			System.out.println("Comentamos la oferta. " + comment);
 			break;
 
 		case "RATE":
@@ -100,7 +98,6 @@ public class OfferController implements ActionListener {
 				break;
 			}
 
-			System.out.println("Rateamos la oferta. " + rating);
 			break;
 		}
 
