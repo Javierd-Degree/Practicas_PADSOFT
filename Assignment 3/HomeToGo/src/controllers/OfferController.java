@@ -90,12 +90,13 @@ public class OfferController implements ActionListener {
 			}
 
 			String comment = JOptionPane.showInputDialog(offerView,
-					"Write your comment. It'll be displayed once you enter this window again.");
+					"Write your comment.");
 			if (comment == null || comment.equals("")) {
 				break;
 			}
 
 			offer.postComment((RegisteredUser) logged, comment);
+			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1));
 			break;
 
 		case "RATE":
@@ -105,16 +106,19 @@ public class OfferController implements ActionListener {
 			}
 
 			String rating = JOptionPane.showInputDialog(offerView,
-					"Write your rating as an integer from 0 to 5. It'll be displayed once you enter this window again.");
+					"Write your rating as an integer from 0 to 5.");
 			if (rating == null || rating.equals("")) {
 				break;
 			}
 			
-			if(!isValidRating(rating)) {
+			Integer nRating = stringToInteger(rating);
+			if(nRating == null ||  nRating <= 0 || nRating >= 5) {
 				errorMessage("The rating must be an integer between 0 and 5.");
 				break;
 			}
-
+			
+			offer.postComment((RegisteredUser) logged, nRating);
+			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1));
 			break;
 		}
 
@@ -126,12 +130,11 @@ public class OfferController implements ActionListener {
 		JOptionPane.showMessageDialog(frame, text);
 	}
 
-	public boolean isValidRating(String rating) {
+	public Integer stringToInteger(String rating) {
 		try {
-			int i = Integer.parseInt(rating);
-			return i <= 5 && i >= 0;
+			return Integer.parseInt(rating);
 		} catch (NumberFormatException nfe) {
-			return false;
+			return null;
 		}
 	}
 

@@ -44,6 +44,8 @@ public class OfferView extends JPanel{
     private JButton commentButton;
     private JButton rateButton;
     
+    private JList<Comment> commentJList;
+    
 	public OfferView(Offer offer, int mode) {
 		super();
 		this.offer = offer;
@@ -218,7 +220,7 @@ public class OfferView extends JPanel{
 		buttons.add(rateButton);
 		
 		view.add(buttons, BorderLayout.EAST);
-		view.add(new JScrollPane(createListComments()),
+		view.add(new JScrollPane((commentJList = createListComments())),
                 BorderLayout.CENTER);
 		
 		return view;
@@ -245,6 +247,11 @@ public class OfferView extends JPanel{
         
         return list;
     }
+	
+	public void addComment(Comment c) {
+		DefaultListModel<Comment> model = (DefaultListModel<Comment>) this.commentJList.getModel();
+		model.addElement(c);
+	}
 	
 	public Offer getOffer() {
 		return this.offer;

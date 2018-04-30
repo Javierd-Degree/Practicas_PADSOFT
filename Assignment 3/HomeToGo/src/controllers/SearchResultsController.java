@@ -34,6 +34,9 @@ public class SearchResultsController implements ListSelectionListener {
 
 		Offer o = view.getList().getSelectedValue();
 
+		//TODO Si el modo es HOST_CREATED y la oferta esta pendiente
+		// de cambiarse, ir a dicha ventanad.
+		
 		OfferView v = new OfferView(o, view.getMode());
 		OfferController c = new OfferController(v);
 		v.setController(c);

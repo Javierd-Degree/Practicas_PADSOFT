@@ -10,6 +10,7 @@ import Application.Administrator;
 import Application.Application;
 import User.RegisteredUser;
 import User.UserType;
+import views.BothWindow;
 import views.GuestWindow;
 import views.HostWindow;
 import views.LoginWindow;
@@ -82,7 +83,16 @@ public class LoginController implements ActionListener{
 				
 				host.setVisible(true);
 			}else if(user.getType() == UserType.BOTH) {
+				BothWindow both = new BothWindow(user);
+				BothController cont = new BothController(both);
+				both.setController(cont);
 				
+				SearchView s = new SearchView(true);
+				SearchController controller = new SearchController(s);
+				s.setController(controller);
+				both.setSecondaryView(s);
+				
+				both.setVisible(true);
 			}
 			
 			

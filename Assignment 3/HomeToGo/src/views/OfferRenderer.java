@@ -14,7 +14,6 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
-import Date.ModificableDate;
 import Offer.Offer;
  
 public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
