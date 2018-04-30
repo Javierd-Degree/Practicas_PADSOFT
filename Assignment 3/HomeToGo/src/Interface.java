@@ -1,5 +1,6 @@
 
 import Application.Application;
+import Date.ModificableDate;
 import User.RegisteredUser;
 import controllers.LoginController;
 import controllers.SearchController;
@@ -19,6 +20,7 @@ public class Interface {
 		app.login(app.getUsers().get(1).getId(), app.getUsers().get(1).getPassword());
 		*/
 		
+		ModificableDate.setToday();
 		Application app = Application.getInstance();
 		for(RegisteredUser u: app.getUsers()) {
 			System.out.println("ID: "+u.getId()+", PASS: "+u.getPassword()+", Type: "+u.getType()+", Status: "+u.getStatus());

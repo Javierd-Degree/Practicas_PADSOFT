@@ -14,21 +14,22 @@ import javax.swing.ListCellRenderer;
 import javax.swing.border.EmptyBorder;
 import javax.swing.border.EtchedBorder;
 
+import Date.ModificableDate;
 import Offer.Offer;
  
 public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
  
 	private static final long serialVersionUID = 7468273940233272052L;
-	
-	private boolean logged;
+
+	private int mode;
 	private JLabel nameLabelText;
 	private JLabel charsTitle;
     private JLabel charsLabelText;
     private JTextArea infoLabelText;
  
-    public OfferRenderer(boolean logged) {
+    public OfferRenderer(int mode) {
     	super();
-    	this.logged = logged;
+    	this.mode = mode;
         setLayout(new BorderLayout(2, 2));
         
         nameLabelText = new JLabel();
@@ -64,25 +65,23 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
     public Component getListCellRendererComponent(JList<? extends Offer> list,
     		Offer offer, int index, boolean isSelected, boolean cellHasFocus) {
  
+    	/*If the user is not logged in, or if it is an administrator,
+    	 * he just see the offer name.*/
     	nameLabelText.setText(offer.getName());
     	nameLabelText.setForeground(Color.decode("#82B1FF"));
-    	if(this.logged) {
-    		if(offer.getStatus() == Offer.AVAILABLE) {
-        		nameLabelText.setText(offer.getName()+" (Available)");
-            	nameLabelText.setForeground(Color.decode("#33CC00"));
-        	}else {
-        		nameLabelText.setText(offer.getName()+" (Not available)");
-            	nameLabelText.setForeground(Color.decode("#FF6600"));
-        	}
-    	}
+    	
+    	
+    	OfferView.setOfferNameAndStyle(offer, nameLabelText, this.mode);
     	
     	//System.out.println(offer.getName()+": "+offer.getHouse().getCharacteristics().size());
     	this.charsLabelText.setText(offer.getHouse().getHouseCharsStyled());
     	
-    	this.infoLabelText.setText(offer.getInfo(this.logged));
-    	
-    	
-    	
+    	if(mode != SearchResultsView.NOT_LOGGED) {
+    		this.infoLabelText.setText(offer.getInfo(true));
+    	}else {
+    		this.infoLabelText.setText(offer.getInfo(false));
+    	}
+
     	// set Opaque to change background color of JLabel
     	nameLabelText.setOpaque(true);
     	charsTitle.setOpaque(true);

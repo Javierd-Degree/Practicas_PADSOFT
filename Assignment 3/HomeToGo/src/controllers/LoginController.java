@@ -81,6 +81,8 @@ public class LoginController implements ActionListener{
 				host.setSecondaryView(s);
 				
 				host.setVisible(true);
+			}else if(user.getType() == UserType.BOTH) {
+				
 			}
 			
 			

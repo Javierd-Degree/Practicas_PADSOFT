@@ -162,7 +162,13 @@ public class SearchController implements ActionListener{
 		}
 	
 		/*Once we have the results, we can change the view.*/
-		SearchResultsView v = new SearchResultsView(result, view.getLogged());
+		SearchResultsView v;
+		if(view.getLogged()) {
+			v = new SearchResultsView(result, SearchResultsView.LOGGED_SEARCH);
+		}else {
+			v = new SearchResultsView(result, SearchResultsView.NOT_LOGGED);
+		}
+		
 		SearchResultsController c = new SearchResultsController(v);
 		v.setController(c);
 		Application.getWindow().setSecondaryView(v);

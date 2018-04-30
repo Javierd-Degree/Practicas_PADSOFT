@@ -23,6 +23,7 @@ import javax.swing.border.EmptyBorder;
 import Application.Application;
 import Comment.ChangeComment;
 import Comment.Comment;
+import Date.ModificableDate;
 import Offer.Offer;
 import User.RegisteredUser;
 import controllers.CommentAnswerController;
@@ -32,6 +33,7 @@ public class OfferView extends JPanel{
 	private static final long serialVersionUID = -1542170420708668044L;
 	
 	private Offer offer;
+	private int mode;
 	private JLabel nameLabelText;
 	private JLabel charsTitle;
     private JLabel charsLabelText;
@@ -42,9 +44,10 @@ public class OfferView extends JPanel{
     private JButton commentButton;
     private JButton rateButton;
     
-	public OfferView(Offer offer) {
+	public OfferView(Offer offer, int mode) {
 		super();
 		this.offer = offer;
+		this.mode = mode;
 		
 		setLayout(new BorderLayout(10, 10));
 		add(createOfferView(offer), BorderLayout.CENTER);
@@ -54,7 +57,7 @@ public class OfferView extends JPanel{
 	
 	public JPanel createOfferView(Offer offer) {
 		JPanel view = new JPanel();
-		view.setBorder(BorderFactory.createTitledBorder("Offer information."));
+		view.setBorder(BorderFactory.createTitledBorder("Offer information"));
 		view.setLayout(new GridBagLayout());
 		
         nameLabelText = new JLabel();
@@ -69,13 +72,8 @@ public class OfferView extends JPanel{
         /*Put some margin on the name*/
         nameLabelText.setBorder(new EmptyBorder(12, 0, 0, 0));
         nameLabelText.setFont(nameLabelText.getFont().deriveFont(24.0f));
-        if(offer.getStatus() == Offer.AVAILABLE) {
-    		nameLabelText.setText(offer.getName()+" (Available)");
-        	nameLabelText.setForeground(Color.decode("#33CC00"));
-    	}else {
-    		nameLabelText.setText(offer.getName()+" (Not available)");
-        	nameLabelText.setForeground(Color.decode("#FF6600"));
-    	}
+        setOfferNameAndStyle(offer, nameLabelText, this.mode);
+        
         
         /*We do not want the characteristics text to be bold.*/
         Font f = charsLabelText.getFont();
@@ -97,6 +95,7 @@ public class OfferView extends JPanel{
         charsPanel.add(charsLabelText);
         
         JPanel buttonsPanel = new JPanel(new FlowLayout());
+        /*TODO CAMBIAR POR UN MODO*/
         Object o = Application.getInstance().searchLoggedIn();
         if(this.offer.getStatus() == Offer.RESERVED 
         		&& (o instanceof RegisteredUser) && ((RegisteredUser)o).equals(offer.getGuest())) {
@@ -145,6 +144,62 @@ public class OfferView extends JPanel{
         view.add(buttonsPanel, c);
             
         return view;
+	}
+	
+	public static void setOfferNameAndStyle(Offer offer, JLabel nameLabelText, int mode) {
+		if(mode == SearchResultsView.LOGGED_SEARCH) {
+    		if(offer.getStatus() == Offer.AVAILABLE) {
+        		nameLabelText.setText(offer.getName()+" (Available)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+        	}else {
+        		nameLabelText.setText(offer.getName()+" (Not available)");
+            	nameLabelText.setForeground(Color.decode("#FF6600"));
+        	}
+    		
+    	}else if(mode == SearchResultsView.GUEST_HISTORY) {
+    		if(offer.getStartDate().isBefore(ModificableDate.getModifiableDate())) {
+    			nameLabelText.setText(offer.getName()+" (Passed)");
+            	nameLabelText.setForeground(Color.decode("#FF6600"));
+    		}else if(offer.getStatus() == Offer.RESERVED) {
+    			nameLabelText.setText(offer.getName()+" (Pending payment)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    		}else {
+    			nameLabelText.setText(offer.getName()+" (Paid)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    		}
+    		
+    	}else if(mode == SearchResultsView.HOST_CREATED) {
+    		if(offer.getStatus() == Offer.DENIED) {
+    			nameLabelText.setText(offer.getName()+" (Denied)");
+            	nameLabelText.setForeground(Color.decode("#FF6600"));
+            	
+    		}else if(offer.getStatus() == Offer.WAITING) {
+    			nameLabelText.setText(offer.getName()+" (Waiting)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+            	
+    		}else if(offer.getStatus() == Offer.TO_CHANGE) {
+    			nameLabelText.setText(offer.getName()+" (To change)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+            	
+    		}else if(offer.getStartDate().isBefore(ModificableDate.getModifiableDate())) {
+    			if(offer.getStatus() == Offer.BOUGHT) {
+    				nameLabelText.setText(offer.getName()+" (Passed, sold)");
+                	nameLabelText.setForeground(Color.decode("#FF6600"));
+    			}else {
+    				nameLabelText.setText(offer.getName()+" (Passed, not sold)");
+                	nameLabelText.setForeground(Color.decode("#FF6600"));
+    			}
+    		}else if(offer.getStatus() == Offer.RESERVED) {
+    			nameLabelText.setText(offer.getName()+" (Pending payment)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    		}else if(offer.getStatus() == Offer.BOUGHT){
+    			nameLabelText.setText(offer.getName()+" (Paid)");
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    		}else {
+    			nameLabelText.setText(offer.getName());
+            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    		}
+    	}
 	}
 	
 	

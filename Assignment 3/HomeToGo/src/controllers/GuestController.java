@@ -42,7 +42,7 @@ public class GuestController implements ActionListener{
 				return;
 			}
 			
-			SearchResultsView v = new SearchResultsView(userOffers, true);
+			SearchResultsView v = new SearchResultsView(userOffers, SearchResultsView.GUEST_HISTORY);
 			SearchResultsController c = new SearchResultsController(v);
 			v.setController(c);
 			Application.getWindow().setSecondaryView(v);

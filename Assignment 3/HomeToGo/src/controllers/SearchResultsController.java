@@ -28,13 +28,13 @@ public class SearchResultsController implements ListSelectionListener {
 		
 		/*If the user is not logged, he should not be able
 		 * to see the complete offer.*/
-		if(view.getLogged() == false) {
+		if(view.getMode() == SearchResultsView.NOT_LOGGED) {
 			return;
 		}
 
 		Offer o = view.getList().getSelectedValue();
 
-		OfferView v = new OfferView(o);
+		OfferView v = new OfferView(o, view.getMode());
 		OfferController c = new OfferController(v);
 		v.setController(c);
 		Application.getWindow().setSecondaryView(v);
