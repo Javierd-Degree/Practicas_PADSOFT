@@ -5,13 +5,14 @@ import java.util.List;
 
 import javax.swing.BorderFactory;
 import javax.swing.DefaultListModel;
+import javax.swing.JButton;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.border.EmptyBorder;
-import javax.swing.event.ListSelectionListener;
 
 import Offer.Offer;
+import controllers.SearchResultsController;
 
 public class SearchResultsView extends JPanel{
 	
@@ -20,6 +21,7 @@ public class SearchResultsView extends JPanel{
 	private int mode;
 	private List<Offer> offers;
 	private JList<Offer> offersList;
+	private JButton createOfferButton;
 	
 	public static final int NOT_LOGGED = -1;
 	public static final int LOGGED_SEARCH = 0;
@@ -38,6 +40,13 @@ public class SearchResultsView extends JPanel{
         // Create list and set to scrollpane and add to panel
         add(new JScrollPane((offersList = createListOffers())),
                 BorderLayout.CENTER);
+        
+        createOfferButton = new JButton("Create offer");
+        createOfferButton.setActionCommand("CREATE_OFFER");
+        add(createOfferButton, BorderLayout.SOUTH);
+        if(mode != HOST_CREATED) {
+        	createOfferButton.setVisible(false);
+        }
 	}
  
     private JList<Offer> createListOffers() {
@@ -78,7 +87,8 @@ public class SearchResultsView extends JPanel{
     	return this.offersList;
     }
     
-    public void setController(ListSelectionListener c) {
+    public void setController(SearchResultsController c) {
     	offersList.addListSelectionListener(c);
+    	createOfferButton.addActionListener(c);
 	}
 }

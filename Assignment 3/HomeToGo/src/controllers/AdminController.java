@@ -2,33 +2,31 @@ package controllers;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.List;
 
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
+import Application.Administrator;
 import Application.Application;
-import Offer.Offer;
-import User.RegisteredUser;
-import views.GuestWindow;
+import views.AdminPanelView;
+import views.AdminWindow;
 import views.LoginWindow;
-import views.SearchResultsView;
 import views.SearchView;
 
-public class GuestController implements ActionListener{
+public class AdminController implements ActionListener{
 	
-	GuestWindow window;
+	AdminWindow window;
 	
-	public GuestController(GuestWindow window) {
+	public AdminController(AdminWindow window) {
 		this.window = window;
 	}
 
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		switch(arg0.getActionCommand()) {
-		case "HISTORY":
+		case "CONTROL":
 			Object o = Application.getInstance().searchLoggedIn();
-			if(!(o instanceof RegisteredUser)) {
+			if(!(o instanceof Administrator)) {
 				JOptionPane.showMessageDialog(new JFrame("Error"),
 						"Upps, something bad happened, but anyway, nobody is "
 						+ "perfect. Try again later.", "Error",
@@ -36,17 +34,11 @@ public class GuestController implements ActionListener{
 				return;
 			}
 			
-			List<Offer> userOffers = ((RegisteredUser)o).seeHistory();
-			if(userOffers.size() == 0) {
-				JOptionPane.showMessageDialog(new JFrame("Error"),
-						"You have not bought nor reserved any offer yet.");
-				return;
-			}
-			
-			SearchResultsView v = new SearchResultsView(userOffers, SearchResultsView.GUEST_HISTORY);
-			SearchResultsController c = new SearchResultsController(v);
-			v.setController(c);
-			Application.getWindow().setSecondaryView(v);
+			/*TODO ControlPanelView*/
+			AdminPanelView controlPanel = new AdminPanelView();
+			AdminPanelController panelCont = new AdminPanelController(controlPanel);
+			controlPanel.setControler(panelCont);
+			Application.getWindow().setSecondaryView(controlPanel);
 			
 			break;
 		case "LOGOUT":

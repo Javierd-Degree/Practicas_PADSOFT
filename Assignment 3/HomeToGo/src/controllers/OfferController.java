@@ -111,7 +111,7 @@ public class OfferController implements ActionListener {
 				break;
 			}
 			
-			Integer nRating = stringToInteger(rating);
+			Integer nRating = SearchController.stringToInteger(rating);
 			if(nRating == null ||  nRating <= 0 || nRating >= 5) {
 				errorMessage("The rating must be an integer between 0 and 5.");
 				break;
@@ -128,14 +128,6 @@ public class OfferController implements ActionListener {
 		JFrame frame = new JFrame("Error");
 
 		JOptionPane.showMessageDialog(frame, text);
-	}
-
-	public Integer stringToInteger(String rating) {
-		try {
-			return Integer.parseInt(rating);
-		} catch (NumberFormatException nfe) {
-			return null;
-		}
 	}
 
 }

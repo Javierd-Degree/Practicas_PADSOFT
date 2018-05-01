@@ -1,5 +1,6 @@
 package Application;
 import java.util.List;
+import java.util.Map;
 
 import Date.ModificableDate;
 import Exceptions.DateRangeException;
@@ -238,6 +239,35 @@ public class Application implements Serializable {
 			
 			houses.add(h);
 			return((RegisteredUser) logged).addHouse(h);
+		}
+		return false;	
+	}
+	
+	/**
+	 * Method that creates a new house with its characteristics and adds it to the application's list, and
+	 * into the host's houses list, making sure that the user is not a guest.
+	 * 
+	 * @param id of the new house to add.
+	 * @param chars Characteristics of the house.
+	 * 
+	 * @return boolean to check if the house was correctly added or not.
+	 */
+	public boolean addHouse(String id, Map<String, String> chars) {
+		Object logged = this.searchLoggedIn();
+		if(id != null && logged instanceof RegisteredUser && (
+				((RegisteredUser) logged).getType() != UserType.GUEST)) {
+			
+			House h = new House(id);
+			if(houses.contains(h)) {
+				return false;
+			}
+			
+			for(Map.Entry<String, String> pair: chars.entrySet()) {
+				h.addCharacteristic(pair.getKey(), pair.getValue());
+			}
+			
+			houses.add(h);
+			return ((RegisteredUser) logged).addHouse(h);
 		}
 		return false;	
 	}

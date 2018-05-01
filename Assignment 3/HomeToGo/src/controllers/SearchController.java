@@ -151,7 +151,8 @@ public class SearchController implements ActionListener{
 		if(result == null) {
 			JOptionPane.showMessageDialog(new JFrame("Error"),
 					"Upps, something bad happened, but anyway, nobody is "
-					+ "perfect. Try again later.");
+					+ "perfect. Try again later.", "Error",
+					JOptionPane.ERROR_MESSAGE);
 			return;
 		}
 		
@@ -174,15 +175,23 @@ public class SearchController implements ActionListener{
 		Application.getWindow().setSecondaryView(v);
 	}
 	
-	public Double stringToDouble(String rating) {
+	public static Double stringToDouble(String number) {
 		try {
-			return Double.parseDouble(rating);
+			return Double.parseDouble(number);
 		} catch (NumberFormatException nfe) {
 			return null;
 		}
 	}
 	
-	public LocalDate stringToDate(String date) {
+	public static Integer stringToInteger(String number) {
+		try {
+			return Integer.parseInt(number);
+		} catch (NumberFormatException nfe) {
+			return null;
+		}
+	}
+	
+	public static LocalDate stringToDate(String date) {
 		try {
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("d/MM/yyyy");
 			return LocalDate.parse(date, formatter);

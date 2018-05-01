@@ -85,6 +85,16 @@ public class House implements Serializable{
 	 */
 	@Override
 	public String toString() {
+		return this.id;
+	}
+	
+	/**
+	 * Returns the House as a String
+	 * so that it can be shown.
+	 * 
+	 * @return String with the House's data.
+	 */
+	public String info() {
 		String result = "House with ID: " + this.id + "\n" + this.characteristics;
 		return result;
 	}
@@ -112,7 +122,7 @@ public class House implements Serializable{
 	public String getHouseCharsStyled() {
 		String result = "";
 		for(Map.Entry<String, String> entry: this.characteristics.entrySet()) {
-			result += entry.getKey()+": "+entry.getValue() + "\t";
+			result += entry.getKey()+": "+entry.getValue() + "    ";
 		}
 		return result;
 	}

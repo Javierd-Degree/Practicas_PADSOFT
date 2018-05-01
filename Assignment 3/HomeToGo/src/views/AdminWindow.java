@@ -17,31 +17,27 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 
 import Application.Application;
-import User.RegisteredUser;
 
-public class BothWindow implements WindowInterface{
+public class AdminWindow implements WindowInterface{
 	private JFrame frame;
 	private JPanel login;
-	private JButton createdButton;
-	private JButton historyButton;
+	
+	private JButton controlButton;
 	private JButton logoutButton;
+	
 	private JLabel nameLabelText;
 	private JLabel userImageLabel;
 	private JLabel logoLabelText;
-
-	RegisteredUser user;
 	
-	public BothWindow(RegisteredUser user) {
-		frame = new JFrame("User window");
+	public AdminWindow() {
+		frame = new JFrame("Administrator window");
 		Container cont = frame.getContentPane();
 		cont.setLayout(new BorderLayout());
-		
-		this.user = user;
 		
 		/*Create the login layout*/
 		login = new JPanel();
 		login.setLayout(new GridBagLayout());
-		login.setBorder(BorderFactory.createTitledBorder("User"));
+		login.setBorder(BorderFactory.createTitledBorder("Administrator"));
 		
 		GridBagConstraints c = new GridBagConstraints();
 		c.insets = new Insets(8, 4, 0, 4);
@@ -56,22 +52,19 @@ public class BothWindow implements WindowInterface{
 		c.gridheight = 1;
 		login.add(userImageLabel, c);
 		
-		nameLabelText = new JLabel(user.getName());
+		nameLabelText = new JLabel("Administrator");
 		c.gridy = 1;
 		c.anchor = GridBagConstraints.NORTH;
 		login.add(nameLabelText, c);
 		
 		
 		JPanel buttonPanel = new JPanel(new GridLayout(0, 1, 0, 4));
-		historyButton = new JButton("History");
-		historyButton.setActionCommand("HISTORY");
-		createdButton = new JButton("Created");
-		createdButton.setActionCommand("CREATED");
+		controlButton = new JButton("Control panel");
+		controlButton.setActionCommand("CONTROL");
 		logoutButton = new JButton("Logout");
 		logoutButton.setActionCommand("LOGOUT");
 		
-		buttonPanel.add(createdButton);
-		buttonPanel.add(historyButton);
+		buttonPanel.add(controlButton);
 		buttonPanel.add(logoutButton);
 		
 		c.gridy = 2;
@@ -102,8 +95,7 @@ public class BothWindow implements WindowInterface{
 	}
 	
 	public void setController(ActionListener c) {
-		createdButton.addActionListener(c);
-		historyButton.addActionListener(c);
+		controlButton.addActionListener(c);
 		logoutButton.addActionListener(c);
 	}
 	

@@ -10,6 +10,7 @@ import Application.Administrator;
 import Application.Application;
 import User.RegisteredUser;
 import User.UserType;
+import views.AdminWindow;
 import views.BothWindow;
 import views.GuestWindow;
 import views.HostWindow;
@@ -52,9 +53,17 @@ public class LoginController implements ActionListener{
 			Application.getWindow().delete();
 			Object logged = Application.getInstance().searchLoggedIn();
 			if(logged instanceof Administrator) {
+	
+				AdminWindow admin = new AdminWindow();
+				AdminController cont = new AdminController(admin);
+				admin.setController(cont);
 				
-				//TODO
+				SearchView s = new SearchView(false);
+				SearchController controller = new SearchController(s);
+				s.setController(controller);
+				admin.setSecondaryView(s);
 				
+				admin.setVisible(true);
 				return;
 			}
 			

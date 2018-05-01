@@ -1,4 +1,5 @@
 
+import Application.Administrator;
 import Application.Application;
 import Date.ModificableDate;
 import User.RegisteredUser;
@@ -22,6 +23,12 @@ public class Interface {
 		
 		ModificableDate.setToday();
 		Application app = Application.getInstance();
+		System.out.println("Administrators: ");
+		for(Administrator a: app.getAdmins()) {
+			System.out.println("ID: "+ a.getId() + ", PASS: " +a.getPassword());
+		}
+		
+		System.out.println("\nUsers: ");
 		for(RegisteredUser u: app.getUsers()) {
 			System.out.println("ID: "+u.getId()+", PASS: "+u.getPassword()+", Type: "+u.getType()+", Status: "+u.getStatus());
 		}

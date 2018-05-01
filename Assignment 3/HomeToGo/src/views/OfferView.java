@@ -97,15 +97,17 @@ public class OfferView extends JPanel{
         charsPanel.add(charsLabelText);
         
         JPanel buttonsPanel = new JPanel(new FlowLayout());
-        /*TODO CAMBIAR POR UN MODO*/
-        Object o = Application.getInstance().searchLoggedIn();
-        if(this.offer.getStatus() == Offer.RESERVED 
-        		&& (o instanceof RegisteredUser) && ((RegisteredUser)o).equals(offer.getGuest())) {
-        	payButton.setText("Pay offer");
-        	buttonsPanel.add(payButton);
-        }else if(this.offer.getStatus() == Offer.AVAILABLE) {
-        	buttonsPanel.add(payButton);
-        	buttonsPanel.add(reserveButton);
+        
+        if(this.mode == SearchResultsView.LOGGED_SEARCH || this.mode == SearchResultsView.GUEST_HISTORY) {
+        	Object o = Application.getInstance().searchLoggedIn();
+            if(this.offer.getStatus() == Offer.RESERVED 
+            		&& (o instanceof RegisteredUser) && ((RegisteredUser)o).equals(offer.getGuest())) {
+            	payButton.setText("Pay offer");
+            	buttonsPanel.add(payButton);
+            }else if(this.offer.getStatus() == Offer.AVAILABLE) {
+            	buttonsPanel.add(payButton);
+            	buttonsPanel.add(reserveButton);
+            }
         }
         
         GridBagConstraints c = new GridBagConstraints();

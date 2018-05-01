@@ -11,6 +11,7 @@ import Application.Application;
 import Offer.Offer;
 import User.RegisteredUser;
 import views.BothWindow;
+import views.CreateOfferView;
 import views.LoginWindow;
 import views.SearchResultsView;
 import views.SearchView;
@@ -31,18 +32,23 @@ public class BothController implements ActionListener{
 			if(!(o instanceof RegisteredUser)) {
 				JOptionPane.showMessageDialog(new JFrame("Error"),
 						"Upps, something bad happened, but anyway, nobody is "
-						+ "perfect. Try again later.");
+						+ "perfect. Try again later.", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
 			List<Offer> userOffers = ((RegisteredUser)o).seeOffers();
 			if(userOffers.size() == 0) {
-				JOptionPane.showMessageDialog(new JFrame("Error"),
-						"You have not created any offers yet.");
+				JOptionPane.showMessageDialog(new JFrame("Message"),
+						"You have not created any offers yet. Try to create your first one.");
+				
+				CreateOfferView createOffer = new CreateOfferView((RegisteredUser)o);
+				CreateOfferController controller = new CreateOfferController(createOffer);
+				createOffer.setController(controller);
+				Application.getWindow().setSecondaryView(createOffer);
 				return;
 			}
 			
-			/*TODO HAY QUE CAMBIARLO PARA QUE NO PUEDA COMPRAR ETC*/
 			SearchResultsView vCreated = new SearchResultsView(userOffers, SearchResultsView.HOST_CREATED);
 			SearchResultsController cCreated = new SearchResultsController(vCreated);
 			vCreated.setController(cCreated);
@@ -55,7 +61,8 @@ public class BothController implements ActionListener{
 			if(!(guest instanceof RegisteredUser)) {
 				JOptionPane.showMessageDialog(new JFrame("Error"),
 						"Upps, something bad happened, but anyway, nobody is "
-						+ "perfect. Try again later.");
+						+ "perfect. Try again later.", "Error",
+						JOptionPane.ERROR_MESSAGE);
 				return;
 			}
 			
