@@ -243,6 +243,36 @@ public class CreateOfferController implements ActionListener{
 			}
 
 			break;
+			
+		case "CANCEL_OFFER":
+			Object log = Application.getInstance().searchLoggedIn();
+			if(log instanceof Administrator || ((RegisteredUser)log).getType() == UserType.GUEST) {
+				JOptionPane.showMessageDialog(new JFrame("Error"),
+						"Upps, something bad happened, but anyway, nobody is "
+						+ "perfect. Try again later.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			RegisteredUser hostLogged = (RegisteredUser) log;
+			
+			try {
+				view.getOffer().denyOffer();
+			} catch (NotAvailableOfferException e) {
+				JOptionPane.showMessageDialog(new JFrame("Error"),
+						"You cannot cancel this offer.");
+				return;
+			}
+			
+			JOptionPane.showMessageDialog(new JFrame("Success"),
+					"Your offer was successfully canceled!.");
+			
+			SearchResultsView resultsView2 = new SearchResultsView(hostLogged.seeOffers(), SearchResultsView.HOST_CREATED);
+			SearchResultsController controller2 = new SearchResultsController(resultsView2);
+			resultsView2.setController(controller2);
+			Application.getWindow().setSecondaryView(resultsView2);
+			
+			break;
 		}
 	}
 	

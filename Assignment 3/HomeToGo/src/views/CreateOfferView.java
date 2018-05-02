@@ -50,6 +50,7 @@ public class CreateOfferView extends JPanel{
 	private HintTextField extraPriceTextField;
 	
 	private JButton createButton;
+	private JButton cancelButton;
 	
 	private Offer updatingOffer;
 	
@@ -145,20 +146,27 @@ public class CreateOfferView extends JPanel{
 		
 		createButton = new JButton("Create");
 		createButton.setActionCommand("CREATE_OFFER");
+		cancelButton = new JButton("Cancel offer");
+		cancelButton.setActionCommand("CANCEL_OFFER");
+		cancelButton.setVisible(false);
+		JPanel buttons = new JPanel(new FlowLayout());
+		buttons.add(cancelButton);
+		buttons.add(createButton);
+		
 		c.gridx = 3;
 		c.gridy = 3;
 		c.weightx = 1;
 		c.weighty = 1;
 		c.fill = GridBagConstraints.NONE;
 		c.anchor = GridBagConstraints.SOUTHEAST;
-		add(createButton, c);
+		add(buttons, c);
 	}
 	
 	
 	/*If the offer is already created but it needs some changes, we use this screen.*/
 	public CreateOfferView(RegisteredUser user, Offer offer) {
 		this(user);
-		
+
 		/*We use the first cell to show the admin comments.*/
 		GridBagConstraints c = new GridBagConstraints();
 		
@@ -210,8 +218,10 @@ public class CreateOfferView extends JPanel{
 			endTextField.setText(((HolidayOffer) offer).getEndDate().format(DateTimeFormatter.ofPattern("d/MM/yyyy")));
 			extraPriceTextField.setText(((HolidayOffer) offer).getTotalPrice()+"");
 		}
+		
 		createButton.setText("Update");
 		createButton.setActionCommand("UPDATE_OFFER");
+		cancelButton.setVisible(true);
 	}
 	
 	public void setOfferType(String command) {
@@ -234,6 +244,7 @@ public class CreateOfferView extends JPanel{
 		addHouseButton.addActionListener(c);
 		houseAddCharButton.addActionListener(c);
 		createButton.addActionListener(c);
+		cancelButton.addActionListener(c);
 	}
 	
 	public void clearCharacteristic() {
