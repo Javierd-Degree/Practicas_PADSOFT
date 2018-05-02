@@ -35,20 +35,20 @@ public class OfferController implements ActionListener {
 
 		case "PAY":
 			if (!(logged instanceof RegisteredUser)) {
-				errorMessage("An administrator cannot buy offers.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "An administrator cannot buy offers.");
 				return;
 			}
 
 			try {
 				offer.buyOffer((RegisteredUser) logged, "Buy offer");
 			} catch (FailedInternetConnectionException e1) {
-				errorMessage("No internet connection available.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "No internet connection available.");
 				return;
 			} catch (NotAvailableOfferException e1) {
-				errorMessage("You cannot buy this offer.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "You cannot buy this offer.");
 				return;
 			} catch (InvalidCardNumberException e1) {
-				errorMessage("Not valid credit card. You are now unlogged and banned "
+				JOptionPane.showMessageDialog(new JFrame("Error"), "Not valid credit card. You are now unlogged and banned "
 						+ "until the administrator changes it.");
 				
 				Application.getInstance().logout();
@@ -67,7 +67,7 @@ public class OfferController implements ActionListener {
 				login.setVisible(true);
 				return;
 			} catch (OrderRejectedException e1) {
-				errorMessage("You cannot reserve this offer.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "You cannot reserve this offer.");
 				return;
 			}
 			
@@ -78,14 +78,14 @@ public class OfferController implements ActionListener {
 
 		case "RESERVE":
 			if (!(logged instanceof RegisteredUser)) {
-				errorMessage("An administrator cannot reserve offers.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "An administrator cannot reserve offers.");
 				return;
 			}
 
 			try {
 				offer.reserveOffer((RegisteredUser) logged);
 			} catch (NotAvailableOfferException e) {
-				errorMessage("You cannot reserve this offer.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "You cannot reserve this offer.");
 				return;
 			}
 			
@@ -96,7 +96,7 @@ public class OfferController implements ActionListener {
 
 		case "COMMENT":
 			if (!(logged instanceof RegisteredUser)) {
-				errorMessage("An administrator cannot comment offers.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "An administrator cannot comment offers.");
 				return;
 			}
 
@@ -112,7 +112,7 @@ public class OfferController implements ActionListener {
 
 		case "RATE":
 			if (!(logged instanceof RegisteredUser)) {
-				errorMessage("An administrator cannot rate offers.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "An administrator cannot rate offers.");
 				return;
 			}
 
@@ -124,7 +124,7 @@ public class OfferController implements ActionListener {
 			
 			Integer nRating = SearchController.stringToInteger(rating);
 			if(nRating == null ||  nRating <= 0 || nRating >= 5) {
-				errorMessage("The rating must be an integer between 0 and 5.");
+				JOptionPane.showMessageDialog(new JFrame("Error"), "The rating must be an integer between 0 and 5.");
 				return;
 			}
 			
@@ -134,11 +134,4 @@ public class OfferController implements ActionListener {
 		}
 
 	}
-
-	public void errorMessage(String text) {
-		JFrame frame = new JFrame("Error");
-
-		JOptionPane.showMessageDialog(frame, text);
-	}
-
 }
