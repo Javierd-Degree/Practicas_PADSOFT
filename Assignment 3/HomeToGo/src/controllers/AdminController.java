@@ -34,7 +34,6 @@ public class AdminController implements ActionListener{
 				return;
 			}
 			
-			/*TODO ControlPanelView*/
 			AdminPanelView controlPanel = new AdminPanelView();
 			AdminPanelController panelCont = new AdminPanelController(controlPanel);
 			controlPanel.setControler(panelCont);
@@ -56,6 +55,7 @@ public class AdminController implements ActionListener{
 			login.setSecondaryView(s);
 			
 			login.setVisible(true);
+			break;
 			
 		}
 		

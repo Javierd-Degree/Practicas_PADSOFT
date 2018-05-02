@@ -36,7 +36,7 @@ public class OfferController implements ActionListener {
 		case "PAY":
 			if (!(logged instanceof RegisteredUser)) {
 				errorMessage("An administrator cannot buy offers.");
-				break;
+				return;
 			}
 
 			try {
@@ -73,7 +73,7 @@ public class OfferController implements ActionListener {
 		case "RESERVE":
 			if (!(logged instanceof RegisteredUser)) {
 				errorMessage("An administrator cannot reserve offers.");
-				break;
+				return;
 			}
 
 			try {
@@ -86,39 +86,39 @@ public class OfferController implements ActionListener {
 		case "COMMENT":
 			if (!(logged instanceof RegisteredUser)) {
 				errorMessage("An administrator cannot comment offers.");
-				break;
+				return;
 			}
 
 			String comment = JOptionPane.showInputDialog(offerView,
 					"Write your comment.");
 			if (comment == null || comment.equals("")) {
-				break;
+				return;
 			}
 
 			offer.postComment((RegisteredUser) logged, comment);
-			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1));
+			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1), true);
 			break;
 
 		case "RATE":
 			if (!(logged instanceof RegisteredUser)) {
 				errorMessage("An administrator cannot rate offers.");
-				break;
+				return;
 			}
 
 			String rating = JOptionPane.showInputDialog(offerView,
 					"Write your rating as an integer from 0 to 5.");
 			if (rating == null || rating.equals("")) {
-				break;
+				return;
 			}
 			
 			Integer nRating = SearchController.stringToInteger(rating);
 			if(nRating == null ||  nRating <= 0 || nRating >= 5) {
 				errorMessage("The rating must be an integer between 0 and 5.");
-				break;
+				return;
 			}
 			
 			offer.postComment((RegisteredUser) logged, nRating);
-			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1));
+			offerView.addComment(offer.getComments().get(offer.getComments().size() - 1), true);
 			break;
 		}
 

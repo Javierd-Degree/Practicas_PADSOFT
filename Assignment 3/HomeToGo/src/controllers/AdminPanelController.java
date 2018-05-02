@@ -15,7 +15,22 @@ public class AdminPanelController implements ActionListener{
 	
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
-		// TODO Auto-generated method stub
+		switch(arg0.getActionCommand()) {
+		case "APPROVE":
+			System.out.println("Aprovamos la oferta");
+			
+			break;
+		case "ASK_CHANGES":
+			System.out.println("Queremos cambios. REVOLUSIO");
+			
+			break;
+			
+		case "DENY":
+			System.out.println("Denegamos la oferta");
+			
+			break;
+			
+		}
 		
 	}
 

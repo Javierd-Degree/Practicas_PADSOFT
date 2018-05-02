@@ -38,7 +38,8 @@ public class SearchResultsController implements ListSelectionListener,
 		
 		/*If the user is not logged, he should not be able
 		 * to see the complete offer.*/
-		if(view.getMode() == SearchResultsView.NOT_LOGGED) {
+		if(view.getMode() == SearchResultsView.NOT_LOGGED
+				|| view.getMode() == SearchResultsView.ADMINISTRATOR) {
 			return;
 		}
 

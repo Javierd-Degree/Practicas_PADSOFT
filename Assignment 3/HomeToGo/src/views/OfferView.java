@@ -2,6 +2,7 @@ package views;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -11,10 +12,9 @@ import java.awt.Insets;
 import java.awt.event.ActionListener;
 
 import javax.swing.BorderFactory;
-import javax.swing.DefaultListModel;
+import javax.swing.BoxLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
@@ -26,7 +26,7 @@ import Comment.Comment;
 import Date.ModificableDate;
 import Offer.Offer;
 import User.RegisteredUser;
-import controllers.CommentAnswerController;
+import controllers.CommentCellController;
 
 public class OfferView extends JPanel{
 
@@ -44,7 +44,8 @@ public class OfferView extends JPanel{
     private JButton commentButton;
     private JButton rateButton;
     
-    private JList<Comment> commentJList;
+    JPanel comments;
+    JScrollPane commentScroll;
     
 	public OfferView(Offer offer, int mode) {
 		super();
@@ -206,9 +207,10 @@ public class OfferView extends JPanel{
     	}
 	}
 	
-	
 	public JPanel createCommentView(Offer offer) {
 		JPanel view = new JPanel();
+		view.setMaximumSize(new Dimension(1280, 280));
+		view.setPreferredSize(new Dimension(1280, 280));
 		view.setBorder(BorderFactory.createTitledBorder("Comments/Ratings."));
 		view.setLayout(new BorderLayout(6, 6));
 		
@@ -222,37 +224,31 @@ public class OfferView extends JPanel{
 		buttons.add(rateButton);
 		
 		view.add(buttons, BorderLayout.EAST);
-		view.add(new JScrollPane((commentJList = createListComments())),
-                BorderLayout.CENTER);
+		
+		//comments = new JPanel(new GridLayout(0, 1));
+		comments = new JPanel();
+		comments.setLayout(new BoxLayout(comments, BoxLayout.Y_AXIS));
+		for(Comment c: this.offer.getComments()) {
+        	if(!(c instanceof ChangeComment)) {
+        		addComment(c, false);
+        	}
+        }
+		
+		commentScroll = new JScrollPane(comments);
+		commentScroll.setMaximumSize(new Dimension(100, 100));
+		view.add(commentScroll, BorderLayout.CENTER);
 		
 		return view;
 	}
 	
-	private JList<Comment> createListComments() {
-        // Create List model
-        DefaultListModel<Comment> model = new DefaultListModel<>();
-        // Add item to model
-        for(Comment c: this.offer.getComments()) {
-        	if(!(c instanceof ChangeComment)) {
-        		model.addElement(c);
-        	}
-        }
-        // Create JList with model
-        JList<Comment> list = new JList<>(model);
-        
-        // Set cell renderer 
-        CommentRenderer customRenderer = new CommentRenderer(this.offer);
-        list.setCellRenderer(customRenderer);
-        
-        CommentAnswerController controller = new CommentAnswerController(customRenderer);
-        customRenderer.setController(controller);
-        
-        return list;
-    }
-	
-	public void addComment(Comment c) {
-		DefaultListModel<Comment> model = (DefaultListModel<Comment>) this.commentJList.getModel();
-		model.addElement(c);
+	public void addComment(Comment c, boolean update) {
+		CommentCellView v = new CommentCellView(c, this.offer, comments);
+		CommentCellController cont = new CommentCellController(v);
+		v.setController(cont);
+		comments.add(v);
+		if(update) {
+			comments.revalidate();
+		}
 	}
 	
 	public Offer getOffer() {

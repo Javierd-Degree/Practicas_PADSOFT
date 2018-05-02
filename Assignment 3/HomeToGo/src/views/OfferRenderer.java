@@ -3,9 +3,12 @@ package views;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
+import java.awt.event.ActionListener;
 
+import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JPanel;
@@ -25,6 +28,11 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
 	private JLabel charsTitle;
     private JLabel charsLabelText;
     private JTextArea infoLabelText;
+    
+    private JPanel adminPanel;
+    private JButton approveButton;
+    private JButton denyButton;
+    private JButton askChangesButton;
  
     public OfferRenderer(int mode) {
     	super();
@@ -55,8 +63,25 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         charsPanel.add(charsTitle);
         charsPanel.add(charsLabelText);
         
+        adminPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 10, 8));
+        approveButton = new JButton("Approve offer");
+        approveButton.setActionCommand("APPROVE");
+        askChangesButton = new JButton("Ask for changes");
+        askChangesButton.setActionCommand("ASK_CHANGES");
+        denyButton = new JButton("Deny offer");
+        denyButton.setActionCommand("DENY");
+        adminPanel.add(approveButton);
+        adminPanel.add(askChangesButton);
+        adminPanel.add(denyButton);
+        
+        JPanel down = new JPanel(new GridLayout(0, 1));
+        down.add(charsPanel);
+        if(mode == SearchResultsView.ADMINISTRATOR) {
+        	down.add(adminPanel);
+        }
+        
         add(nameLabelText, BorderLayout.NORTH);
-        add(charsPanel, BorderLayout.SOUTH);
+        add(down, BorderLayout.SOUTH);
         add(infoLabelText, BorderLayout.EAST);
     }
  
@@ -86,6 +111,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
     	charsTitle.setOpaque(true);
     	charsLabelText.setOpaque(true);
     	infoLabelText.setOpaque(true);
+    	adminPanel.setOpaque(true);
      
         // when select item
         if (isSelected) {
@@ -93,12 +119,14 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         	charsTitle.setBackground(list.getSelectionBackground());
         	charsLabelText.setBackground(list.getSelectionBackground());
         	infoLabelText.setBackground(list.getSelectionBackground());
+        	adminPanel.setBackground(list.getSelectionBackground());
             setBackground(list.getSelectionBackground());
         } else { // when don't select
         	nameLabelText.setBackground(list.getBackground());
         	charsTitle.setBackground(list.getBackground());
         	charsLabelText.setBackground(list.getBackground());
         	infoLabelText.setBackground(list.getBackground());
+        	adminPanel.setBackground(list.getBackground());
             setBackground(list.getBackground());
         }
         
@@ -106,5 +134,11 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         this.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
  
         return this;
+    }
+    
+    public void setAdminController(ActionListener c) {
+    	this.approveButton.addActionListener(c);
+    	this.denyButton.addActionListener(c);
+    	this.askChangesButton.addActionListener(c);
     }
 }

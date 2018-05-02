@@ -397,7 +397,7 @@ public abstract class Offer implements Serializable{
 	 * @return false if the answerTo comment was not in the offer, true otherwise.
 	 */
 	public boolean postComment(RegisteredUser user, String text, TextComment answerTo) {
-		if(answerTo == null || !this.comments.contains(answerTo)) {
+		if(answerTo == null) {
 			return false;
 		}
 		

@@ -57,6 +57,15 @@ public class TextComment extends Comment implements Serializable{
 	}
 	
 	/**
+	 * Method that returns the list of answers to the comment.
+	 * 
+	 * @return List with the answers.
+	 */
+	public List<TextComment> getAnswers(){
+		return this.answers;
+	}
+	
+	/**
 	 * Method that returns the name of the user who posted
 	 * the comment.
 	 * @return String with a user name.

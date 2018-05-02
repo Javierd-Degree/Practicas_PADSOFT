@@ -1,6 +1,7 @@
 package views;
 
 import java.awt.BorderLayout;
+import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -22,6 +23,8 @@ public class SearchResultsView extends JPanel{
 	private List<Offer> offers;
 	private JList<Offer> offersList;
 	private JButton createOfferButton;
+	
+	private OfferRenderer offerRenderer;
 	
 	public static final int NOT_LOGGED = -1;
 	public static final int LOGGED_SEARCH = 0;
@@ -75,7 +78,8 @@ public class SearchResultsView extends JPanel{
         // Create JList with model
         JList<Offer> list = new JList<Offer>(model);
         // Set cell renderer 
-        list.setCellRenderer(new OfferRenderer(this.mode));
+        offerRenderer = new OfferRenderer(this.mode);
+        list.setCellRenderer(offerRenderer);
         return list;
     }
     
@@ -91,4 +95,8 @@ public class SearchResultsView extends JPanel{
     	offersList.addListSelectionListener(c);
     	createOfferButton.addActionListener(c);
 	}
+    
+    public void setAdminButtonsController(ActionListener e) {
+    	offerRenderer.setAdminController(e);
+    }
 }
