@@ -6,6 +6,8 @@ import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
 import java.awt.event.ActionListener;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -15,8 +17,14 @@ import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
+import javax.swing.JTextArea;
 
+import Comment.ChangeComment;
+import Comment.Comment;
 import House.House;
+import Offer.HolidayOffer;
+import Offer.LivingOffer;
+import Offer.Offer;
 import User.RegisteredUser;
 import components.HintTextField;
 
@@ -29,6 +37,7 @@ public class CreateOfferView extends JPanel{
 	private ButtonGroup group;
 	
 	private JComboBox<House> houseComboBox;
+	private JLabel newHouseLabel;
 	private HintTextField houseIdTextField;
 	private HintTextField houseCharTextField;
 	private HintTextField houseValueCharTextField;
@@ -41,6 +50,10 @@ public class CreateOfferView extends JPanel{
 	private HintTextField extraPriceTextField;
 	
 	private JButton createButton;
+	
+	private Offer updatingOffer;
+	
+	public final static String newHouseString = "- New house -";
 	
 	public CreateOfferView(RegisteredUser host) {
 		super();
@@ -78,11 +91,15 @@ public class CreateOfferView extends JPanel{
 		JPanel housePanel = new JPanel(new GridLayout(0, 1));
 		housePanel.setBorder(BorderFactory.createTitledBorder("House"));
 		housePanel.add(new JLabel("Select house:"));
-		List<House> houses = host.getCreatedHouses();
+		List<House> houses = new ArrayList<>(host.getCreatedHouses());
+		houses.add(new House(newHouseString));
 		houseComboBox = new JComboBox<House>(houses.toArray(new House[houses.size()]));
+		houseComboBox.setActionCommand("HOUSE_SELECTED");
 		housePanel.add(houseComboBox);
 		
-		housePanel.add(new JLabel("Create new house:"));
+		
+		newHouseLabel = new JLabel("Create new house:");
+		housePanel.add(newHouseLabel);
 		houseIdTextField = new HintTextField("House id", 12);
 		houseCharTextField = new HintTextField("Characteristic", 12);
 		houseValueCharTextField = new HintTextField("Value", 12);
@@ -97,6 +114,10 @@ public class CreateOfferView extends JPanel{
 		housePanel.add(charPanel);
 		housePanel.add(houseAddCharButton);
 		housePanel.add(addHouseButton);
+		
+		if(!((House)houseComboBox.getSelectedItem()).getId().equals(newHouseString)) {
+			housePanelMode(false);
+		}
 		
 		c.gridx = 2;
 		add(housePanel, c);
@@ -133,6 +154,66 @@ public class CreateOfferView extends JPanel{
 		add(createButton, c);
 	}
 	
+	
+	/*If the offer is already created but it needs some changes, we use this screen.*/
+	public CreateOfferView(RegisteredUser user, Offer offer) {
+		this(user);
+		
+		/*We use the first cell to show the admin comments.*/
+		GridBagConstraints c = new GridBagConstraints();
+		
+		c.insets = new Insets(0, 10, 10 ,10);
+		c.gridx = 0;
+		c.gridy = 1;
+		c.anchor = GridBagConstraints.NORTHWEST;
+		c.fill = GridBagConstraints.BOTH;
+		c.weightx = 0.0;
+		c.weighty = 0;
+		
+		JTextArea adminComments = new JTextArea();
+		adminComments.setOpaque(false);
+		adminComments.setEditable(false);
+		String comments =  "";
+		for(Comment comment: offer.getComments()) {
+			if(comment instanceof ChangeComment) {
+				comments += "-" + comment.getComment() + "\n";
+			}
+		}
+		
+		adminComments.setText(comments);
+		JPanel adminCommentsPanel = new JPanel(new FlowLayout());
+		adminCommentsPanel.add(adminComments);
+		adminCommentsPanel.setBorder(BorderFactory.createTitledBorder("Administrator comments"));
+		if(offer.getStatus() == Offer.TO_CHANGE) {
+			add(adminCommentsPanel, c);
+		}
+		
+		
+		this.updatingOffer = offer;
+		startDateTextField.setText(offer.getStartDate().format(DateTimeFormatter.ofPattern("d/MM/yyyy")));
+		depositTextField.setText(""+offer.getDeposit());
+		houseComboBox.setSelectedItem(offer.getHouse());
+		if(offer instanceof LivingOffer) {
+			setOfferType(livingRadioButton.getActionCommand());
+			livingRadioButton.setSelected(true);
+			livingRadioButton.setEnabled(false);
+			holidayRadioButton.setEnabled(false);
+			
+			endTextField.setText(((LivingOffer) offer).getNumberMonths()+"");
+			extraPriceTextField.setText(((LivingOffer) offer).getPricePerMonth()+"");
+		}else if(offer instanceof HolidayOffer) {
+			setOfferType(holidayRadioButton.getActionCommand());
+			holidayRadioButton.setSelected(true);
+			livingRadioButton.setEnabled(false);
+			holidayRadioButton.setEnabled(false);
+			
+			endTextField.setText(((HolidayOffer) offer).getEndDate().format(DateTimeFormatter.ofPattern("d/MM/yyyy")));
+			extraPriceTextField.setText(((HolidayOffer) offer).getTotalPrice()+"");
+		}
+		createButton.setText("Update");
+		createButton.setActionCommand("UPDATE_OFFER");
+	}
+	
 	public void setOfferType(String command) {
 		extraPriceTextField.setText("");
 		endTextField.setText("");
@@ -147,6 +228,7 @@ public class CreateOfferView extends JPanel{
 	}
 	
 	public void setController(ActionListener c) {
+		houseComboBox.addActionListener(c);
 		holidayRadioButton.addActionListener(c);
 		livingRadioButton.addActionListener(c);
 		addHouseButton.addActionListener(c);
@@ -164,8 +246,27 @@ public class CreateOfferView extends JPanel{
 		this.houseIdTextField.setText("");
 	}
 	
+	public void housePanelMode(boolean b) {
+		addHouseButton.setEnabled(b);
+		houseIdTextField.setEnabled(b);
+		if(b) {
+			newHouseLabel.setText("Create new house:");
+		}else {
+			newHouseLabel.setText("Add characteristics to selected house.");
+		}
+	}
+	
+	public boolean getHousePanelMode() {
+		return addHouseButton.isEnabled();
+	}
+	
+	public Offer getOffer() {
+		return this.updatingOffer;
+	}
+	
 	public void addHouseToList(House h) {
 		houseComboBox.addItem(h);
+		houseComboBox.setSelectedItem(h);
 	}
 	
 	public String getSelected() {

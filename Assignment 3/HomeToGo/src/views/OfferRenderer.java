@@ -6,7 +6,6 @@ import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.GridLayout;
-import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JLabel;
@@ -43,6 +42,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         charsTitle = new JLabel("Characteristics: ");
         charsLabelText = new JLabel();
         infoLabelText = new JTextArea();
+        infoLabelText.setEditable(false);
         
         /*Put some margin on the name*/
         nameLabelText.setBorder(new EmptyBorder(12, 0, 0, 0));
@@ -134,11 +134,5 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         this.setBorder(new EtchedBorder(EtchedBorder.LOWERED));
  
         return this;
-    }
-    
-    public void setAdminController(ActionListener c) {
-    	this.approveButton.addActionListener(c);
-    	this.denyButton.addActionListener(c);
-    	this.askChangesButton.addActionListener(c);
     }
 }

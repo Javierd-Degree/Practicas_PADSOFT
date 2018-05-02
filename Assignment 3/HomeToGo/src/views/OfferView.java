@@ -174,7 +174,7 @@ public class OfferView extends JPanel{
     		}
     		
     	}else if(mode == SearchResultsView.HOST_CREATED) {
-    		if(offer.getStatus() == Offer.DENIED) {
+    		if(offer.getStatus() == Offer.DENIED || offer.getStatus() == Offer.NOT_AVAILABLE) {
     			nameLabelText.setText(offer.getName()+" (Denied)");
             	nameLabelText.setForeground(Color.decode("#FF6600"));
             	
@@ -196,10 +196,10 @@ public class OfferView extends JPanel{
     			}
     		}else if(offer.getStatus() == Offer.RESERVED) {
     			nameLabelText.setText(offer.getName()+" (Pending payment)");
-            	nameLabelText.setForeground(Color.decode("#33CC00"));
+            	nameLabelText.setForeground(Color.decode("#FF6600"));
     		}else if(offer.getStatus() == Offer.BOUGHT){
-    			nameLabelText.setText(offer.getName()+" (Paid)");
-            	nameLabelText.setForeground(Color.decode("#33CC00"));
+    			nameLabelText.setText(offer.getName()+" (Sold)");
+            	nameLabelText.setForeground(Color.decode("#FF6600"));
     		}else {
     			nameLabelText.setText(offer.getName());
             	nameLabelText.setForeground(Color.decode("#33CC00"));
@@ -253,6 +253,16 @@ public class OfferView extends JPanel{
 	
 	public Offer getOffer() {
 		return this.offer;
+	}
+	
+	public void hidePayButton() {
+		this.payButton.setVisible(false);
+		this.repaint();
+	}
+	
+	public void hideReserveButton() {
+		this.reserveButton.setVisible(false);
+		this.repaint();
 	}
 	
 	public void setController(ActionListener c) {

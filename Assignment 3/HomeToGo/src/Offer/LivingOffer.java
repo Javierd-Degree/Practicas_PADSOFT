@@ -20,6 +20,7 @@ public class LivingOffer extends Offer implements Serializable{
 	private static final long serialVersionUID = 6202450079263161446L;
 	private double pricePerMonth;
 	private int nMonths;
+	public final static int defaultNMonths =  5;
 	
 	/**
 	 * Constructor of the LivingOffer class with five months for the offer.
@@ -33,7 +34,8 @@ public class LivingOffer extends Offer implements Serializable{
 	public LivingOffer(double deposit, LocalDate startDate, RegisteredUser host, House house, double pricePerMonth) {
 		super(deposit, startDate, host, house);
 		this.pricePerMonth = pricePerMonth;
-		this.nMonths = 5;
+		/*DO NOT CHANGE THIS VALUE, otherwise, you need to modifify the add method in Application.*/
+		this.nMonths = defaultNMonths;
 	}
 	
 	/**
@@ -67,7 +69,7 @@ public class LivingOffer extends Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setPricePerMonth(double d) throws NotAvailableOfferException {
-		if(this.getStatus() != TO_CHANGE) {
+		if(this.getStatus() != TO_CHANGE && this.getStatus() != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -83,7 +85,7 @@ public class LivingOffer extends Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setNumberMonths(int n) throws NotAvailableOfferException {
-		if(this.getStatus() != TO_CHANGE) {
+		if(this.getStatus() != TO_CHANGE && this.getStatus() != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -118,12 +120,30 @@ public class LivingOffer extends Offer implements Serializable{
 	}
 	
 	/**
-	 * Return the total price of a holiday offer.
+	 * Return the total price of a living offer.
 	 * 
 	 * @return double with the total price the user needs to pay.
 	 */
 	public double getPrice() {
 		return this.pricePerMonth + this.getDeposit();
+	}
+	
+	/**
+	 * Returns the price per month of a living offer.
+	 * 
+	 * @return offer's price per month.
+	 */
+	public double getPricePerMonth() {
+		return this.pricePerMonth;
+	}
+	
+	/**
+	 * Returns the number of months of a living offer.
+	 * 
+	 * @return number of months.
+	 */
+	public int getNumberMonths() {
+		return this.nMonths;
 	}
 	
 	/**

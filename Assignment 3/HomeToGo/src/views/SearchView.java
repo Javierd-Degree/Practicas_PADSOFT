@@ -10,9 +10,6 @@ import javax.swing.JButton;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 
-import Application.Application;
-import User.RegisteredUser;
-import User.UserType;
 import components.HintTextField;
 
 public class SearchView extends JPanel{
@@ -99,9 +96,7 @@ public class SearchView extends JPanel{
 		group.add(reservedRadioButton);
 		group.add(bookedRadioButton);
 		
-		Object o = Application.getInstance().searchLoggedIn();
-		if(!loggedUser || 
-				(o != null && o instanceof RegisteredUser && ((RegisteredUser)o).getType() != UserType.GUEST)) {
+		if(!loggedUser) {
 			ratingRadioButton.setEnabled(false);
 			reservedRadioButton.setEnabled(false);
 			bookedRadioButton.setEnabled(false);

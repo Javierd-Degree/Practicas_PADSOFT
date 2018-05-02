@@ -43,8 +43,10 @@ public class OfferController implements ActionListener {
 				offer.buyOffer((RegisteredUser) logged, "Buy offer");
 			} catch (FailedInternetConnectionException e1) {
 				errorMessage("No internet connection available.");
+				return;
 			} catch (NotAvailableOfferException e1) {
 				errorMessage("You cannot buy this offer.");
+				return;
 			} catch (InvalidCardNumberException e1) {
 				errorMessage("Not valid credit card. You are now unlogged and banned "
 						+ "until the administrator changes it.");
@@ -63,11 +65,15 @@ public class OfferController implements ActionListener {
 				login.setSecondaryView(s);
 				
 				login.setVisible(true);
-				
+				return;
 			} catch (OrderRejectedException e1) {
 				errorMessage("You cannot reserve this offer.");
+				return;
 			}
-
+			
+			offerView.hideReserveButton();
+			offerView.hidePayButton();
+			JOptionPane.showMessageDialog(new JFrame("Congraturations"), "You have just bought the offer.");
 			break;
 
 		case "RESERVE":
@@ -80,7 +86,12 @@ public class OfferController implements ActionListener {
 				offer.reserveOffer((RegisteredUser) logged);
 			} catch (NotAvailableOfferException e) {
 				errorMessage("You cannot reserve this offer.");
+				return;
 			}
+			
+			offerView.hideReserveButton();
+			JOptionPane.showMessageDialog(new JFrame("Congraturations"), "You have just reserved the offer.\n"
+					+ "Now you have up to five days to pay it.");
 			break;
 
 		case "COMMENT":

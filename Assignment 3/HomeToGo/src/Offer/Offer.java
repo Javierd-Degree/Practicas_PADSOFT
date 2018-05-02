@@ -72,6 +72,10 @@ public abstract class Offer implements Serializable{
 	 * @return true if it's valid, false otherwise.
 	 */
 	public boolean isValid(LocalDate todayDate) {
+		if(this.status == NOT_AVAILABLE) {
+			return false;
+		}
+		
 		/*The host has not made the necessary changes*/
 		if(this.status == TO_CHANGE && lastModifiedDate.plusDays(5).isBefore(todayDate)) {
 			/*The offer is denied and deleted if needed on Application*/
@@ -106,7 +110,7 @@ public abstract class Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setStartDate(LocalDate l) throws NotAvailableOfferException {
-		if(this.status != TO_CHANGE) {
+		if(this.status != TO_CHANGE && this.status != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -123,7 +127,7 @@ public abstract class Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setDeposit(double d) throws NotAvailableOfferException {
-		if(this.status != TO_CHANGE) {
+		if(this.status != TO_CHANGE && this.status != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -140,7 +144,7 @@ public abstract class Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setHouse(House h) throws NotAvailableOfferException {
-		if(this.status != TO_CHANGE) {
+		if(this.status != TO_CHANGE && this.status != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -186,7 +190,7 @@ public abstract class Offer implements Serializable{
 	 * If it was already approved, we just exit the function,
 	 * in order to avoid a silly exception.
 	 * 
-	 * @throws NotAvailableOfferException if the offer can't be denied
+	 * @throws NotAvailableOfferException if the offer can't be approved
 	 * because it is already approved/reserved/bought.
 	 */
 	public void approveOffer() throws NotAvailableOfferException {

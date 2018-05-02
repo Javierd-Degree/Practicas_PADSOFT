@@ -52,7 +52,7 @@ public class HolidayOffer extends Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setEndDate(LocalDate d) throws NotAvailableOfferException {
-		if(this.getStatus() != TO_CHANGE) {
+		if(this.getStatus() != TO_CHANGE && this.getStatus() != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -68,7 +68,7 @@ public class HolidayOffer extends Offer implements Serializable{
 	 * @throws NotAvailableOfferException If the offer is not waiting to be changed.
 	 */
 	public void setTotalPrice(double t) throws NotAvailableOfferException {
-		if(this.getStatus() != TO_CHANGE) {
+		if(this.getStatus() != TO_CHANGE && this.getStatus() != WAITING) {
 			throw new NotAvailableOfferException();
 		}
 		
@@ -116,6 +116,14 @@ public class HolidayOffer extends Offer implements Serializable{
 	 */
 	public double getPrice() {
 		return this.totalPrice + this.getDeposit();
+	}
+	
+	/**
+	 * Returns the offer's price for the stance, without the deposit.
+	 * @return offer's total price without the deposit.
+	 */
+	public double getTotalPrice() {
+		return this.totalPrice;
 	}
 	
 	/**

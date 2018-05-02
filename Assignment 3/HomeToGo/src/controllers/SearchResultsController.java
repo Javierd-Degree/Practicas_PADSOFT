@@ -44,9 +44,25 @@ public class SearchResultsController implements ListSelectionListener,
 		}
 
 		Offer o = view.getList().getSelectedValue();
-
-		//TODO Si el modo es HOST_CREATED y la oferta esta pendiente
-		// de cambiarse, ir a la ventana de crear, con los datos puestos.
+		
+		if(view.getMode() == SearchResultsView.HOST_CREATED &&
+				(o.getStatus() == Offer.TO_CHANGE || o.getStatus() == Offer.WAITING)) {
+			Object logged = Application.getInstance().searchLoggedIn();
+			if(logged instanceof Administrator || ((RegisteredUser)logged).getType() == UserType.GUEST) {
+				JOptionPane.showMessageDialog(new JFrame("Error"),
+						"Upps, something bad happened, but anyway, nobody is "
+						+ "perfect. Try again later.", "Error",
+						JOptionPane.ERROR_MESSAGE);
+				return;
+			}
+			
+			CreateOfferView createOffer = new CreateOfferView((RegisteredUser) logged, o);
+			CreateOfferController controller = new CreateOfferController(createOffer);
+			createOffer.setController(controller);
+			Application.getWindow().setSecondaryView(createOffer);
+			
+			return;
+		}
 		
 		OfferView v = new OfferView(o, view.getMode());
 		OfferController c = new OfferController(v);

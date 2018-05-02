@@ -35,8 +35,6 @@ public class AdminController implements ActionListener{
 			}
 			
 			AdminPanelView controlPanel = new AdminPanelView();
-			AdminPanelController panelCont = new AdminPanelController(controlPanel);
-			controlPanel.setControler(panelCont);
 			Application.getWindow().setSecondaryView(controlPanel);
 			
 			break;

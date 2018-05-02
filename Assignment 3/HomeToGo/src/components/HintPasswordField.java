@@ -39,4 +39,15 @@ public class HintPasswordField extends JPasswordField implements FocusListener {
 	public String getText() {
 		return showingHint ? "" : super.getText();
 	}
+	
+	@Override
+	public void setText(String text) {
+		if(text.equals("")){
+			super.setText(hint);
+			showingHint = true;
+		}else {
+			showingHint = false;
+			super.setText(text);
+		}
+	}
 }

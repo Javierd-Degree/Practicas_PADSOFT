@@ -1,7 +1,6 @@
 package views;
 
 import java.awt.BorderLayout;
-import java.awt.event.ActionListener;
 import java.util.List;
 
 import javax.swing.BorderFactory;
@@ -95,8 +94,4 @@ public class SearchResultsView extends JPanel{
     	offersList.addListSelectionListener(c);
     	createOfferButton.addActionListener(c);
 	}
-    
-    public void setAdminButtonsController(ActionListener e) {
-    	offerRenderer.setAdminController(e);
-    }
 }
