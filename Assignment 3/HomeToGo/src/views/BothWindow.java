@@ -95,7 +95,7 @@ public class BothWindow implements WindowInterface{
 		cont.add(logoLabelText, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
 		
-		frame.setSize(1280, 720);
+		frame.setSize(1500, 844);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		
 		Application.setWindow(this);
