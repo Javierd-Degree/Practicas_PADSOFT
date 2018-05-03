@@ -34,10 +34,13 @@ public class HintPasswordField extends JPasswordField implements FocusListener {
 		}
 	}
 
+
 	@SuppressWarnings("deprecation")
 	@Override
+	/*We use the method getPassword, but as we override getText, we 
+	 * get this warning which makes no sense here.*/
 	public String getText() {
-		return showingHint ? "" : super.getText();
+		return showingHint ? "" : String.valueOf(super.getPassword());
 	}
 	
 	@Override
