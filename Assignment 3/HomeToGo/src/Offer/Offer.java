@@ -497,6 +497,14 @@ public abstract class Offer implements Serializable{
 	public abstract String getInfo(boolean logged);
 	
 	/**
+	 * Method that allows us to clone an offer.
+	 * 
+	 * @param o Offer to be cloned.
+	 * @return A copy of the original offer
+	 */
+	public abstract Offer clone();
+	
+	/**
 	 * Compare two Offer to know if they are the same one.
 	 * 
 	 * @param ob Object we want to compare, must be an Offer.

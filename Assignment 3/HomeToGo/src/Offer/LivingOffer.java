@@ -156,6 +156,18 @@ public class LivingOffer extends Offer implements Serializable{
 	}
 	
 	/**
+	 * Method that allows us to clone an offer.
+	 * It just copy the offer content, not the state
+	 * (reserved, the guest, etc).
+	 * 
+	 * @param o Offer to be cloned.
+	 * @return A copy of the original offer
+	 */
+	public LivingOffer clone() {
+		return new LivingOffer(getDeposit(), getStartDate(), getHost(), getHouse(), getPricePerMonth());
+	}
+	
+	/**
 	 * Method that allows us to get some basic offer
 	 * information.
 	 * @param logged Boolean that indicates whether the user is logged in 

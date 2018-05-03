@@ -214,15 +214,50 @@ public class CreateOfferController implements ActionListener{
 			
 			RegisteredUser hostUser = (RegisteredUser) loggedUser;
 			
-			if(updateOffer(view.getOffer()) == false) {
+			/*We need to check if every parameter is right and 
+			 * then, change the original offer*/
+			Offer clone = view.getOffer().clone();
+			if(updateOffer(clone) == false) {
 				return;
 			}
 			
-			if((view.getOffer() instanceof LivingOffer) && !Application.getInstance().validOffer((LivingOffer)view.getOffer()) ||
-					(view.getOffer() instanceof HolidayOffer) && !Application.getInstance().validOffer((HolidayOffer)view.getOffer())) {
+			if((clone instanceof LivingOffer) && !Application.getInstance().validOffer((LivingOffer)clone) ||
+					(clone instanceof HolidayOffer) && !Application.getInstance().validOffer((HolidayOffer)clone)) {
 				JOptionPane.showMessageDialog(new JFrame("Error"),
 						"The house you selected has another offer of the same type.");
 				return;
+			}
+			
+			if(view.getOffer() instanceof LivingOffer) {
+				try {
+					view.getOffer().setDeposit(clone.getDeposit());
+					view.getOffer().setHouse(clone.getHouse());
+					view.getOffer().setStartDate(clone.getStartDate());
+					((LivingOffer)view.getOffer()).setNumberMonths(((LivingOffer)clone).getNumberMonths());
+					((LivingOffer)view.getOffer()).setPricePerMonth(((LivingOffer)clone).getPricePerMonth());
+				} catch (NotAvailableOfferException e) {
+					JOptionPane.showMessageDialog(new JFrame("Error"),
+							"Upps, something bad happened, but anyway, nobody is "
+							+ "perfect. Try again later.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
+			}else if(view.getOffer() instanceof HolidayOffer) {
+				try {
+					view.getOffer().setDeposit(clone.getDeposit());
+					view.getOffer().setHouse(clone.getHouse());
+					view.getOffer().setStartDate(clone.getStartDate());
+					((HolidayOffer)view.getOffer()).setEndDate(((HolidayOffer)clone).getEndDate());
+					((HolidayOffer)view.getOffer()).setTotalPrice(((HolidayOffer)clone).getTotalPrice());
+				} catch (NotAvailableOfferException e) {
+					JOptionPane.showMessageDialog(new JFrame("Error"),
+							"Upps, something bad happened, but anyway, nobody is "
+							+ "perfect. Try again later.", "Error",
+							JOptionPane.ERROR_MESSAGE);
+					return;
+				}
+				
 			}
 			
 			JOptionPane.showMessageDialog(new JFrame("Success"),

@@ -127,6 +127,25 @@ public class HolidayOffer extends Offer implements Serializable{
 	}
 	
 	/**
+	 * Method that allows us to clone an offer.
+	 * It just copy the offer content, not the state
+	 * (reserved, the guest, etc).
+	 * 
+	 * @param o Offer to be cloned.
+	 * @return A copy of the original offer
+	 */
+	public HolidayOffer clone() {
+		HolidayOffer offer;
+		try {
+			offer = new HolidayOffer(getDeposit(), getStartDate(), getHost(), getHouse(), getEndDate(), getTotalPrice());
+		} catch (DateRangeException e) {
+			//Nunca va a pasar
+			return null;
+		}
+		return offer;
+	}
+	
+	/**
 	 * Method that allow us to get a simple offer name.
 	 * @return String with the offer name.
 	 */
