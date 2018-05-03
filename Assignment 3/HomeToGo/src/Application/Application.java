@@ -720,7 +720,11 @@ public class Application implements Serializable {
 					String[] tokens = data.split(";");
 					String[] name = tokens[2].split(",");
 					UserType type;
-					if(tokens[0].equals("O")){
+					if(tokens[0].equals("A")) {
+						/*It may be an administrator*/
+						sys.admins.add(new Administrator(tokens[1], name[1], name[0], tokens[3]));
+						continue;
+					}else if(tokens[0].equals("O")){
 						type = UserType.HOST;
 					}else if(tokens[0].equals("D")){
 						type = UserType.GUEST;

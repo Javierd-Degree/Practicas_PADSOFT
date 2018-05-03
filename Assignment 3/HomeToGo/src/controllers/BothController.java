@@ -98,7 +98,7 @@ public class BothController implements ActionListener{
 			break;
 			
 		case "HOME":
-			SearchView s2 = new SearchView(false);
+			SearchView s2 = new SearchView(true);
 			SearchController controller2 = new SearchController(s2);
 			s2.setController(controller2);
 			Application.getWindow().setSecondaryView(s2);
