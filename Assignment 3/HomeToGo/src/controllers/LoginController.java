@@ -106,6 +106,14 @@ public class LoginController implements ActionListener{
 			
 			
 			break;
+			
+		case "HOME":
+			SearchView s = new SearchView(false);
+			SearchController controller = new SearchController(s);
+			s.setController(controller);
+			Application.getWindow().setSecondaryView(s);
+			
+			break;
 		}
 		
 	}

@@ -55,6 +55,7 @@ public class HostController implements ActionListener{
 			Application.getWindow().setSecondaryView(v);
 			
 			break;
+			
 		case "LOGOUT":
 			Application.getInstance().logout();
 			Application.getWindow().setVisible(false);
@@ -70,6 +71,14 @@ public class HostController implements ActionListener{
 			login.setSecondaryView(s);
 			
 			login.setVisible(true);
+			
+		case "HOME":
+			SearchView s2 = new SearchView(false);
+			SearchController controller2 = new SearchController(s2);
+			s2.setController(controller2);
+			Application.getWindow().setSecondaryView(s2);
+			
+			break;
 			
 		}
 		

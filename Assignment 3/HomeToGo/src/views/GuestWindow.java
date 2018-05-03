@@ -22,6 +22,7 @@ import User.RegisteredUser;
 public class GuestWindow implements WindowInterface{
 	private JFrame frame;
 	private JPanel login;
+	private JButton homeButton;
 	private JButton historyButton;
 	private JButton logoutButton;
 	private JLabel nameLabelText;
@@ -83,12 +84,26 @@ public class GuestWindow implements WindowInterface{
 		
 		
 		/*Create the logo*/
+		JPanel topPanel = new JPanel(new GridBagLayout());
+		GridBagConstraints c2 = new GridBagConstraints();
+		homeButton = new JButton("Home");
+		homeButton.setActionCommand("HOME");
 		logoLabelText = new JLabel("HOME TO GO");
 		logoLabelText.setHorizontalAlignment(JLabel.CENTER);
 		logoLabelText.setFont(logoLabelText.getFont().deriveFont(42.0f));
 		logoLabelText.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+		c2.gridx = 0;
+		c2.gridy = 0;
+		c2.insets = new Insets(0, 44, 0, 0);
+		topPanel.add(homeButton, c2);
+		c2.insets = new Insets(0, 0, 0, 0);
+		c2.gridx = 1;
+		c2.weightx = 1.0;
+		c2.anchor = GridBagConstraints.NORTH;
+		topPanel.add(logoLabelText, c2);
 		
-		cont.add(logoLabelText, BorderLayout.NORTH);
+		
+		cont.add(topPanel, BorderLayout.NORTH);
 		cont.add(login, BorderLayout.WEST);
 		
 		frame.setSize(1500, 844);
@@ -100,6 +115,7 @@ public class GuestWindow implements WindowInterface{
 	public void setController(ActionListener c) {
 		historyButton.addActionListener(c);
 		logoutButton.addActionListener(c);
+		homeButton.addActionListener(c);
 	}
 	
 	public void setVisible(boolean v) {
