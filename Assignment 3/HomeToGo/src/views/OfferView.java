@@ -35,6 +35,7 @@ public class OfferView extends JPanel{
 	private Offer offer;
 	private int mode;
 	private JLabel nameLabelText;
+	private JLabel ratingLabelText;
 	private JLabel charsTitle;
     private JLabel charsLabelText;
     private JTextArea infoLabelText;
@@ -64,6 +65,7 @@ public class OfferView extends JPanel{
 		view.setLayout(new GridBagLayout());
 		
         nameLabelText = new JLabel();
+        ratingLabelText = new JLabel();
         charsTitle = new JLabel("Characteristics: ");
         charsLabelText = new JLabel();
         infoLabelText = new JTextArea();
@@ -76,6 +78,14 @@ public class OfferView extends JPanel{
         nameLabelText.setBorder(new EmptyBorder(12, 0, 0, 0));
         nameLabelText.setFont(nameLabelText.getFont().deriveFont(24.0f));
         setOfferNameAndStyle(offer, nameLabelText, this.mode);
+        JPanel upperPanel = new JPanel(new BorderLayout());
+        upperPanel.add(nameLabelText, BorderLayout.NORTH);
+        upperPanel.add(ratingLabelText, BorderLayout.CENTER);
+        if(offer.calculateRating() == -1) {
+    		ratingLabelText.setText(" Rating: No available");
+    	}else {
+    		ratingLabelText.setText(" Rating: " + offer.calculateRating()+"/5");
+    	}
         
         
         /*We do not want the characteristics text to be bold.*/
@@ -87,6 +97,7 @@ public class OfferView extends JPanel{
         
         /*We do not want the information text to be bold.*/
         infoLabelText.setOpaque(false);
+        infoLabelText.setEditable(false);
         f = infoLabelText.getFont();
         infoLabelText.setFont(f.deriveFont(f.getStyle() | ~Font.BOLD));
         /*Put some right border*/
@@ -118,7 +129,7 @@ public class OfferView extends JPanel{
         c.gridwidth = 3;
         c.gridheight = 1;
         c.anchor = GridBagConstraints.NORTHWEST;
-        view.add(nameLabelText, c);
+        view.add(upperPanel, c);
         
         c.gridx = 2;
         c.weightx = 1.0;

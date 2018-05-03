@@ -186,7 +186,7 @@ public class CreateOfferController implements ActionListener{
 				if(result3 == false) {
 					JOptionPane.showMessageDialog(new JFrame("Error"),
 							"Sorry, there was an error creating your offer, try again later.\n"
-							+ "Maybe you already have one offer of this type on the selected house, at the same time range.");
+							+ "Maybe you already have one offer of this type on the selected house.");
 					return;
 				}
 				
@@ -221,7 +221,7 @@ public class CreateOfferController implements ActionListener{
 			if((view.getOffer() instanceof LivingOffer) && !Application.getInstance().validOffer((LivingOffer)view.getOffer()) ||
 					(view.getOffer() instanceof HolidayOffer) && !Application.getInstance().validOffer((HolidayOffer)view.getOffer())) {
 				JOptionPane.showMessageDialog(new JFrame("Error"),
-						"The house you selected has another offer of the same type in the same time range.");
+						"The house you selected has another offer of the same type.");
 				return;
 			}
 			

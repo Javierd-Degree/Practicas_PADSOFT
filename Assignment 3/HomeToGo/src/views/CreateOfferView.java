@@ -181,6 +181,8 @@ public class CreateOfferView extends JPanel{
 		JTextArea adminComments = new JTextArea();
 		adminComments.setOpaque(false);
 		adminComments.setEditable(false);
+		adminComments.setWrapStyleWord(true);
+		adminComments.setLineWrap(true);
 		String comments =  "";
 		for(Comment comment: offer.getComments()) {
 			if(comment instanceof ChangeComment) {

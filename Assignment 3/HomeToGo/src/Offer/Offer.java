@@ -359,7 +359,7 @@ public abstract class Offer implements Serializable{
 				num++;
 			}
 		}
-		return (num == 0) ? 0 : (sum/num);
+		return (num == 0) ? -1 : Math.round((sum/num)*100)/100;
 	}
 	
 	/**
@@ -514,7 +514,7 @@ public abstract class Offer implements Serializable{
 					this.startDate.equals(o.startDate) && this.lastModifiedDate.equals(o.lastModifiedDate)
 					&& this.host.equals(o.host) && this.comments.equals(o.comments)
 					&& this.house.equals(o.house);
-		}else if(this.guest == null && o.guest == null) {
+		}else if(this.guest == null || o.guest == null) {
 			/*If just one of them is null, the offers are obviously not the same.*/
 			return false;
 		}

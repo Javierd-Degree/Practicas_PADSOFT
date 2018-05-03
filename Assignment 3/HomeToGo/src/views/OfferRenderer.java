@@ -24,6 +24,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
 
 	private int mode;
 	private JLabel nameLabelText;
+	private JLabel ratingLabelText;
 	private JLabel charsTitle;
     private JLabel charsLabelText;
     private JTextArea infoLabelText;
@@ -39,6 +40,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         setLayout(new BorderLayout(2, 2));
         
         nameLabelText = new JLabel();
+        ratingLabelText = new JLabel();
         charsTitle = new JLabel("Characteristics: ");
         charsLabelText = new JLabel();
         infoLabelText = new JTextArea();
@@ -46,6 +48,9 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         
         /*Put some margin on the name*/
         nameLabelText.setBorder(new EmptyBorder(12, 0, 0, 0));
+        JPanel upperPanel = new JPanel(new BorderLayout());
+        upperPanel.add(nameLabelText, BorderLayout.NORTH);
+        upperPanel.add(ratingLabelText, BorderLayout.CENTER);
         
         /*We do not want the characteristics text to be bold.*/
         Font f = charsLabelText.getFont();
@@ -80,7 +85,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         	down.add(adminPanel);
         }
         
-        add(nameLabelText, BorderLayout.NORTH);
+        add(upperPanel, BorderLayout.NORTH);
         add(down, BorderLayout.SOUTH);
         add(infoLabelText, BorderLayout.EAST);
     }
@@ -93,9 +98,13 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
     	 * he just see the offer name.*/
     	nameLabelText.setText(offer.getName());
     	nameLabelText.setForeground(Color.decode("#82B1FF"));
-    	
-    	
     	OfferView.setOfferNameAndStyle(offer, nameLabelText, this.mode);
+    	
+    	if(offer.calculateRating() == -1) {
+    		ratingLabelText.setText(" Rating: No available");
+    	}else {
+    		ratingLabelText.setText(" Rating: " + offer.calculateRating()+"/5");
+    	}
     	
     	//System.out.println(offer.getName()+": "+offer.getHouse().getCharacteristics().size());
     	this.charsLabelText.setText(offer.getHouse().getHouseCharsStyled());
@@ -108,6 +117,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
 
     	// set Opaque to change background color of JLabel
     	nameLabelText.setOpaque(true);
+    	ratingLabelText.setOpaque(true);
     	charsTitle.setOpaque(true);
     	charsLabelText.setOpaque(true);
     	infoLabelText.setOpaque(true);
@@ -116,6 +126,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
         // when select item
         if (isSelected) {
         	nameLabelText.setBackground(list.getSelectionBackground());
+        	ratingLabelText.setBackground(list.getSelectionBackground());
         	charsTitle.setBackground(list.getSelectionBackground());
         	charsLabelText.setBackground(list.getSelectionBackground());
         	infoLabelText.setBackground(list.getSelectionBackground());
@@ -123,6 +134,7 @@ public class OfferRenderer extends JPanel implements ListCellRenderer<Offer> {
             setBackground(list.getSelectionBackground());
         } else { // when don't select
         	nameLabelText.setBackground(list.getBackground());
+        	ratingLabelText.setBackground(list.getBackground());
         	charsTitle.setBackground(list.getBackground());
         	charsLabelText.setBackground(list.getBackground());
         	infoLabelText.setBackground(list.getBackground());

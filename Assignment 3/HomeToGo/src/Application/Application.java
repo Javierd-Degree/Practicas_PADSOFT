@@ -365,25 +365,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Offer o : offers) {
-			if(!(o instanceof HolidayOffer)) {
-				continue;
-			}
-			
-			HolidayOffer o2 = (HolidayOffer) o;
-			/*La fecha de inicio de offer esta entre la de inicio y final de la otra.*/
-			boolean date = startDate.isAfter(o2.getStartDate()) && 
-					startDate.isBefore(o2.getEndDate());
-			/*La fecha de final de offer esta entre la de inicio y final de la otra*/
-			date = date || (endDate.isAfter(o2.getStartDate()) &&
-					endDate.isAfter(o2.getEndDate()));
-			/*Las fechas de la otra estan dentro del rango de fechas de la primera.*/
-			date = date || (startDate.isBefore(o2.getStartDate()) && 
-					endDate.isAfter(o2.getEndDate()));
-			/*Las fechas de offer estan dentro del rango de fechas de la otra*/
-			date = date || (startDate.isAfter(o2.getStartDate()) &&
-					endDate.isBefore(o2.getEndDate()));
-			
-			if(o.getHouse().equals(house) && date) {
+			if(o instanceof HolidayOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -418,7 +400,6 @@ public class Application implements Serializable {
 	 * @return boolean indicating if the offer was successfully added or not.
 	 */
 	public boolean addOffer(double deposit, double pricePerMonth, LocalDate startDate, House house, RegisteredUser host) {
-		int nMonths = LivingOffer.defaultNMonths;
 		if(house == null || host == null || startDate == null) {
 			return false;
 		}
@@ -432,25 +413,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Offer o : offers) {
-			if(!(o instanceof LivingOffer)) {
-				continue;
-			}
-			
-			LivingOffer o2 = (LivingOffer) o;
-			/*La fecha de inicio de offer esta entre la de inicio y final de la otra.*/
-			boolean date = startDate.isAfter(o2.getStartDate()) && 
-					startDate.isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths()));
-			/*La fecha de final de offer esta entre la de inicio y final de la otra*/
-			date = date || (startDate.plusMonths(nMonths).isAfter(o2.getStartDate()) &&
-					startDate.plusMonths(nMonths).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de la otra estan dentro del rango de fechas de la primera.*/
-			date = date || (startDate.isBefore(o2.getStartDate()) && 
-					startDate.plusMonths(nMonths).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de offer estan dentro del rango de fechas de la otra*/
-			date = date || (startDate.isAfter(o2.getStartDate()) &&
-					startDate.plusMonths(nMonths).isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			
-			if(o.getHouse().equals(house) && date) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -488,25 +451,7 @@ public class Application implements Serializable {
 		}
 		
 		for(Offer o : offers) {
-			if(!(o instanceof LivingOffer)) {
-				continue;
-			}
-			
-			LivingOffer o2 = (LivingOffer) o;
-			/*La fecha de inicio de offer esta entre la de inicio y final de la otra.*/
-			boolean date = startDate.isAfter(o2.getStartDate()) && 
-					startDate.isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths()));
-			/*La fecha de final de offer esta entre la de inicio y final de la otra*/
-			date = date || (startDate.plusMonths(nMonths).isAfter(o2.getStartDate()) &&
-					startDate.plusMonths(nMonths).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de la otra estan dentro del rango de fechas de la primera.*/
-			date = date || (startDate.isBefore(o2.getStartDate()) && 
-					startDate.plusMonths(nMonths).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de offer estan dentro del rango de fechas de la otra*/
-			date = date || (startDate.isAfter(o2.getStartDate()) &&
-					startDate.plusMonths(nMonths).isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			
-			if(o.getHouse().equals(house) && date) {
+			if(o instanceof LivingOffer && o.getHouse().equals(house)) {
 				return false;
 			}
 		}
@@ -530,7 +475,7 @@ public class Application implements Serializable {
 	/**
 	 * Method that checks if a LivingOffer is valid in the application.
 	 * (It is not included already, and there is no other LivingOffer
-	 * in the same house at the same time period).
+	 * in the same house.).
 	 * 
 	 * @param offer Offer to check.
 	 * @return boolean indicating if it's valid or not.
@@ -553,25 +498,10 @@ public class Application implements Serializable {
 				continue;
 			}
 			
-			LivingOffer o2 = (LivingOffer) o;
-			/*La fecha de inicio de offer esta entre la de inicio y final de la otra.*/
-			boolean date = offer.getStartDate().isAfter(o2.getStartDate()) && 
-					offer.getStartDate().isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths()));
-			/*La fecha de final de offer esta entre la de inicio y final de la otra*/
-			date = date || (offer.getStartDate().plusMonths(offer.getNumberMonths()).isAfter(o2.getStartDate()) &&
-					offer.getStartDate().plusMonths(offer.getNumberMonths()).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de la otra estan dentro del rango de fechas de la primera.*/
-			date = date || (offer.getStartDate().isBefore(o2.getStartDate()) && 
-					offer.getStartDate().plusMonths(offer.getNumberMonths()).isAfter(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			/*Las fechas de offer estan dentro del rango de fechas de la otra*/
-			date = date || (offer.getStartDate().isAfter(o2.getStartDate()) &&
-					offer.getStartDate().plusMonths(offer.getNumberMonths()).isBefore(o2.getStartDate().plusMonths(o2.getNumberMonths())));
-			
-			if(o.getHouse().equals(offer.getHouse()) && date) {
+			if(o.getHouse().equals(offer.getHouse())) {
 				return false;
 			}
 		}
-		
 		return true;
 	}
 	
@@ -601,29 +531,10 @@ public class Application implements Serializable {
 				continue;
 			}
 			
-			HolidayOffer o2 = (HolidayOffer) o;
-			/*La fecha de inicio de offer esta entre la de inicio y final de la otra.*/
-			boolean date = offer.getStartDate().isAfter(o2.getStartDate()) && 
-					offer.getStartDate().isBefore(o2.getEndDate());
-			/*La fecha de final de offer esta entre la de inicio y final de la otra*/
-			date = date || (offer.getEndDate().isAfter(o2.getStartDate()) &&
-					offer.getEndDate().isAfter(o2.getEndDate()));
-			/*Las fechas de la otra estan dentro del rango de fechas de la primera.*/
-			date = date || (offer.getStartDate().isBefore(o2.getStartDate()) && 
-					offer.getEndDate().isAfter(o2.getEndDate()));
-			/*Las fechas de offer estan dentro del rango de fechas de la otra*/
-			date = date || (offer.getStartDate().isAfter(o2.getStartDate()) &&
-					offer.getEndDate().isBefore(o2.getEndDate()));
-			
-			if(o.getHouse().equals(offer.getHouse()) && date) {
+			if(o.getHouse().equals(offer.getHouse())) {
 				return false;
 			}
 		}
-		
-		if(offers.contains(offer)) {
-			return false;
-		}
-		
 		return true;
 	}
 	

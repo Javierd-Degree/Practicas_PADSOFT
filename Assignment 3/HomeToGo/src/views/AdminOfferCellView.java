@@ -24,6 +24,7 @@ public class AdminOfferCellView extends JPanel{
 	private JPanel parent;
 	
 	private JLabel nameLabelText;
+	private JLabel ratingLabelText;
 	private JLabel charsTitle;
     private JLabel charsLabelText;
     private JTextArea infoLabelText;
@@ -42,6 +43,7 @@ public class AdminOfferCellView extends JPanel{
 		setLayout(new BorderLayout(2, 2));
         
         nameLabelText = new JLabel();
+        ratingLabelText = new JLabel();
         charsTitle = new JLabel("Characteristics: ");
         charsLabelText = new JLabel();
         infoLabelText = new JTextArea();
@@ -49,6 +51,10 @@ public class AdminOfferCellView extends JPanel{
         
         /*Put some margin on the name*/
         nameLabelText.setBorder(new EmptyBorder(12, 0, 0, 0));
+        JPanel upperPanel = new JPanel(new BorderLayout());
+        upperPanel.add(nameLabelText, BorderLayout.NORTH);
+        upperPanel.add(ratingLabelText, BorderLayout.CENTER);
+        upperPanel.setBackground(Color.WHITE);
         
         /*We do not want the characteristics text to be bold.*/
         Font f = charsLabelText.getFont();
@@ -58,6 +64,7 @@ public class AdminOfferCellView extends JPanel{
         
         /*We do not want the information text to be bold.*/
         f = infoLabelText.getFont();
+        infoLabelText.setEditable(false);
         infoLabelText.setFont(f.deriveFont(f.getStyle() | ~Font.BOLD));
         /*Put some right border*/
         infoLabelText.setBorder(new EmptyBorder(0, 0, 0, 8));
@@ -85,7 +92,7 @@ public class AdminOfferCellView extends JPanel{
         down.add(charsPanel);
         down.add(adminPanel);
         
-        add(nameLabelText, BorderLayout.NORTH);
+        add(upperPanel, BorderLayout.NORTH);
         add(down, BorderLayout.SOUTH);
         add(infoLabelText, BorderLayout.EAST);
         
@@ -93,6 +100,11 @@ public class AdminOfferCellView extends JPanel{
         /*Now we need to set up the layout content*/
         nameLabelText.setText(offer.getName());
     	nameLabelText.setForeground(Color.decode("#82B1FF"));
+    	if(offer.calculateRating() == -1) {
+    		ratingLabelText.setText(" Rating: No available");
+    	}else {
+    		ratingLabelText.setText(" Rating: " + offer.calculateRating()+"/5");
+    	}
     	charsLabelText.setText(offer.getHouse().getHouseCharsStyled());
     	infoLabelText.setText(offer.getInfo(true));
     	setBorder(new EtchedBorder(EtchedBorder.LOWERED));
