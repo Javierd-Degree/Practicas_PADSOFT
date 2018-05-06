@@ -1,0 +1,10 @@
+Rol;NIF;Full Name;Password;Credit Card Number
+A;001;Aguirre, Juan Pedro;pepe123
+O;51999111X;Garcia Serrano, Ana Maria;pezEspada;9999666633330000
+D;55555111Z;Perez Lopez, Jose Luis;NoSeSaBe;7777222288885555
+OD;54444111D;Martin Garcia, Ana Maria;olvidame;9999555599996666
+OD;X1130055;Lopez, Mary ;secreta;111133337777222
+D;Z2376543;Ramirez, Pepito;hello world;1234567890123456
+O;G3560856;Barbudo, Javi;1234;TarjetaMALA
+D;F5364097;Sparrow, Jack;contrasena;0987654321123456
+D;F534AM97;Jimenez, Pepito;passena;NOVALE
