@@ -123,7 +123,7 @@ public class OfferController implements ActionListener {
 			}
 			
 			Integer nRating = SearchController.stringToInteger(rating);
-			if(nRating == null ||  nRating <= 0 || nRating >= 5) {
+			if(nRating == null ||  nRating < 0 || nRating > 5) {
 				JOptionPane.showMessageDialog(new JFrame("Error"), "The rating must be an integer between 0 and 5.");
 				return;
 			}
